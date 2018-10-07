@@ -8,6 +8,20 @@ from PIL import Image, ImageEnhance
 from panda3d.core import Quat, look_at, TextureStage, TexGenAttrib
 
 
+class Logger:
+    @staticmethod
+    def info(*args):
+        print('[INFO]:', *args)
+
+    @staticmethod
+    def warning(*args):
+        print('[WARNING]:', *args)
+
+    @staticmethod
+    def error(*args):
+        print('[ERROR]:', *args)
+
+
 def get_screen_resolutions():
     p = subprocess.Popen(['xrandr'], stdout=subprocess.PIPE)
     p2 = subprocess.Popen(['grep', '*'], stdin=p.stdout, stdout=subprocess.PIPE)

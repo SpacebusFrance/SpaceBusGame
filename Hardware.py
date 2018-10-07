@@ -7,34 +7,40 @@ from direct.showbase import DirectObject
 from direct.showbase.MessengerGlobal import messenger
 from direct.showbase.ShowBase import ShowBase
 
-from utils import read_ini_file
+from utils import read_ini_file, Logger
 
 
 class WriteOnlyArduino:
+    """
+    A class representing the read-only arduino used to manage leds.
+    """
     def __init__(self, gameEngine):
         self.task_mgr = gameEngine.task_mgr
         self.gameEngine = gameEngine
         ports = list(serial.tools.list_ports.comports())
         self.board = None
         for p in ports:
-            print(p, p[2], 'description :', p.description)
+            Logger.info(p, p[2], 'description :', p.description)
             if "ttyACM0" in p.description:
                 self.board = serial.Serial(p[0], 9600, timeout=5)
 
         if self.board is None:
-            print("No arduino connected !")
+            Logger.warning("no arduino connected !")
         else:
             if self.board.isOpen():
-                print("port is open. Closing it")
+                Logger.info("port is open. Closing it")
                 self.board.close()
 
-            print("opening the port")
+            Logger.info("opening the port")
             self.board.open()
 
         time.sleep(1.0)
         self.all_off()
 
     def hello_world(self):
+        """
+        All led sets on one after one
+        """
         self.all_off()
         for i in range(50):
             self.led_on(i)
@@ -43,10 +49,18 @@ class WriteOnlyArduino:
         self.all_off()
 
     def send(self, s):
+        """
+        Sends a message to the arduino
+        @param s: te message
+        """
         if self.board is not None:
             self.board.write(str.encode(str(s.strip())))
 
     def led_on(self, id):
+        """
+        Switches led(s) on
+        @param id: the id(s) of the desired led(s). Can be an int or a list of int.
+        """
         if isinstance(id, list):
             for i in id:
                 self.send("<" + str(i) + "-1>")
@@ -54,6 +68,10 @@ class WriteOnlyArduino:
             self.send("<" + str(id) + "-1>")
 
     def led_off(self, id):
+        """
+        Switches led(s) off
+        @param id: the id(s) of the desired led(s). Can be an int or a list of int.
+        """
         if isinstance(id, list):
             for i in id:
                 self.send("<" + str(i) + "-0>")
@@ -61,9 +79,15 @@ class WriteOnlyArduino:
             self.send("<" + str(id) + "-0>")
 
     def all_on(self):
+        """
+        Switches all leds on
+        """
         self.send("<on>")
 
     def all_off(self):
+        """
+        Switches all leds off
+        """
         self.send("<off>")
 
 
@@ -146,41 +170,31 @@ class HardwareHandler(DirectObject.DirectObject):
             if self.events_dict[key] == led_name:
                 self.arduino.led_on(key)
                 return
-        print("Led on.", led_name, "not found in self.event_dict")
+        Logger.info(led_name, "not found in self.event_dict")
 
     def set_led_off(self, led_name):
         for key in self.events_dict:
             if self.events_dict[key] == led_name:
                 self.arduino.led_off(key)
                 return
-        print("Led off.", led_name, "not found in self.event_dict")
+        Logger.info(led_name, "not found in self.event_dict")
 
     def destroy(self):
         pygame.quit()
-
-    # def get_joysticks(self):
-    #     return self._joysticks
-    #
-    # def get_joystick_number(self):
-    #     return len(self._joysticks)
-    #
-    # def get_buttons_number(self, joy_number):
-    #     if 0 <= joy_number < len(self._joysticks):
-    #         return self._joysticks[joy_number].get_numbuttons()
 
     def simulate_input(self, event_code, value):
         if event_code in self.events_dict:
             messenger.send(self.events_dict[event_code], [value])
         else:
-            print(event_code, "is not in the event list !!")
+            Logger.warning(event_code, "is not in the event list !")
 
     def check_constrained_led(self, event_name, value):
         if event_name in self.controlled_leds:
             if value:
-                print("\033[96m (info) setting led", event_name, "on\033[0m")
+                Logger.info("setting led", event_name, "on")
                 self.set_led_on(self.controlled_leds[event_name])
             else:
-                print("\033[96m (info) setting led", event_name, "off\033[0m")
+                Logger.info("setting led", event_name, "off")
                 self.set_led_off(self.controlled_leds[event_name])
 
     def _event_polling(self, task):
@@ -214,7 +228,7 @@ class HardwareHandler(DirectObject.DirectObject):
                 else:
                     # firewall !
                     if self.tasks[event_name] is not None:
-                        print("\033[92mPossible ghost from", event_name, "\033[0m (", dt, ')')
+                        Logger.info("Possible ghost from", event_name)
                         self.tasks[event_name].remove()
         return task.cont
 

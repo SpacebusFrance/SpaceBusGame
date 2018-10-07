@@ -18,6 +18,9 @@ from utils import read_ini_file, smart_cast
 
 
 class Game(ShowBase):
+    """
+    The main class of the game. Reads configuration from the params.ini file.
+    """
     def __init__(self):
         ShowBase.__init__(self)
 
@@ -148,6 +151,9 @@ class Game(ShowBase):
             self.reset_game()
 
     def generate_spacebus_screens(self):
+        """
+        Creates the screen(s)
+        """
         if self.params("one_single_window"):
             # setting set size of the main window
             self.control_screen.set_single_window()
@@ -175,6 +181,12 @@ class Game(ShowBase):
                 self.control_screen.request_focus()
 
     def get_time(self, string_format=False, round_result=True):
+        """
+        Returns the elapsed time in seconds since the last begining (reset) of the game.
+        @param string_format: if True, returns the numbers of seconds as string
+        @param round_result: if True, round at the seconds level
+        @return: the elapsed time in secs.
+        """
         if string_format:
             return str(datetime.timedelta(seconds=round(self.clock.get_real_time(), 1)))
         else:
@@ -185,8 +197,9 @@ class Game(ShowBase):
 
     def reset_game(self):
         """
-        Resets the game
+        Resets the game. Load the scenario if the scenario must be played.
         """
+        # TODO : log file
         # redirect print
         # sys.stdout = open("output.txt", "w")
 
@@ -204,22 +217,45 @@ class Game(ShowBase):
         self.sound_manager.play_ambiant_sound()
         self.shuttle.reset()
 
-        # if start:
-        #     self.params("play_scenario")
-
     def load_scenario(self, scenario):
+        """
+        Load the desired scenario
+        @param scenario: the string name of the .xml file of the scenario
+        """
         self.scenario.load_scenario(scenario)
 
     def start_game(self):
+        """
+        Starts the current scenario
+        """
         self.scenario.start_game()
 
     def get_soft_state(self, state_key):
+        """
+        Gets the desired software tate
+        @param state_key: the name of the state
+        @return: the state
+        """
         return self.soft_states.get(state_key, None)
 
     def get_hard_state(self, state_key):
+        """
+        Gets the desired hardware state
+        @param state_key: the name of the state
+        @return: the state
+        """
         return self.hard_states.get(state_key, None)
 
     def generate_files(self):
+        """
+        Reads the main_hardware_file and creates the following files :
+            - controlled_led_file
+            - hardware_map_file
+            - power_file
+            - soft_state_file
+            - hard_state_file
+            - hardware_keyboard_map_file
+        """
         file = open(self.params("main_hardware_file"), "r")
         lines = file.readlines()[1:]
         file.close()
@@ -294,12 +330,15 @@ class Game(ShowBase):
 
     def update_soft_state(self, state_key, value, force_power=False, silent=False):
         """
-        Update one state of the shuttle and tells the game that the shuttle is updated.
+        Update a software state of the shuttle and tells the game that the shuttle is updated.
+        If this acton requires some power, the engine checks if this action can be performed and update the shuttle power.
+        Depending on the name of state, some action are performed and the shuttle is correctly updated.
 
-        :param state_key: must be one of the strings defined in self.game_states
-        :param value: the new value
-        :param force_power:
-        :return:
+        @param state_key: must be one of the strings defined in self.game_states
+        @param value: the new value (int, float, bool or string depending on the state_key)
+        @param force_power: If this action consumes some power, set is to True to ignore the power limits.
+        @param silent: if True, no automatic sound is played. Otherwise, the game searches for a sound corresponding to the new state of the soft_state and plays it.
+        @return: True if the state exists. False otherwise
         """
         if state_key in self.soft_states:
             if (not self.params("use_power") or force_power or not value or (
@@ -398,6 +437,15 @@ class Game(ShowBase):
 
     def update_hard_state(self, state_key, value, silent=False):
         """
+        Update a hardware state of the shuttle and tells the game that the shuttle is updated. This can only append if
+        the variable 'listen_to_hardware' is set to True. In this case, the game checks if a leds corresponds to this
+        new hardware states and switch it on/off. If the hardware states correspnds to a software one, the corresponding
+        software state is automatically updated.
+
+        @param state_key: must be one of the strings defined in self.game_states
+        @param value: the new value (int, float, bool or string depending on the state_key)
+        @param silent: if True, no automatic sound is played. Otherwise, the game searches for a sound corresponding to the new state of the soft_state and plays it.
+        @return: True if the state exists. False otherwise
         """
         if state_key == "b_admin":
             self.hard_states[state_key] = value
@@ -458,9 +506,7 @@ class Game(ShowBase):
 
     def init_states(self):
         """
-        This function initializes the game states.
-
-        :return:
+        This reads the game states.
         """
         self.hard_states = read_ini_file(self.params("hardware_states_file"))
         self.soft_states = read_ini_file(self.params("software_states_file"))

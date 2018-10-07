@@ -11,7 +11,20 @@ from utils import read_ini_file, get_screen_resolutions
 
 
 class Gauge:
+    """
+    Represents a dynamic gauge linked to a global variable of the shuttle.
+    """
     def __init__(self, screen, name, x=0, low_value=-1, high_value=101, min=0, max=100):
+        """
+        Creates a new gauge
+        @param screen: the controlScreen instance
+        @param name: the name of the corresponding global variable (soft_state).
+        @param x:
+        @param low_value: below this limit,
+        @param high_value:
+        @param min: minimum value
+        @param max: maximum value
+        """
         self.taskMgr = screen.gameEngine.taskMgr
         self.update_func = screen.update
         self.screen = screen
@@ -149,7 +162,7 @@ class Gauge:
 
 class ControlScreen(DirectObject.DirectObject):
     """
-    Class that represents the ControlScreen that must be unlocked.
+    Class that represents the main ControlScreen
     """
 
     def __init__(self, gameEngine):
@@ -200,13 +213,29 @@ class ControlScreen(DirectObject.DirectObject):
             self.update()
 
     def gimp_pos(self, xg, yg):
+        """
+        Returns the screen coordinates fro initial Gimp positions in the image
+        @param xg: the x position on Gimp
+        @param yg: the y position on Gimp
+        @return:
+        """
         return (-1 + xg * self._x0,
                 1 - yg * self._y0)
 
-    def set_background_image(self, name):
-        self.background_image.setImage(self.image_path + name + ".png")
+    def set_background_image(self, name, extension='.png'):
+        """
+        Changes the background image
+        @param name: the file name without extension
+        @param extension: the file extension.
+        """
+        self.background_image.setImage(self.image_path + name + extension)
 
     def info_text(self, text, close_time=10):
+        """
+        Text popup screen. This screen can be closed by pressing 'enter' key
+        @param text: The text to display
+        @param close_time: the life time of the popup in seconds.
+        """
         self.gameEngine.sound_manager.play("gui_open")
         self.on_screen_info.set_text(text)
         self.on_screen_info.show()
@@ -228,6 +257,11 @@ class ControlScreen(DirectObject.DirectObject):
             self.gameEngine.taskMgr.doMethodLater(close_time, _end, name="end_info")
 
     def event(self, message, **kwargs):
+        """
+        Send an event to the screen.
+        @param message: the event name
+        @param kwargs: the assocaited parameters.
+        """
         if message == "crew_lock_screen":
             self._previous_screen = message
             self.listen_to_keyboard()
@@ -305,16 +339,28 @@ class ControlScreen(DirectObject.DirectObject):
                 self.current_screen.set_all_elements()
 
     def set_previous_screen(self):
+        """
+        Resets the previous screen
+        """
         self.event(self._previous_screen)
 
     def request_focus(self):
+        """
+        Request the focus. Seems to be useless
+        """
         self.props.setForeground(True)
         self.window.requestProperties(self.props)
         self.update()
 
-    def set_single_window(self):
+    def set_single_window(self, screen_numbers=5, res_x=1920, res_y=1080):
+        """
+        If the game works in single window (much faster), enlarges the screen and allocates a fraction of it to the ControlScreen
+        @param screen_numbers: the numbers of simulated screens (including the ControlScreen)
+        @param res_x: the x resolution of each screen
+        @param res_y: the y resolution of each screen
+        """
         # setting the main window
-        self.props.set_size((5 * 1920, 1080))
+        self.props.set_size((screen_numbers * res_x, res_y))
         self.props.set_origin((0, 0))
         self.props.setUndecorated(True)
         self.window.requestProperties(self.props)
@@ -323,11 +369,14 @@ class ControlScreen(DirectObject.DirectObject):
         for dr in self.window.get_display_regions():
             cam = dr.get_camera()
             if cam and "cam2d" in cam.name:
-                dr.set_dimensions(0, 0.2, 0, 1)
+                dr.set_dimensions(0, 1/screen_numbers, 0, 1)
 
         self.update()
 
     def set_fullscreen(self):
+        """
+        Sets this screen in fullscreen mode.
+        """
         res = get_screen_resolutions()[0]
         self.props.set_size(res)
         self.props.setFullscreen(True)
@@ -336,6 +385,9 @@ class ControlScreen(DirectObject.DirectObject):
         self.update()
 
     def listen_to_keyboard(self):
+        """
+        Allows to listen to the keyboard. Maps keys to the corresponding chars.
+        """
         self.request_focus()
         self.reject_keyboard(False)
 
@@ -356,6 +408,9 @@ class ControlScreen(DirectObject.DirectObject):
         self.enter_func = lambda: self.input_text("enter")
 
     def keyboard_as_shuttle_control(self):
+        """
+        Sets the keyboard as a shuttle controller.
+        """
         self.request_focus()
         self.reject_keyboard(False)
 
@@ -375,6 +430,9 @@ class ControlScreen(DirectObject.DirectObject):
             self.accept(key, self.gameEngine.shuttle.align_along, extraArgs=[key])
 
     def keyboard_as_hardware(self):
+        """
+        Sets the keyboard as a simulated hardware. The mapping is defined in the keyboard_hardware file.
+        """
         self.request_focus()
         self.reject_keyboard(False)
 
@@ -398,6 +456,10 @@ class ControlScreen(DirectObject.DirectObject):
                 self.accept(key, self._switch_state, extraArgs=[name])
 
     def reject_keyboard(self, connect_alternative=True):
+        """
+        Ignore all keyboard inputs.
+        @param connect_alternative: if True, reads the params of the game and sets the keyboard on shuttle_control or hardware_control
+        """
         self.ignore_all()
 
         if self.gameEngine.params("fulfill_current_step_key_with_F1"):
@@ -418,8 +480,6 @@ class ControlScreen(DirectObject.DirectObject):
     def update(self):
         """
         Updates the window when this window is not active (for saving FPS).
-
-        :return:
         """
         if self.limited_update:
             self.window.setActive(True)
@@ -430,21 +490,21 @@ class ControlScreen(DirectObject.DirectObject):
 
     def input_text(self, textEntered):
         """
-        Function that sends the inputs from the shuttle to the ControlBoard.
-        If textEntered  = "enter", the code checks if the the screen is unlocked.
+        Transmitting keyboard inputs.
 
-        :param textEntered: string. Sent from the shuttle object.
-        :return:
+        @param textEntered: string. Sent from the shuttle object.
         """
         self.current_screen.process_text(textEntered)
 
 
 class InfoOverScreen:
+    """
+    The popup window class
+    """
     def __init__(self, MainScreen, text=""):
         self.main_screen = MainScreen
         self._image = OnscreenImage(image=self.main_screen.image_path + "comm.png",
                                     pos=(0, 0, 0),
-                                    # parent=self.main_screen.background_image,
                                     parent=self.main_screen.gui_render_node,
                                     )
         # image in front
@@ -457,7 +517,6 @@ class InfoOverScreen:
                                   scale=(0.06, 0.08),
                                   fg=LVector4f(1, 1, 1, 1),
                                   parent=self._image,
-                                  # sort=-20,
                                   wordwrap=20,
                                   )
         self._show = False
@@ -465,34 +524,51 @@ class InfoOverScreen:
         self._text.hide()
 
     def is_on_screen(self):
+        """
+        @return: True if the popup is on screen. False otherwise
+        """
         return self._show
 
     def show(self, t=None):
+        """
+        Shows the window
+        @param t: a mute parameter allowing to call it in a doMethodLater
+        """
         self._show = True
         self._image.show()
         self._text.show()
         self.main_screen.update()
 
     def hide(self, t=None):
+        """
+        Hides the window
+        @param t: a mute parameter allowing to call it in a doMethodLater
+        """
         self._show = False
         self._image.hide()
         self._text.hide()
         self.main_screen.update()
 
-    def set_text(self, text):
-        self._text["text"] = text + "\n\n... (Entrée pour continuer) ..."
+    def set_text(self, text, end="\n\n... (Entrée pour continuer) ..."):
+        """
+        Sets the text of the popup.
+        @param text: the text
+        @param end: the end text.
+        """
+        self._text["text"] = text + end
         if self._show:
             self.main_screen.update()
 
 
 class LoadIcon:
+    """
+    A spinning icon.
+    """
     def __init__(self, mainScreen, x=0.0, y=0.0):
         self.main_screen = mainScreen
         self._image = OnscreenImage(image=self.main_screen.image_path + "load_icon.png",
                                     pos=(x, 0, y),
-                                    # parent=self.main_screen.gameEngine.aspect2d,
                                     parent=self.main_screen.gameEngine.render2d,
-                                    # aspect_Ratio=0.7,
                                     scale=(0.07, 1, 0.07)
                                     )
         self._image.setTransparency(TransparencyAttrib.MAlpha)
@@ -500,22 +576,45 @@ class LoadIcon:
         self._image.hide()
 
     def set_pos(self, x, y):
+        """
+        Sets the position of the icon
+        @param x: the relative x in the screen
+        @param y: the relative y in the screen
+        """
         self._image.set_r(0)
         self._image.set_pos(x, 0, y)
 
     def start(self):
+        """
+        Starts the spinning animation and shows it.
+        """
         self._image.set_r(0)
         self._image.show()
         self.spin_task = self._image.hprInterval(duration=2, hpr=(0, 0, 360))
         self.spin_task.loop()
 
     def stop(self):
+        """
+        Stops the spinning animation and hides it.
+        @return:
+        """
         self.spin_task.finish()
         self._image.hide()
 
 
 class Screen:
+    """
+    This class represents the actual behaviour of the ControlScreen. Each different behaviour is encoded as a child class of this general Screen class
+    """
     def __init__(self, MainScreen, image_name=None, entry_gimp_pos=None, entry_size=1.0, max_char=7):
+        """
+        Creates the class.
+        @param MainScreen: The ControlScreen class
+        @param image_name: the name of the background image to display.
+        @param entry_gimp_pos: the position of the entry if there is one. Positions are given in Gimp positions.
+        @param entry_size: The size of the entry text.
+        @param max_char: The max number of characters accepted in the entry.
+        """
         self.main_screen = MainScreen
         self.name = ""
         self.max_char = max_char
@@ -532,8 +631,6 @@ class Screen:
                                       font=self.main_screen.font,
                                       fg=self.main_screen.fg_color,
                                       parent=self.main_screen.gui_render_node,
-                                      # parent=self.main_screen.background_image,
-                                      # sort=30,
                                       )
         self._listen_to_input = True
         self.on_screen_texts = dict()
@@ -544,9 +641,22 @@ class Screen:
         self.load_passwords()
 
     def load_passwords(self):
+        """
+        To be implemented in each child class.
+        """
         pass
 
     def add_on_screen_text(self, xg, yg, text, size=1.0, name=None, may_change=False, color=None):
+        """
+        Adds text on the screen
+        @param xg: the x Gimp position of the text
+        @param yg: the y Gimp position of the text
+        @param text: the text itself
+        @param size: the size of the text
+        @param name: the name of this text (if you want to change it later)
+        @param may_change: True if the text may change. False otherwise
+        @param color: the color of the text, can be "green", "red" or black by default.
+        """
         name = text if name is None else name
         if name not in self.on_screen_texts:
             if color == 'red':
@@ -556,7 +666,6 @@ class Screen:
             else:
                 fg = self.main_screen.fg_color
             x_scale = 0.04 + 0.01 * size
-            # y_scale = x_scale * self.main_screen.window.getXSize()/self.main_screen.window.getYSize()
             y_scale = x_scale * 16 / 9
             self.on_screen_texts[name] = OnscreenText(text=text,
                                                       align=TextNode.ALeft,
@@ -566,13 +675,13 @@ class Screen:
                                                       font=self.main_screen.font,
                                                       fg=fg,
                                                       parent=self.main_screen.gui_render_node,
-                                                      # parent=self.main_screen.background_image,
-                                                      # sort=-50
-
-                                                      # sort=1,
                                                       )
 
     def hide_on_screen_texts(self, names=None):
+        """
+        Hide some texts displayed on the screen
+        @param names: the names of the texts to hide. Can be a string or a list of strings. If None, all texts are hidden.
+        """
         if names is None:
             for ost in self.on_screen_texts:
                 self.on_screen_texts[ost].hide()
@@ -584,6 +693,10 @@ class Screen:
             self.on_screen_texts[names].hide()
 
     def show_on_screen_texts(self, names=None):
+        """
+        Shows some texts displayed on the screen
+        @param names: the names of the texts to hide. Can be a string or a list of strings. If None, all texts are hidden.
+        """
         if names is None:
             for ost in self.on_screen_texts:
                 self.on_screen_texts[ost].show()
@@ -595,6 +708,13 @@ class Screen:
             self.on_screen_texts[names].show()
 
     def set_on_screen_text(self, name, new_text, update=True, color=None):
+        """
+        Updates a text displayed on the screen
+        @param name: the name of the text to update
+        @param new_text : the new text to diaplay
+        @param update : if the main screen is not automatically updated, updates the screen
+        @param color: to set the new color of the text.
+        """
         if name in self.on_screen_texts:
             self.on_screen_texts[name]["text"] = new_text
             if color is not None:
@@ -608,29 +728,54 @@ class Screen:
                 self._update()
 
     def listen_to_input(self, listen):
+        """
+        Specifies if keyboard input are considered or not.
+        @param listen: a boolean
+        """
         self._listen_to_input = listen
 
     def call_main_screen(self, message):
+        """
+        Sends a message (event) to the main ControlScreeen (e.g. changing the screen)
+        @param message: the message (event)
+        """
         self.main_screen.event(message)
 
     def _update(self):
         self.main_screen.update()
 
     def destroy(self):
+        """
+        Destroys the current screen
+        """
         self.lock_text.destroy()
         for element in self.on_screen_texts.values():
             element.destroy()
 
     def check_input(self):
+        """
+        To be implemnetd in child class. Check if the input in the entry corresponds to the desired password or not
+        """
         pass
 
     def check_password(self, key, text=None):
+        """
+        Checks if the text corresponds to te password named 'key'
+        @param key: the key of the password
+        @param text: the text to check. If None, the text is the one entered in the entry.
+        @return: a boolean
+        """
         text = text if text is not None else self.lock_text["text"]
         if len(text) > 0 and key in self.passwords:
             return text in self.passwords[key]
         return False
 
     def reset_text(self, sound=None, update=True):
+        """
+        Resets the entry text.
+        @param sound: name of the sound to play
+        @param update: update or not the screen
+        """
         self.lock_text["text"] = ""
         if sound is not None:
             self.main_screen.gameEngine.sound_manager.play(sound)
@@ -638,6 +783,11 @@ class Screen:
             self._update()
 
     def transition_screen(self, image, time):
+        """
+        Creates a transition screen. An image is popup while listening to input is set to False
+        @param image: the image name
+        @param time: the lifetime of the popup.
+        """
         new_image = OnscreenImage(self.main_screen.image_path + image + ".png",
                                   parent=self.main_screen.gui_render_node,
                                   pos=(0, 0, 0),
@@ -671,6 +821,10 @@ class Screen:
         self.main_screen.gameEngine.taskMgr.doMethodLater(time, to_call, name="update", extraArgs=[relisten])
 
     def process_text(self, char):
+        """
+        Process the incoming text
+        @param char: the sent string
+        """
         if self._listen_to_input:
             if char == "enter":
                 self.check_input()
@@ -684,6 +838,9 @@ class Screen:
 
 
 class ImageScreen(Screen):
+    """
+    A basic image screen. Displays an image and can set text over it.
+    """
     def __init__(self, mainScreen, image_name):
         self._listen_to_input = False
         self.main_screen = mainScreen
@@ -705,9 +862,6 @@ class ImageScreen(Screen):
                                        fg=color if color is not None else (1, 1, 1, 1),
                                        parent=self.main_screen.gui_render_node,
                                        ))
-        # if alpha_time > 0.0:
-        #     alphaInterval = LerpFunctionInterval(self.texts[-1].setAlphaScale, toData=1.0, fromData=0.0, duration=alpha_time)
-        #     alphaInterval.start()
 
     def destroy(self):
         for t in self.texts:
@@ -715,6 +869,9 @@ class ImageScreen(Screen):
 
 
 class LockScreen(Screen):
+    """
+    The lock screen that must be unlocked by crew.
+    """
     def __init__(self, mainScreen, num_player=None):
         self.current_lock = 0
         self._listen_to_input = True
@@ -805,7 +962,10 @@ class LockScreen(Screen):
 
 
 class AdminScreen(Screen):
-    def __init__(self, mainScreen, num_player=None):
+    """
+    The administrator screen. Mainly unused.
+    """
+    def __init__(self, mainScreen):
         self.unlocked = False
         self.menu_choice = 0
         self._listen_to_input = True
@@ -904,6 +1064,9 @@ class AdminScreen(Screen):
 
 
 class MainScreen(Screen):
+    """
+    The main default screen with shuttle informations, gauges etc.
+    """
     def __init__(self, mainScreen):
         Screen.__init__(self, mainScreen, "screen")
         self.name = "unlocked_screen"
@@ -1024,6 +1187,9 @@ class MainScreen(Screen):
 
 
 class AlertScreen(Screen):
+    """
+    The alert screen that popups after the collision
+    """
     def __init__(self, mainScreen):
         self.current_task = 0
         self.task_list = list()
@@ -1102,6 +1268,9 @@ class AlertScreen(Screen):
 
 
 class TargetScreen(Screen):
+    """
+    The target screen to be unlocked
+    """
     def __init__(self, mainScreen):
         Screen.__init__(self, mainScreen, "coordinates_lock",
                         entry_gimp_pos=(275, 305),
