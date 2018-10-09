@@ -18,9 +18,9 @@
 
         <!-- cible -->
         <step event="play_sound" name="voice_target" time_max="0"/>
-        <step event="info_text" text="Entrer les coordonnées du site d'atterrissage : Base 2016FZ"/>
+        <step event="info_text" text="Entrer les coordonnées du site d'atterrissage : Base 2012A2"/>
         <step event="control_screen_event" name="target_screen"/>
-        <step event="info_text" text="Calcul terminé, cible verrouillée : Base 2016FZ" time_max="10"/>
+        <step event="info_text" text="Calcul terminé, cible verrouillée : Base 2012A2" time_max="10"/>
 
         mise ne route des moteurs
         <step event="play_sound" name="engine_starts" time_max="5"/>

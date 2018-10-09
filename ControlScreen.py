@@ -1276,6 +1276,8 @@ class TargetScreen(Screen):
                         entry_gimp_pos=(275, 305),
                         entry_size=0.5,
                         max_char=12)
+        # getting the base name
+        self.target_name = list(self.passwords)[0]
         self.name = "target_screen"
 
         self._listen_to_input = True
@@ -1287,7 +1289,7 @@ class TargetScreen(Screen):
         self.main_screen.gameEngine.update_soft_state('target_screen_unlocked', False)
 
         self.add_on_screen_text(250, 250,
-                                text="Longitude (N) de la base 2012A2",
+                                text="Longitude (N) de la base " + self.target_name,
                                 size=1,
                                 may_change=True,
                                 name="text"
@@ -1340,7 +1342,7 @@ class TargetScreen(Screen):
                 if str(self.passwords[p][0]) == self.lock_text["text"].replace(" ", ""):
                     self.reset_text("ok", update=False)
                     self.set_on_screen_text("text",
-                                            "Latitude (E) de la base 2012A2",
+                                            "Latitude (E) de la base " + self.target_name,
                                             update=False)
                     self._current_target = p
                     self._update()
