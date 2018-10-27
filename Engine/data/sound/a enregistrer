@@ -1,0 +1,26 @@
+voice_welcome : Bienvenue équipage Equality.
+voice_door_close : Fermeture du sasse extérieur.
+voice_identify : Dévérouillage nécessaire. Tous les membre d'équipage doivent entrer le mot de passe individuel qui lui a été fourni.
+voice_identify_ok : Dévérouillage activé. Mise en ligne des systèmes de fonctionnement.
+voice_target : veuillez entrer les coordonnées de la cible.
+voice_target_ok : coordonnées enregistrées. Chargement des paramètres de trajectoires précalculés.
+voice_engine_on : Allumage des moteurs.
+voice_trip_start : Equipage Equality. toutes fonctions ok et en ligne. Mise en orbite lunaire basse dans 7 minutes et 28 secondes. Ouverture du sasse pour sections 2 et 3 dans 8 minutes et 45 secondes.
+voice_batterie_1/2/3/4 : batterie 1/2/3/4 en ligne
+voice_alert : Alerte collision. Multiples défaillances détectées. Diagnostique de l'état de la navette en cours. Equipage, veuillez rester à disposition pour la procèdure d'urgence.
+pilote_automatique_off : Pilote automatique et corrections dynamiques désactivées. Activation des commandes de secours manuelles.
+pilote_automatique_on : Pilote automatique activé. Corrections dynamiques désactivées par défaut. veuillez les ré-activer manuellement.
+voice_O2_alert : Attention. niveau d'oxygène critique. Risque de suffocation, élevée. Veuillez engager les corrections nécessaires.
+voice_power_alert : Attention. niveau de puissance critique. Veuillez engager les corrections nécessaires.
+
+rey
+A FAIRE :
+voice_alert_done = Corrections manuelles, correctement appliquées. état de la navette : critique. Veuillez suivre la procèdure d'urgence affichée sur l'écran de bord.
+voice_end_win: quand l'équipe à réussi à réctiver le PA
+voice_end_loose: l'inverse
+voice_emergency_freq : Le lien de communication avec la station est défaillant. Veuillez changer le canal de communication. La fréquence d'urgence est précisée dans la procédure d'extraction. P... U... 5 ...
+voice_freq_ok : quand l'équipe met la bonne valeur de fréquence. La voix indique ce qu'il reste à faire et donne le temps (approx) restant ppur l'oxygène
+La communication avec la station est correctement rétabli. Envoi des données d'état à la station pour analyse approfondie. Equipage Equality, veuillez suivre la procédure d'extraction. P ... U ... 5
+O2_alert : Réception des données analysées. Attention. il reste 7 minutes et 28 secondes d'oxygène. Réactivez au plus vite le pilote automatique pour extraction d'urgence.
+player_win : Pilote automatique correctement enlenché. Retour immédiat à la station. 
+player_win : Equipage Equality, la station a repris le contrôle de la navette ...

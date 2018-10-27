@@ -1,5 +1,5 @@
-data/sound/
-data/control_board/gimp
+Engine/data/sound/
+Engine/data/control_board/gimp
 *.xcf
 test_arduino.py
 tests.py

@@ -1,0 +1,8 @@
+warning0 = attention, vous êtes en zone sécurisée de type 2
+boost_fw = boust avant
+boost_bw = boust arrière
+boost_r = boust à droite
+boost_l = boust à gauche
+stabilized = capsule stabilisée
+init0 = bienvenus dans la station Guy Lebegue. Votre mission sera très simple.
+test = équipage équality. Le pilote automatique a bien repris le contrôle.

@@ -1,0 +1,40 @@
+
+
+# automatic
+batterie : activation des batteries auxiliaires autorisée.
+batterie_wrong : Impossible de mettre en ligne la batterie. Veuillez d'abord autoriser les batteries auxiliaires.
+batterie_1/2/3/4_on : batterie 1/2/3/4, activée et en ligne.
+correction_direction_on : correction direction activée
+correction_roulis_on : correction roulis activée
+correction_stabilisation_on : correction stabilisatio activée
+main_O2_low : attention, niveau d'oxygène critique. Risque de suffocation élevée, veuillez engager les corrections nécéssaires.
+main_power_low : attention, niveau de puissance critique. Veuillez engager les corrections nécéssaires.
+pilote_automatique_off : Pilote automatique et corrections dynamiques désactivées. Activation des commandes de secours manuelles.
+pilote_automatique_on : Pilote automatique activé. Corrections dynamiques désactivées par défaut. veuillez les ré-activer manuellement.
+recyclage_CO2_off : désactivation du recyclage CO2. Risque d'intoxication élevé.
+recyclage_H2O_off : désactivation du contrôle d'humidité. Risque de surchauffe important
+recyclage_O2_off : désactivation de la purification d'oxygène. Risque d'étouffement élevé.
+
+
+# scenario
+voice_welcome : Bienvenue équipage Equality.
+voice_door_close : Fermeture du sasse extérieur.
+voice_trip_ok : navette Equality, vous êtes clear pour le décollage. Bon voyage
+
+voice_identify : Dévérouillage nécessaire. Tous les membre d'équipage doivent entrer le mot de passe individuel qui lui a été fourni.
+voice_identify_ok : Dévérouillage activé. Mise en ligne des systèmes de fonctionnement.
+voice_target : veuillez entrer les coordonnées de la cible.
+voice_target_ok : coordonnées enregistrées. Chargement des paramètres de trajectoires précalculés.
+voice_engine_on : Allumage des moteurs.
+voice_trip_start : Equipage Equality. toutes fonctions ok et en ligne. Mise en orbite lunaire basse dans 7 minutes et 28 secondes. Ouverture du sasse pour sections 2 et 3 dans 8 minutes et 45 secondes.
+sp_nominal : Décalage des panneaux solaires corrigé. Puissance solaire, nominale.
+
+# collision
+voice_alert : Alerte collision. Multiples défaillances détectées. Fuite oxygène critique. Equipage, veuillez rester à disposition pour la procèdure d'urgence.
+voice_alert_todo : Equipage, soyez attentifs. Les systèmes de survie de la navette sont enclenchés. Le pré-diagnostique indique plusieurs valves externes défaillantes. Vous devez entrer les mots de passe autorisant leur fermeture automatique. Pour les trouver, référez vous à la liste... L... E... N... 1...
+voice_alert_done : Les valves déficiantes ont étés correctement vérouillées. Le système indique qu'il reste... 8 minutes et 32 secondes d'oxygène à bord. Veuillez basculer sur la fréquence d'urgence comme indiquée dans la fiche de procèdures.
+voice_emergency_freq : Le lien de communication avec la station est défaillant. Veuillez changer le canal de communication. La fréquence d'urgence est précisée dans la procédure d'extraction. P... U... 5 ...
+voice_freq_ok : La communication avec la station est correctement rétablie. Envoi des données d'état à la station pour analyse approfondie. Equipage Equality, veuillez suivre la procédure d'extraction. P ... U ... 5
+voice_alert_0: Réactivez au plus vite le pilote automatique pour extraction d'urgence selon la procédure. P ... U ... 5
+player_win : Pilote automatique correctement enlenché. retour immédiat à la station. Equipage, préparez vous à l'évacuation.
+player_loose : Equipage Equality, la station a réussie à reprendre le contrôle de la navette. retour immédiat à la station. Equipage, préparez vous à l'évacuation.
