@@ -1,6 +1,6 @@
 import random
 
-from Engine.ControlScreens.MainScreen import LoadIcon
+from Engine.ControlScreens.LoadIcon import LoadIcon
 from Engine.ControlScreens.Screen import Screen
 from Engine.Utils.utils import read_ini_file
 
