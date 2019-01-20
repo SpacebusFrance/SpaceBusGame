@@ -1,5 +1,7 @@
 import datetime
 from math import sqrt
+
+from direct.filter.CommonFilters import CommonFilters
 from direct.showbase.ShowBase import ShowBase, ClockObject
 from panda3d.core import AntialiasAttrib, LVector3f
 from Engine.GraphicEngine.Camera import FreeCameraControl
@@ -7,7 +9,7 @@ from Engine.ControlScreens.MainScreen import ControlScreen
 from Engine.Utils.EventHandler import EventHandler
 from Engine.Utils.GlobalStates import PowerHandler
 from Engine.Utils.Hardware import HardwareHandler
-from Engine.GraphicEngine.Meshes import CartesianBasis, Earth, Moon, Sun, SkyDome, NewSpaceCraft, Grid, Asteroid
+from Engine.GraphicEngine.Meshes import CartesianBasis, Earth, Moon, Sun, SkyDome, NewSpaceCraft, Grid, Asteroid, Moon3D
 from Engine.Utils.Parameters import Param
 from Engine.GraphicEngine.Screens import Screen3D, FakeScreen3D
 from Engine.GraphicEngine.Shuttle import ShuttleFrame
@@ -30,8 +32,12 @@ class Game(ShowBase):
 
         if self.params("test_3D"):
             self.earth = Earth(self)
-            self.moon = Moon(self)
+            # self.moon = Moon(self)
+            self.moon = Moon3D(self)
             self.sun = Sun(self)
+
+            # filters = CommonFilters(self.win, self.cam)
+            # filters.setBlurSharpen()
             self.space_craft = NewSpaceCraft(self, quality=self.params("quality"))
 
             self.sound_manager = SoundManager(self)
@@ -44,8 +50,11 @@ class Game(ShowBase):
             self.render.attachNewNode(cb)
             grid = Grid(x_extend=[-10, 10], y_extend=[-10, 10], x_color=(1, 1, 1, 0.1), y_color=(1, 1, 1, 0.1))
             self.render.attach_new_node(grid)
-            self.sky_sphere = SkyDome(self)
-            self.sky_sphere.set_color_scale(LVector3f(0.4, 0.4, 0.4))
+
+            self.setBackgroundColor(0, 0, 0)
+
+            # self.sky_sphere = SkyDome(self)
+            # self.sky_sphere.set_color_scale(LVector3f(0.4, 0.4, 0.4))
 
             self.render.setShaderAuto()
             self.setFrameRateMeter(True)
@@ -264,7 +273,10 @@ class Game(ShowBase):
         """
         Starts the current scenario
         """
-        self.scenario.start_game()
+        try:
+            self.scenario.start_game()
+        except AttributeError:
+            pass
 
     def get_soft_state(self, state_key):
         """
