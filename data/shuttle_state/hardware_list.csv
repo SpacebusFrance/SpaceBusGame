@@ -1,4 +1,4 @@
-id,hardware_key,type,hardware_id of led,initial value,power,defines a state,test_key
+id,hardware_key,type,led_id,initial_value,power,defines_a_state,test_key
 crew_screen_unlocked,,SOFT,,False,,,
 alert_screen_unlocked,,SOFT,,False,,,
 target_screen_unlocked,,SOFT,,False,,,
@@ -72,7 +72,7 @@ s_recyclage_CO2,joystick2-button7,switch,48,True,-20,True,h
 s_recyclage_H2O,joystick2-button8,switch,47,True,-20,True,j
 s_recyclage_O2,joystick2-button9,switch,46,True,-20,True,k
 s_tension_secteur1,joystick2-button1,switch,40,True,-20,True,n
-s_tension_secteur2,joystick2-button2,switch,41,True,-20,l,l
+s_tension_secteur2,joystick2-button2,switch,41,True,-20,True,l
 s_tension_secteur3,joystick2-button3,switch,42,True,-20,True,m
 s_thermique_secteur1,joystick2-button4,switch,43,True,-20,True,v
 s_thermique_secteur2,joystick2-button5,switch,44,True,-20,True,w

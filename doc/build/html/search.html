@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Search &mdash; SpaceBusGame 2.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/searchtools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="#" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SpaceBusGame
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Creating a scenario</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scenario.html">Scenario structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#blocking-steps">Blocking steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#ending-conditions">Ending conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-life-time">Step life-time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-arguments">Step arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#punctual-events">Punctual events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#event-arguments">Event arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multilang.html">Multi language support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#text-key">Text key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#sound-support">Sound support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Action list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#game-actions">Game actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#wait">wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#set-screen">set_screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-game">reset_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#start-game">start_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#restart">restart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#stop-game">stop_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#end-game">end_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#goto-step">goto_step</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#sound-actions">Sound actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#play-sound">play_sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#stop-sound">stop_sound</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#window-actions">Window actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#info">info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#warning">warning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#password">password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#close-window">close_window</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#special-events">Special events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#collision">collision</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#shuttle-actions">Shuttle actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-look-at">shuttle_look_at</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-pos">shuttle_pos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-goto">shuttle_goto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-stop">shuttle_stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-goto-station">shuttle_goto_station</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#boost">boost</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#hardware-actions">Hardware actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-buttons">reset_buttons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-leds">reset_leds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#led-on">led_on</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#led-off">led_off</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#state-update">State update</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#update-hardware-state">update_hardware_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#update-software-state">update_software_state</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="states.html">States</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="states.html#software-states">Software states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#buttons-states">Buttons states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#switch-states">Switch states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#joystick-states">Joystick states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#leds">Leds</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Existing scenario</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html">demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#demo-static">demo static</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#igor-scenario">igor scenario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final">scenario final</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final-2">scenario final 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-test">scenario test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#test">test</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SpaceBusGame</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Search</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <noscript>
+  <div id="fallback" class="admonition warning">
+    <p class="last">
+      Please activate JavaScript to enable the search
+      functionality.
+    </p>
+  </div>
+  </noscript>
+
+  
+  <div id="search-results">
+  
+  </div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Paul de Fromont
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+  <script type="text/javascript">
+    jQuery(function() { Search.loadIndex("searchindex.js"); });
+  </script>
+  
+  <script type="text/javascript" id="searchindexloader"></script>
+   
+
+
+</body>
+</html>

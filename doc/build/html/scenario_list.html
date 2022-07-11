@@ -1,0 +1,728 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>demo &mdash; SpaceBusGame 2.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="States" href="states.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SpaceBusGame
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Creating a scenario</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scenario.html">Scenario structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#blocking-steps">Blocking steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#ending-conditions">Ending conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-life-time">Step life-time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-arguments">Step arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#punctual-events">Punctual events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#event-arguments">Event arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multilang.html">Multi language support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#text-key">Text key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#sound-support">Sound support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Action list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#game-actions">Game actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#wait">wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#set-screen">set_screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-game">reset_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#start-game">start_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#restart">restart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#stop-game">stop_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#end-game">end_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#goto-step">goto_step</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#sound-actions">Sound actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#play-sound">play_sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#stop-sound">stop_sound</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#window-actions">Window actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#info">info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#warning">warning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#password">password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#close-window">close_window</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#special-events">Special events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#collision">collision</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#shuttle-actions">Shuttle actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-look-at">shuttle_look_at</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-pos">shuttle_pos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-goto">shuttle_goto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-stop">shuttle_stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-goto-station">shuttle_goto_station</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#boost">boost</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#hardware-actions">Hardware actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-buttons">reset_buttons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-leds">reset_leds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#led-on">led_on</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#led-off">led_off</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#state-update">State update</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#update-hardware-state">update_hardware_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#update-software-state">update_software_state</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="states.html">States</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="states.html#software-states">Software states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#buttons-states">Buttons states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#switch-states">Switch states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#joystick-states">Joystick states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#leds">Leds</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Existing scenario</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#demo-static">demo static</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#igor-scenario">igor scenario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#scenario-final">scenario final</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#scenario-final-2">scenario final 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#scenario-test">scenario test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#test">test</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SpaceBusGame</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>demo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/scenario_list.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="demo">
+<h1>demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;scenario&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_pos&quot;</span> <span class="na">x=</span><span class="s">&quot;70&quot;</span> <span class="na">y=</span><span class="s">&quot;2&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_look_at&quot;</span> <span class="na">x=</span><span class="s">&quot;0&quot;</span> <span class="na">y=</span><span class="s">&quot;5&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span> <span class="na">time=</span><span class="s">&quot;0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;b_admin&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+    <span class="nt">&lt;/step&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;control_screen_event&quot;</span> <span class="na">name=</span><span class="s">&quot;default_screen&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;update_software_state&quot;</span> <span class="na">name=</span><span class="s">&quot;listen_to_hardware&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;reset_leds&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;boost&quot;</span> <span class="na">direction=</span><span class="s">&quot;f&quot;</span> <span class="na">power=</span><span class="s">&quot;20&quot;</span> <span class="na">time_max=</span><span class="s">&quot;30&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;b_admin&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;restart&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="demo-static">
+<h1>demo static<a class="headerlink" href="#demo-static" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;scenario&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_pos&quot;</span> <span class="na">x=</span><span class="s">&quot;10&quot;</span> <span class="na">y=</span><span class="s">&quot;10&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_look_at&quot;</span> <span class="na">x=</span><span class="s">&quot;0&quot;</span> <span class="na">y=</span><span class="s">&quot;5&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span> <span class="na">time=</span><span class="s">&quot;0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;control_screen_event&quot;</span> <span class="na">name=</span><span class="s">&quot;default_screen&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;update_software_state&quot;</span> <span class="na">name=</span><span class="s">&quot;listen_to_hardware&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;leds_init&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="igor-scenario">
+<h1>igor scenario<a class="headerlink" href="#igor-scenario" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;scenario&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;debut de jeux&quot;</span><span class="nt">&gt;</span>
+<span class="c">&lt;!--        &lt;event action=&quot;goto_step&quot; goto_id=&quot;end_game&quot; start_time=&quot;10&quot;/&gt;--&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;ok&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;set_screen&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0.0&quot;</span> <span class="na">name=</span><span class="s">&quot;new_scenario&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;password&quot;</span> <span class="na">password=</span><span class="s">&quot;Aa&quot;</span> <span class="na">title=</span><span class="s">&quot;$unlock_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$unlock_text$&quot;</span> <span class="na">background_color=</span><span class="s">&quot;(0.0, 0.0, 0.0, 1.0)&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;$reboot_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$reboot_text_0$&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5.0&quot;</span> <span class="na">close_on_enter=</span><span class="s">&quot;False&quot;</span> <span class="na">background_color=</span><span class="s">&quot;(0.0, 0.0, 0.0, 1.0)&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;$reboot_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$reboot_text_1$&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5.0&quot;</span> <span class="na">close_on_enter=</span><span class="s">&quot;False&quot;</span> <span class="na">background_color=</span><span class="s">&quot;(0.0, 0.0, 0.0, 1.0)&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;$reboot_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$reboot_text_2$&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5.0&quot;</span> <span class="na">close_on_enter=</span><span class="s">&quot;False&quot;</span> <span class="na">background_color=</span><span class="s">&quot;(0.0, 0.0, 0.0, 1.0)&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;terminal-show&quot;</span> <span class="na">text=</span><span class="s">&quot;$terminal_text_0$&quot;</span> <span class="na">title=</span><span class="s">&quot;$terminal_title$&quot;</span> <span class="na">focus=</span><span class="s">&quot;False&quot;</span> <span class="na">dt=</span><span class="s">&#39;0.1&#39;</span> <span class="na">time_max=</span><span class="s">&quot;2.0&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;video_title_info&quot;</span> <span class="na">text=</span><span class="s">&quot;$video_text_info$&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2.0&quot;</span> <span class="na">close_on_enter=</span><span class="s">&quot;False&quot;</span> <span class="na">background_color=</span><span class="s">&quot;(0.0, 0.0, 0.0, 0.5)&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;video&quot;</span> <span class="na">title=</span><span class="s">&quot;$video_title$&quot;</span> <span class="na">name=</span><span class="s">&quot;test_sound&quot;</span> <span class="na">start=</span><span class="s">&quot;True&quot;</span> <span class="na">size_x=</span><span class="s">&quot;2.0&quot;</span> <span class="na">size_y=</span><span class="s">&quot;1.5&quot;</span> <span class="na">time_max=</span><span class="s">&quot;15.0&quot;</span> <span class="na">background_color=</span><span class="s">&quot;(0.0, 0.0, 0.0, 0.5)&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">text=</span><span class="s">&quot;video gone ?&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!--        &lt;step action=&quot;video&quot; time_max=&quot;2.0&quot; name=&quot;test_sound&quot; text=&quot;&quot;/&gt;--&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">id=</span><span class="s">&quot;end_game&quot;</span> <span class="na">title=</span><span class="s">&quot;end of game !!!&quot;</span> <span class="na">text=</span><span class="s">&quot;this should be the end of game ...&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;start-chrono&quot;</span> <span class="na">time=</span><span class="s">&quot;20&quot;</span> <span class="na">time_max=</span><span class="s">&quot;1.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;end of game II !!!&quot;</span> <span class="na">text=</span><span class="s">&quot;YESSS&quot;</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;/group&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scenario-final">
+<h1>scenario final<a class="headerlink" href="#scenario-final" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;scenario&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;debut de jeux&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;b_admin&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;ok&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;start_game&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- identification --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">text=</span><span class="s">&quot;Entrer les code d’accès de votre badge&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;control_screen_event&quot;</span> <span class="na">name=</span><span class="s">&quot;crew_lock_screen&quot;</span> <span class="na">num_player=</span><span class="s">&quot;4&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- fermeture des portes --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;voice_door_close&quot;</span> <span class="na">volume=</span><span class="s">&quot;3.0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;door_close&quot;</span> <span class="na">volume=</span><span class="s">&quot;3.0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- cible --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_target&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="c">&lt;!-- 180 = 3 MINUTES POUR LA BASE--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">text=</span><span class="s">&quot;Entrer les coordonnées du site d&#39;atterrissage : Base 2012A2&quot;</span> <span class="na">hint_sound=</span><span class="s">&quot;human_hint_target&quot;</span> <span class="na">hint_time=</span><span class="s">&quot;180&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;control_screen_event&quot;</span> <span class="na">name=</span><span class="s">&quot;target_screen&quot;</span><span class="nt">/&gt;</span>
+
+         <span class="c">&lt;!--mise ne route des moteurs--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;reset_leds&quot;</span> <span class="na">time_max=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;engine_starts&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2&quot;</span> <span class="na">volume=</span><span class="s">&quot;2.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_1&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_look_at&quot;</span> <span class="na">x=</span><span class="s">&quot;0&quot;</span> <span class="na">y =</span><span class="s">&quot;10&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_goto&quot;</span> <span class="na">x=</span><span class="s">&quot;-2&quot;</span> <span class="na">y=</span><span class="s">&quot;10&quot;</span> <span class="na">z=</span><span class="s">&quot;1&quot;</span> <span class="na">power=</span><span class="s">&quot;30&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_look_at&quot;</span> <span class="na">x=</span><span class="s">&quot;0&quot;</span> <span class="na">y=</span><span class="s">&quot;0&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- premier mouvement --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_2&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;asteroid&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2.2&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;start_music&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">text=</span><span class="s">&quot;Bon voyage équipage ;)&quot;</span> <span class="na">time_max=</span><span class="s">&quot;4&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_goto&quot;</span> <span class="na">x=</span><span class="s">&quot;500&quot;</span> <span class="na">y=</span><span class="s">&quot;10&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span> <span class="na">power=</span><span class="s">&quot;200&quot;</span> <span class="na">time_max=</span><span class="s">&quot;12.5&quot;</span><span class="nt">/&gt;</span>
+
+         <span class="c">&lt;!--collision --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;collision&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;partie joueur&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- remise à zéro --&gt;</span>
+        <span class="c">&lt;!--&lt;step event=&quot;reset_buttons&quot;/&gt;--&gt;</span>
+
+        <span class="c">&lt;!-- fréquence urgence--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;voice_emergency_freq&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">text=</span><span class="s">&quot;Basculer sur le canal d&#39;urgence (Procédure PU2)&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;freq_comm&quot;</span> <span class="na">value=</span><span class="s">&quot;310&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+        <span class="c">&lt;!--&lt;step event=&quot;oxygen&quot; time=&quot;800&quot; value=&quot;0&quot; start_time=&quot;0&quot; time_max=&quot;2&quot;/&gt;--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;oxygen_leak&quot;</span> <span class="na">time_max=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;bips&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;led_on&quot;</span> <span class="na">id=</span><span class="s">&quot;l_antenne_com&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="c">&lt;!-- this time can be adapted --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_3&quot;</span> <span class="na">time_max=</span><span class="s">&quot;7&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_pu4&quot;</span> <span class="na">time_max=</span><span class="s">&quot;18&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- PU4 --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">text=</span><span class="s">&quot;Suivre la procédure PU4 dans le classeur “Procédures”&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batteries&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batterie1&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batterie2&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batterie3&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batterie4&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_pu6&quot;</span> <span class="na">start_time=</span><span class="s">&quot;3&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- PU6 --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">text=</span><span class="s">&quot;Suivre la procédure PU6&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;thermique_secteur2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;thermique_secteur3&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;oxygene_secteur2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;oxygene_secteur3&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;tension_secteur2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;tension_secteur3&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;recyclage_H2O&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;recyclage_CO2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;recyclage_O2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_pu7&quot;</span> <span class="na">start_time=</span><span class="s">&quot;3&quot;</span><span class="nt">/&gt;</span>
+
+
+        <span class="c">&lt;!-- PU7 --&gt;</span>
+        <span class="c">&lt;!-- 180 = 3 MINUTES POUR L&#39;INDICE DES PANNEAUX--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">text=</span><span class="s">&quot;Suivre la procédure PU7&quot;</span> <span class="na">hint_sound=</span><span class="s">&quot;human_hint_pu7&quot;</span> <span class="na">hint_time=</span><span class="s">&quot;180&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;offset_ps_x&quot;</span> <span class="na">value=</span><span class="s">&quot;0.0&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;offset_ps_y&quot;</span> <span class="na">value=</span><span class="s">&quot;0.0&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+
+         <span class="c">&lt;!--PA1 --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_p_a_1&quot;</span> <span class="na">time_max=</span><span class="s">&quot;9&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">text=</span><span class="s">&quot;Activer le bouton &#39;pilote automatique 1&#39;&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;pilote_automatique1&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+
+        <span class="c">&lt;!-- PA2 --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">start_time=</span><span class="s">&quot;2&quot;</span> <span class="na">name=</span><span class="s">&quot;human_p_a_2&quot;</span> <span class="na">time_max=</span><span class="s">&quot;4&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;info_text&quot;</span> <span class="na">start_time=</span><span class="s">&quot;5&quot;</span> <span class="na">text=</span><span class="s">&quot;Activer le bouton &#39;Systèmes survie 1-4&#39;&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;pilote_automatique2&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;end game&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_p_a_ok&quot;</span> <span class="na">start_time=</span><span class="s">&quot;2&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;end_game&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;led_off&quot;</span> <span class="na">id=</span><span class="s">&quot;l_alert0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;led_off&quot;</span> <span class="na">id=</span><span class="s">&quot;l_alert1&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- LAST MOVE --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;end_music&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;shuttle_look_at&quot;</span> <span class="na">x=</span><span class="s">&quot;0&quot;</span> <span class="na">y=</span><span class="s">&quot;-10&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span> <span class="na">time=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;control_screen_event&quot;</span> <span class="na">name=</span><span class="s">&quot;image_screen&quot;</span> <span class="na">image_name=</span><span class="s">&quot;end&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;boost&quot;</span> <span class="na">direction=</span><span class="s">&quot;f&quot;</span> <span class="na">power=</span><span class="s">&quot;20&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;control_screen_event&quot;</span> <span class="na">name=</span><span class="s">&quot;image_screen&quot;</span> <span class="na">image_name=</span><span class="s">&quot;score&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;show_score&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_end&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- RESTART GAME --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;wait&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;b_admin&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">event=</span><span class="s">&quot;restart&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scenario-final-2">
+<h1>scenario final 2<a class="headerlink" href="#scenario-final-2" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;scenario&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;debut de jeux&quot;</span><span class="nt">&gt;</span>
+<span class="c">&lt;!--        &lt;step action=&quot;wait&quot;&gt;--&gt;</span>
+<span class="c">&lt;!--            &lt;end_conditions&gt;--&gt;</span>
+<span class="c">&lt;!--                &lt;condition key=&quot;b_admin&quot; value=&quot;True&quot;/&gt;--&gt;</span>
+<span class="c">&lt;!--            &lt;/end_conditions&gt;--&gt;</span>
+<span class="c">&lt;!--        &lt;/step&gt;--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;ok&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;set_screen&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0.0&quot;</span> <span class="na">name=</span><span class="s">&quot;shuttle_state&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5&quot;</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--        &lt;step action=&quot;start_game&quot;/&gt;--&gt;</span>
+<span class="c">&lt;!--        &lt;step action=&quot;play_sound&quot; name=&quot;human_0&quot; time_max=&quot;20&quot;/&gt;--&gt;</span>
+
+        <span class="c">&lt;!-- identification --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;$id_info_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$id_info_text$&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;password&quot;</span> <span class="na">password=</span><span class="s">&quot;Aa&quot;</span> <span class="na">title=</span><span class="s">&quot;$id_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$id_text_0$&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;password&quot;</span> <span class="na">password=</span><span class="s">&quot;Bb&quot;</span> <span class="na">title=</span><span class="s">&quot;$id_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$id_text_1$&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;password&quot;</span> <span class="na">password=</span><span class="s">&quot;Cc&quot;</span> <span class="na">title=</span><span class="s">&quot;$id_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$id_text_2$&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- fermeture des portes --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;voice_door_close&quot;</span> <span class="na">volume=</span><span class="s">&quot;3.0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;door_close&quot;</span> <span class="na">volume=</span><span class="s">&quot;3.0&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- cible --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_target&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="c">&lt;!-- 180 = 3 MINUTES POUR LA BASE--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span> <span class="na">title=</span><span class="s">&quot;$target_title_info$&quot;</span> <span class="na">text=</span><span class="s">&quot;$target_text_info$&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;password&quot;</span> <span class="na">format=</span><span class="s">&quot;target&quot;</span> <span class="na">password=</span><span class="s">&quot;XX-XX-XX&quot;</span> <span class="na">title=</span><span class="s">&quot;$target_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$target_text$&quot;</span> <span class="na">hint_sound=</span><span class="s">&quot;human_hint_target&quot;</span> <span class="na">hint_time=</span><span class="s">&quot;180&quot;</span><span class="nt">/&gt;</span>
+
+         <span class="c">&lt;!--mise ne route des moteurs--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;reset_leds&quot;</span> <span class="na">time_max=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;engine_starts&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2&quot;</span> <span class="na">volume=</span><span class="s">&quot;2.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_1&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;shuttle_look_at&quot;</span> <span class="na">x=</span><span class="s">&quot;0&quot;</span> <span class="na">y =</span><span class="s">&quot;10&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;shuttle_goto&quot;</span> <span class="na">x=</span><span class="s">&quot;-2&quot;</span> <span class="na">y=</span><span class="s">&quot;10&quot;</span> <span class="na">z=</span><span class="s">&quot;1&quot;</span> <span class="na">power=</span><span class="s">&quot;30&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;shuttle_look_at&quot;</span> <span class="na">x=</span><span class="s">&quot;0&quot;</span> <span class="na">y=</span><span class="s">&quot;0&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- premier mouvement --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_2&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;asteroid&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2.2&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;start_music&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">time_max=</span><span class="s">&quot;4&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_info$&quot;</span> <span class="na">text=</span><span class="s">&quot;$good_trip_text$&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;shuttle_goto&quot;</span> <span class="na">x=</span><span class="s">&quot;500&quot;</span> <span class="na">y=</span><span class="s">&quot;10&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span> <span class="na">power=</span><span class="s">&quot;200&quot;</span> <span class="na">time_max=</span><span class="s">&quot;12.5&quot;</span><span class="nt">/&gt;</span>
+
+         <span class="c">&lt;!--collision --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;collision_new&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;alarm&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span> <span class="na">loop=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;warning&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_collision_info$&quot;</span> <span class="na">text=</span><span class="s">&quot;$text_collision_info$&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;password&quot;</span> <span class="na">password=</span><span class="s">&quot;15Hu7&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_collision_password$&quot;</span> <span class="na">text=</span><span class="s">&quot;$text_collision_password$&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;stop_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;alarm&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;partie joueur&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- fréquence urgence--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;voice_emergency_freq&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_procedure$&quot;</span> <span class="na">text=</span><span class="s">&quot;$text_procedure_com$&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;freq_comm&quot;</span> <span class="na">value=</span><span class="s">&quot;310&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+
+        <span class="c">&lt;!--&lt;step action=&quot;oxygen&quot; time=&quot;800&quot; value=&quot;0&quot; start_time=&quot;0&quot; time_max=&quot;2&quot;/&gt;--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;oxygen_leak&quot;</span> <span class="na">time_max=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;bips&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;led_on&quot;</span> <span class="na">id=</span><span class="s">&quot;l_antenne_com&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="c">&lt;!-- this time can be adapted --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_3&quot;</span> <span class="na">time_max=</span><span class="s">&quot;7&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_pu4&quot;</span> <span class="na">time_max=</span><span class="s">&quot;18&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- PU4 --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_procedure$&quot;</span> <span class="na">text=</span><span class="s">&quot;$text_procedure_batteries$&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batteries&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batterie1&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batterie2&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batterie3&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;batterie4&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;3.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_pu6&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- PU6 --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_procedure$&quot;</span> <span class="na">text=</span><span class="s">&quot;$text_procedure_buttons$&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;thermique_secteur2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;thermique_secteur3&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;oxygene_secteur2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;oxygene_secteur3&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;tension_secteur2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;tension_secteur3&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;recyclage_H2O&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;recyclage_CO2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;recyclage_O2&quot;</span> <span class="na">value=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;3.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_pu7&quot;</span><span class="nt">/&gt;</span>
+
+
+        <span class="c">&lt;!-- PU7 --&gt;</span>
+        <span class="c">&lt;!-- 180 = 3 MINUTES POUR L&quot;INDICE DES PANNEAUX--&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_procedure$&quot;</span> <span class="na">text=</span><span class="s">&quot;$text_procedure_solar$&quot;</span> <span class="na">hint_sound=</span><span class="s">&quot;human_hint_pu7&quot;</span> <span class="na">hint_time=</span><span class="s">&quot;180&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;offset_ps_x&quot;</span> <span class="na">value=</span><span class="s">&quot;0.0&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;offset_ps_y&quot;</span> <span class="na">value=</span><span class="s">&quot;0.0&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+
+         <span class="c">&lt;!--PA1 --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_p_a_1&quot;</span> <span class="na">time_max=</span><span class="s">&quot;9&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_procedure$&quot;</span> <span class="na">text=</span><span class="s">&quot;$text_procedure_auto_pilot1$&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;s_pilote_automatique1&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+
+        <span class="c">&lt;!-- PA2 --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_p_a_2&quot;</span> <span class="na">time_max=</span><span class="s">&quot;4&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">close_time=</span><span class="s">&quot;20&quot;</span> <span class="na">title=</span><span class="s">&quot;$title_procedure$&quot;</span> <span class="na">text=</span><span class="s">&quot;$text_procedure_auto_pilot2$&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;s_pilote_automatique2&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;end game&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;2.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_p_a_ok&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;end_game&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;led_off&quot;</span> <span class="na">id=</span><span class="s">&quot;l_alert0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;led_off&quot;</span> <span class="na">id=</span><span class="s">&quot;l_alert1&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- LAST MOVE --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;end_music&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;shuttle_look_at&quot;</span> <span class="na">x=</span><span class="s">&quot;0&quot;</span> <span class="na">y=</span><span class="s">&quot;-10&quot;</span> <span class="na">z=</span><span class="s">&quot;0&quot;</span> <span class="na">time=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;control_screen_event&quot;</span> <span class="na">name=</span><span class="s">&quot;image_screen&quot;</span> <span class="na">image_name=</span><span class="s">&quot;end&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;boost&quot;</span> <span class="na">direction=</span><span class="s">&quot;f&quot;</span> <span class="na">power=</span><span class="s">&quot;20&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;control_screen_event&quot;</span> <span class="na">name=</span><span class="s">&quot;image_screen&quot;</span> <span class="na">image_name=</span><span class="s">&quot;score&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;show_score&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;human_end&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- RESTART GAME --&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;end_conditions&gt;</span>
+                <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;b_admin&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/end_conditions&gt;</span>
+        <span class="nt">&lt;/step&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;restart&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scenario-test">
+<h1>scenario test<a class="headerlink" href="#scenario-test" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;scenario&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;debut de jeux&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;end game&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;event</span> <span class="na">action=</span><span class="s">&quot;stop_game&quot;</span> <span class="na">start_time=</span><span class="s">&quot;11.0&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;event</span> <span class="na">action=</span><span class="s">&quot;warning&quot;</span> <span class="na">title=</span><span class="s">&quot;last window&quot;</span> <span class="na">text=</span><span class="s">&quot;This should be seen !&quot;</span> <span class="na">start_time=</span><span class="s">&quot;15.0&quot;</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!--            &lt;event action=&quot;end_game&quot; start_time=&quot;16.0&quot;/&gt;--&gt;</span>
+        <span class="nt">&lt;/group&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;set_screen&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0.0&quot;</span> <span class="na">name=</span><span class="s">&quot;shuttle_state&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;3.0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;test window&quot;</span> <span class="na">text=</span><span class="s">&quot;this shall be closed in 8 secs.&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;test window&quot;</span> <span class="na">text=</span><span class="s">&quot;Do you see mee ?&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;end_music&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test">
+<h1>test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;scenario&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;debut de jeux&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;set_screen&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0.0&quot;</span> <span class="na">name=</span><span class="s">&quot;new_scenario&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;password&quot;</span> <span class="na">password=</span><span class="s">&quot;yes&quot;</span> <span class="na">title=</span><span class="s">&quot;$key_one$&quot;</span> <span class="na">text=</span><span class="s">&quot;$key_two$&quot;</span> <span class="na">background_color=</span><span class="s">&quot;(0.0, 0.0, 0.0, 1.0)&quot;</span> <span class="na">size_x=</span><span class="s">&quot;1.5&quot;</span> <span class="na">size_y=</span><span class="s">&quot;1.5&quot;</span> <span class="na">color=</span><span class="s">&quot;(0.1, 0.1, 0.15, 1.0)&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;Test title&quot;</span> <span class="na">text=</span><span class="s">&quot;This is a test content ...&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;Titre test&quot;</span> <span class="na">text=</span><span class="s">&quot;Ceci est un contenu test ...&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;set_screen&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0.0&quot;</span> <span class="na">name=</span><span class="s">&quot;shuttle_state&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="states.html" class="btn btn-neutral float-left" title="States" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Paul de Fromont
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

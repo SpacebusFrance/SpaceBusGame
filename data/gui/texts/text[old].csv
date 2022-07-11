@@ -1,0 +1,68 @@
+key;fr;en
+menu_title;Main menu;Main menu
+menu_text;Welcome to Spacebus game;Welcome to Spacebus game
+button_play;Play;Play
+button_quit;Exit;Exit
+game_title;Game launch;Game launch
+game_text;Choose a scenario to launch;Choose a scenario to launch
+apply_menu_button;apply;apply
+reset_menu_button;reset;reset
+back_menu_button;back;back
+options_title;set options;set options
+button_options;options;options
+shuttle_title;;
+batterie1;batterie 1;
+batterie2;;
+batterie3;;
+batterie4;;
+recyclage_O2;;
+recyclage_CO2;;
+recyclage_H2O;;
+tension_secteur1;;
+oxygene_secteur1;;
+thermique_secteur1;;
+tension_secteur2;;
+oxygene_secteur2;;
+thermique_secteur2;;
+tension_secteur3;;
+oxygene_secteur3;;
+thermique_secteur3;;
+com_title;;
+com_text;;
+engine_title;;
+moteur1;;
+moteur2;;
+moteur3;;
+solar_title;;
+sp_power;;
+offset_ps_y;;
+offset_ps_x;;
+main_CO2;;
+main_O2;;
+main_power;;
+id_info_title;;
+id_info_text;;
+id_title;;
+id_text_0;;
+id_text_1;;
+id_text_2;;
+id_title_3;;
+id_text_3;;
+id_title_4;;
+id_text_4;;
+target_title_info;;
+target_text_info;;
+target_title;;
+target_text;;
+title_info;;
+good_trip_text;;
+title_collision_info;;
+title_collision_text;;
+unlock_title;Attention;Warning
+unlock_text;La session a été vérouillée, entrer mot de passe;
+terminal_title;;
+terminal_text_0;Tentative de dévérouillage de session ...\nRécupération des systemes de boot ... \1green\1OK\2\nRécupération du cache systeme ... \1green\1OK\2\nAnalyse des fichiers cache ...\n\tfichiers cache ADM_1 ... \1green\1OK\2\n\tfichiers cache ADM_2 ... \1green\1OK\2\n\tfichiers cache Atx_boot ... \1green\1OK\2\n\tfichiers cache DMC_device_1 ... \1green\1OK\2\n\tfichiers cache DMC_device_2 ... \1green\1OK\2\n\tfichiers cache boot_state ... \1red\1ERREUR\2\n\1red\1Fichier boot_state corrompus\2\nTentative de récupération ...\nChargement du cache secondaire ...\n\1red\1ERREUR\2Lecture impossible, fichiers corrompus\n...;
+reboot_title;Erreur session;
+reboot_text_0;Chargement de la sauvegarde de session ...;
+reboot_text_1;Chargement de la sauvegarde de session ...\nRécupération des données ...;
+reboot_text_2;Chargement de la sauvegarde de session ...\nRécupération des données ...\nLecture du fichier video ...;

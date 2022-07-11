@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario>
+    <group name="debut de jeux">
+<!--        <event action="goto_step" goto_id="end_game" start_time="10"/>-->
+
+        <step action="play_sound" name="ok" time_max="0"/>
+        <step action="set_screen" time_max="0.0" name="new_scenario"/>
+
+        <step action="password" password="Aa" title="$unlock_title$" text="$unlock_text$" background_color="(0.0, 0.0, 0.0, 1.0)"/>
+
+        <step action="info" title="$reboot_title$" text="$reboot_text_0$" time_max="5.0" close_on_enter="False" background_color="(0.0, 0.0, 0.0, 1.0)"/>
+        <step action="info" title="$reboot_title$" text="$reboot_text_1$" time_max="5.0" close_on_enter="False" background_color="(0.0, 0.0, 0.0, 1.0)"/>
+        <step action="info" title="$reboot_title$" text="$reboot_text_2$" time_max="5.0" close_on_enter="False" background_color="(0.0, 0.0, 0.0, 1.0)"/>
+
+        <step action="wait" time_max="2.0"/>
+        <step action="terminal-show" text="$terminal_text_0$" title="$terminal_title$" focus="True" dt='0.1' time_max="2.0"/>
+
+<!--        <step action="wait" time_max="2.0"/>-->
+<!--        <step action="info" title="video_title_info" text="$video_text_info$" time_max="2.0" close_on_enter="False" background_color="(0.0, 0.0, 0.0, 0.5)"/>-->
+<!--        <step action="video" title="$video_title$" name="test_sound" start="True" size_x="2.0" size_y="1.5" time_max="15.0" background_color="(0.0, 0.0, 0.0, 0.5)"/>-->
+<!--        <step action="info" text="video gone ?"/>-->
+
+        <!--        <step action="video" time_max="2.0" name="test_sound" text=""/>-->
+
+        <step action="wait"/>
+
+        <step action="info" id="end_game" title="end of game !!!" text="this should be the end of game ..."/>
+        <step action="start-chrono" time="20" time_max="1.0"/>
+        <step action="info" title="end of game II !!!" text="YESSS"/>
+
+    </group>
+</scenario>

@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Multi language support &mdash; SpaceBusGame 2.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="demo" href="scenario_list.html" />
+    <link rel="prev" title="States" href="states.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SpaceBusGame
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Creating a scenario</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="scenario.html">Scenario structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#blocking-steps">Blocking steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#ending-conditions">Ending conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-life-time">Step life-time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-arguments">Step arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#punctual-events">Punctual events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#event-arguments">Event arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Action list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#game-actions">Game actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#wait">wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#set-screen">set_screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-game">reset_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#start-game">start_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#restart">restart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#stop-game">stop_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#end-game">end_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#goto-step">goto_step</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#sound-actions">Sound actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#play-sound">play_sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#stop-sound">stop_sound</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#window-actions">Window actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#info">info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#warning">warning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#password">password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#close-window">close_window</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#special-events">Special events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#collision">collision</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#shuttle-actions">Shuttle actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-look-at">shuttle_look_at</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-pos">shuttle_pos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-goto">shuttle_goto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-stop">shuttle_stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-goto-station">shuttle_goto_station</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#boost">boost</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#hardware-actions">Hardware actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-buttons">reset_buttons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-leds">reset_leds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#led-on">led_on</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#led-off">led_off</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#state-update">State update</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#update-hardware-state">update_hardware_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#update-software-state">update_software_state</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="states.html">States</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="states.html#software-states">Software states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#buttons-states">Buttons states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#switch-states">Switch states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#joystick-states">Joystick states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#leds">Leds</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Multi language support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#text-key">Text key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sound-support">Sound support</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Existing scenario</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html">demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#demo-static">demo static</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#igor-scenario">igor scenario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final">scenario final</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final-2">scenario final 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-test">scenario test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#test">test</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SpaceBusGame</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Multi language support</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/multilang.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multi-language-support">
+<span id="multi-lang"></span><h1>Multi language support<a class="headerlink" href="#multi-language-support" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="text-key">
+<span id="id1"></span><h2>Text key<a class="headerlink" href="#text-key" title="Permalink to this headline">¶</a></h2>
+<p>In order to be compatible with multi-language support, the game system introduces the <strong>text key</strong> syntax. Basically,
+every text displayed during the game should be a text key rather by being hardcoded in the scenario file.</p>
+<p>A <strong>text key</strong> is simply a universal key identifying a text that can be changed as function of the language.</p>
+<p>All these texts are defined in the label file <code class="docutils literal notranslate"><span class="pre">data/gui/texts/text.csv</span></code> file where first column if the text key
+itself (a label in fact) and each column corresponds to its value in a given language (defined in the first row).</p>
+<p>In a scenario file, a text key is identified between <code class="docutils literal notranslate"><span class="pre">$</span></code></p>
+<dl class="field-list">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p>Assume we have in the label file</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>key</p></th>
+<th class="head"><p>fr</p></th>
+<th class="head"><p>en</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>…</p></th>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>my_title</p></th>
+<td><p>Titre test</p></td>
+<td><p>Test title</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>my_text</p></th>
+<td><p>Ceci est un contenu test …</p></td>
+<td><p>This is a test content ..</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>…</p></th>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>Then if we call a missing text key, it will be rendered with <code class="docutils literal notranslate"><span class="pre">!</span></code> surrounding it</p>
+<div class="figure align-center" id="id2">
+<img alt="_images/info_test.png" src="_images/info_test.png" />
+<p class="caption"><span class="caption-text">Example of an info window with missing text keys created with</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;$key_one$&quot;</span> <span class="na">text=</span><span class="s">&quot;$key_two$&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If now we call an existing key with command</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;$my_title$&quot;</span> <span class="na">text=</span><span class="s">&quot;$my_text$&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>It will be rendered in lang <code class="docutils literal notranslate"><span class="pre">en</span></code> as</p>
+<div class="figure align-center">
+<img alt="_images/info_en.png" src="_images/info_en.png" />
+</div>
+<p>And in <code class="docutils literal notranslate"><span class="pre">fr</span></code> as</p>
+<div class="figure align-center">
+<img alt="_images/info_fr.png" src="_images/info_fr.png" />
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="sound-support">
+<h2>Sound support<a class="headerlink" href="#sound-support" title="Permalink to this headline">¶</a></h2>
+<p>Sounds may also have their own language file. In that case, no need to use a particular key in the scenario file,
+when a sound with name <code class="docutils literal notranslate"><span class="pre">my_sound</span></code> is to be played, the engine will look at <code class="docutils literal notranslate"><span class="pre">xx_my_sound</span></code> where <code class="docutils literal notranslate"><span class="pre">xx</span></code> is the current
+language (<em>en</em>, <em>fr</em> etc). If this file exists, it will be played, otherwise <code class="docutils literal notranslate"><span class="pre">my_sound</span></code> file will be played directly.</p>
+<dl class="field-list">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p>Assume that current language is set to <code class="docutils literal notranslate"><span class="pre">fr</span></code>, then command</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;my_sound&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>will play <code class="docutils literal notranslate"><span class="pre">fr_my_sound</span></code> if this file exists, otherwise <code class="docutils literal notranslate"><span class="pre">my_sound</span></code></p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="scenario_list.html" class="btn btn-neutral float-right" title="demo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="states.html" class="btn btn-neutral float-left" title="States" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Paul de Fromont
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

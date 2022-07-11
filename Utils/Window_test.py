@@ -126,15 +126,16 @@ class TestScreen:
         if self.window.get_size()[0] == 800:
             self.props.set_size((self.main_screen.res[0] - 2 * border, self.main_screen.res[1] - 2 * border))
             self.props.setOrigin(self._monitor * self.main_screen.res[0] + border, border)
-            self.lens.setAspectRatio(float(self.main_screen.res[0] / self.main_screen.res[1]))
+            self.lens.setAspectRatio(float(self.main_screen.res[0]/self.main_screen.res[1]))
 
         else:
             self.props.set_size(800, 600)
             self.props.setOrigin(100 + self._monitor * self.main_screen.res[0], 100)
-            self.lens.setAspectRatio(4 / 3)
+            self.lens.setAspectRatio(4/3)
 
         self.window.requestProperties(self.props)
 
 
 game = MainScreen()
 game.run()
+

@@ -1,0 +1,170 @@
+.. _states:
+
+States
+######
+
+This section shows the various **states** defined in the game. These states can be used, for example, to define
+*ending conditions* for a ``step`` (see :ref:`ec`).
+
+For all states, the ``name`` column is the key that should be called in a scenario.
+The ``power`` column specifies if activating this state consume (negative ``power``) or add (positive) power to the
+shuttle.
+
+.. note:: in order to activate a state that consumes power, the total shuttle power should be higher than state's
+    consumed power
+
+Software states
+---------------
+
+These states are defined as *software* states and are thus not linked directly to buttons, switches etc.
+
+- **associated led id** : if set, this indicates that when the corresponding state is ``on``, this led will be switched
+  on. The id corresponds to the ``led id`` column in the :ref:`leds` table.
+
+.. csv-table::
+    :widths: 10, 10, 5, 5, 2
+    :header: name, comment, initial value, power, associated led id
+    :stub-columns: 1
+
+    pilote_automatique_failed,If automatic pilot switch failed,False,,
+    listen_to_hardware,If hardware inputs should be triggered,False,,
+    is_moving,If the shuttle is moving,False,,
+    freq_comm,The communication frequency, 270,,
+    offset_ps_x,Solar panel x offset,0,,
+    offset_ps_y,Solar panel y offset,0,,
+    main_power,Total power,100,,
+    main_O2,Total O2,100,,
+    main_CO2,Total CO2,50,,
+    sp_power,Total solar panel power,10,,
+    sp_max_power,Maximum solar panel power,68.28,,
+    target_name,Actual shuttle target,NT,,
+    pilote_automatique,If automatic pilot is on,True,-78.28,21
+    full_pilote_automatique,If automatic pilot is on,True,,
+
+
+Buttons states
+--------------
+
+Buttons are almost identical than switches but are treated differently.
+
+- **hardware key** : the in-game name of this button. For information only
+
+.. csv-table::
+    :widths: 10, 10, 5, 5
+    :header: name, comment, hardware key, initial value
+    :stub-columns: 1
+
+    b_admin,Admin button,joystick1-button6,False
+    b_freq_moins,Frequency - button, joystick1-button4,False
+    b_freq_plus,Frequency + button,joystick1-button3,False
+
+Switch states
+-------------
+
+Like *Buttons*, switches have two states, ``True`` corresponding to *on* and ``False`` for *off* state.
+
+- **hardware key** : the in-game name of this button. For information only
+- **led id** : if defined, the corresponding led is switched on when state is ``True``
+- **defines a state** : if ``True``, this means that this switch has a corresponding *software state* with the same
+  value and the same name without the ``s_`` prefix. This can be useful to de-correlate the value of the switch and its
+  physical state.
+
+.. csv-table::
+    :widths: 10, 10, 5, 3, 3, 3
+    :header: name,hardware key, led id,initial value, power, defines a state
+    :stub-columns: 1
+
+    s_batterie1,joystick0-button0,33,False,20,True
+    s_batterie2,joystick0-button1,34,False,20,True
+    s_batterie3,joystick0-button2,35,False,20,True
+    s_batterie4,joystick0-button9,36,False,20,True
+    s_batteries,joystick0-button3,,False,,True
+    s_correction_direction,joystick1-button1,19,True,,True
+    s_correction_roulis,joystick1-button2,18,True,,True
+    s_correction_stabilisation,joystick1-button0,20,True,,True
+    s_moteur1,joystick0-button6,17,True,100,True
+    s_moteur2,joystick0-button7,15,True,100,True
+    s_moteur3,joystick0-button4,16,True,100,True
+    s_oxygene_secteur1,joystick1-button8,37,True,-20,True
+    s_oxygene_secteur2,joystick2-button0,38,True,-20,True
+    s_oxygene_secteur3,joystick1-button9,39,True,-20,True
+    s_pilote_automatique1,joystick0-button5,,True,,
+    s_pilote_automatique2,joystick1-button7,,True,,
+    s_recyclage_CO2,joystick2-button7,48,True,-20,True
+    s_recyclage_H2O,joystick2-button8,47,True,-20,True
+    s_recyclage_O2,joystick2-button9,46,True,-20,True
+    s_tension_secteur1,joystick2-button1,40,True,-20,True
+    s_tension_secteur2,joystick2-button2,41,True,-20,True
+    s_tension_secteur3,joystick2-button3,42,True,-20,True
+    s_thermique_secteur1,joystick2-button4,43,True,-20,True
+    s_thermique_secteur2,joystick2-button5,44,True,-20,True
+    s_thermique_secteur3,joystick2-button6,45,True,-20,True
+    s_verrouillage_secteur1,,4,True,,True
+    s_verrouillage_secteur2,,5,True,,True
+    s_verrouillage_secteur3,,11,True,,True
+    s_joystick_pilote,joystick0-button4,,0,,
+    s_joystick_copilote,joystick1-button5,,0,,
+
+Joystick states
+---------------
+
+Switches are split in two modes : on *horizontal* and one *vertical* move. Each mode can have 3 different values ; +1.0
+or -1.0 if the joystick is moved, otherwise 0.0.
+
+- **hardware key** : the in-game name of this button. For information only
+
+.. note:: if the ``hardware key`` is set to *UNDEFINED*, this means that the joystick is not connected
+
+
+.. csv-table::
+    :widths: 10, 10, 5, 3
+    :header: name,comment, hardware key,initial value
+    :stub-columns: 1
+
+    j_copilote_h,Copilot joystick horizontal move,*UNDEFINED*,0.
+    j_copilote_v,Copilot joystick vertical move,*UNDEFINED*,0.
+    j_pilote_h,Pilot joystick horizontal move,*UNDEFINED*,0.
+    j_pilote_v,Pilot joystick vertical move,*UNDEFINED*,0.
+    j_sp_orientation_h,Solar panel horizontal move,joystick2-axis0,0.
+    j_sp_orientation_v,Solar panel vertical move,joystick2-axis1,0.
+
+
+.. _leds:
+
+Leds
+----
+
+Leds are small light switched on when value is ``True``, else switched off.
+
+- **led id** : the physical id of the led.
+
+.. csv-table::
+    :widths: 10, 10, 5, 5, 5
+    :header: name,comment,led id, hardware key,initial value
+    :stub-columns: 1
+
+    l_problem0,Led problem 0,0,False
+    l_problem1,Led problem 1,1,False
+    l_problem2,Led problem 2,2,False
+    l_ps_nominal,Solar panel power nominal,31,True
+    l_defficience_moteur1,Engine 1 problem,14,False
+    l_defficience_moteur2,Engine 2 problem,13,False
+    l_defficience_moteur3,Engine 3 problem,10,False
+    l_main_O2_up,O2 level raising,23,False
+    l_main_O2_down,O2 level lowering26,False
+    l_main_O2_low,O2 level low,29,False
+    l_main_power_up,power level raising,24,False
+    l_main_power_down,power level lowering,27,False
+    l_main_power_low,low power level,30,False
+    l_main_CO2_up,CO2 level raising,22,False
+    l_main_CO2_down,CO2 level lowering,25,False
+    l_main_CO2_high,high CO2 level,28,False
+    l_antenne_com,Communication is on,32,False
+    l_surpression1,Over-pressure 1,False
+    l_surpression2,Over-pressure 2,False
+    l_surpression3,Over-pressure 3,False
+    l_fuite_O2,O2 leak,6,False
+    l_fuite_CO2,CO2 leak,3,False
+    l_alert0,Alert 0,54,False
+    l_alert1,Alert 1,55,False
+    l_acceleration,Acceleration on,False

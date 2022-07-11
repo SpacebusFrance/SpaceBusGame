@@ -1,6 +1,5 @@
-import time
-
 import serial
+import time
 import serial.tools.list_ports
 
 
@@ -17,7 +16,7 @@ class Arduino:
             if p.description != "n/a":
                 self.board = serial.Serial(p[0], 9600, timeout=5)
         if self.board is None:
-            print("No arduino connected !")
+            print("No _arduino connected !")
         time.sleep(0.1)
 
     def all_off(self):
@@ -36,7 +35,7 @@ class Arduino:
 
     def test_all_leds(self):
         for i in range(self.num_leds):
-            # print("Switch led :\033[96m", i, "\033[0m : \033[95mON\033[0m")
+            print("Switch led :\033[96m", i, "\033[0m : \033[95mON\033[0m")
             self.board.write(str.encode(str(i) + "-1"))
             time.sleep(0.5)
             self.board.write(str.encode(str(i) + "-0"))
@@ -47,9 +46,9 @@ if __name__ == '__main__':
 
     print("===========\nTesting all leds\n===========\n")
 
-    h.all_off()
-
+    # h.all_off()
+    #
     # h.led(2, 0)
-
+    #
     # h.all_on()
-    # h.test_all_leds()
+    h.test_all_leds()

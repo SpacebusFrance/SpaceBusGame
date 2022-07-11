@@ -1,0 +1,950 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>States &mdash; SpaceBusGame 2.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Multi language support" href="multilang.html" />
+    <link rel="prev" title="Action list" href="actions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SpaceBusGame
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Creating a scenario</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="scenario.html">Scenario structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#blocking-steps">Blocking steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#ending-conditions">Ending conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-life-time">Step life-time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-arguments">Step arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#punctual-events">Punctual events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#event-arguments">Event arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Action list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#game-actions">Game actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#wait">wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#set-screen">set_screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-game">reset_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#start-game">start_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#restart">restart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#stop-game">stop_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#end-game">end_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#goto-step">goto_step</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#sound-actions">Sound actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#play-sound">play_sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#stop-sound">stop_sound</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#window-actions">Window actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#info">info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#warning">warning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#password">password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#close-window">close_window</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#special-events">Special events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#collision">collision</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#shuttle-actions">Shuttle actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-look-at">shuttle_look_at</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-pos">shuttle_pos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-goto">shuttle_goto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-stop">shuttle_stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#shuttle-goto-station">shuttle_goto_station</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#boost">boost</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#hardware-actions">Hardware actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-buttons">reset_buttons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#reset-leds">reset_leds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#led-on">led_on</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#led-off">led_off</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#state-update">State update</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#update-hardware-state">update_hardware_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#update-software-state">update_software_state</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">States</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#software-states">Software states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#buttons-states">Buttons states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#switch-states">Switch states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#joystick-states">Joystick states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#leds">Leds</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multilang.html">Multi language support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#text-key">Text key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#sound-support">Sound support</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Existing scenario</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html">demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#demo-static">demo static</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#igor-scenario">igor scenario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final">scenario final</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final-2">scenario final 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-test">scenario test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#test">test</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SpaceBusGame</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>States</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/states.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="states">
+<span id="id1"></span><h1>States<a class="headerlink" href="#states" title="Permalink to this headline">¶</a></h1>
+<p>This section shows the various <strong>states</strong> defined in the game. These states can be used, for example, to define
+<em>ending conditions</em> for a <code class="docutils literal notranslate"><span class="pre">step</span></code> (see <a class="reference internal" href="scenario.html#ec"><span class="std std-ref">Ending conditions</span></a>).</p>
+<p>For all states, the <code class="docutils literal notranslate"><span class="pre">name</span></code> column is the key that should be called in a scenario.
+The <code class="docutils literal notranslate"><span class="pre">power</span></code> column specifies if activating this state consume (negative <code class="docutils literal notranslate"><span class="pre">power</span></code>) or add (positive) power to the
+shuttle.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>in order to activate a state that consumes power, the total shuttle power should be higher than state’s
+consumed power</p>
+</div>
+<div class="section" id="software-states">
+<h2>Software states<a class="headerlink" href="#software-states" title="Permalink to this headline">¶</a></h2>
+<p>These states are defined as <em>software</em> states and are thus not linked directly to buttons, switches etc.</p>
+<ul class="simple">
+<li><p><strong>associated led id</strong> : if set, this indicates that when the corresponding state is <code class="docutils literal notranslate"><span class="pre">on</span></code>, this led will be switched
+on. The id corresponds to the <code class="docutils literal notranslate"><span class="pre">led</span> <span class="pre">id</span></code> column in the <a class="reference internal" href="#leds"><span class="std std-ref">Leds</span></a> table.</p></li>
+</ul>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>name</p></th>
+<th class="head"><p>comment</p></th>
+<th class="head"><p>initial value</p></th>
+<th class="head"><p>power</p></th>
+<th class="head"><p>associated led id</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>pilote_automatique_failed</p></th>
+<td><p>If automatic pilot switch failed</p></td>
+<td><p>False</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>listen_to_hardware</p></th>
+<td><p>If hardware inputs should be triggered</p></td>
+<td><p>False</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>is_moving</p></th>
+<td><p>If the shuttle is moving</p></td>
+<td><p>False</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>freq_comm</p></th>
+<td><p>The communication frequency</p></td>
+<td><p>270</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>offset_ps_x</p></th>
+<td><p>Solar panel x offset</p></td>
+<td><p>0</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>offset_ps_y</p></th>
+<td><p>Solar panel y offset</p></td>
+<td><p>0</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>main_power</p></th>
+<td><p>Total power</p></td>
+<td><p>100</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>main_O2</p></th>
+<td><p>Total O2</p></td>
+<td><p>100</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>main_CO2</p></th>
+<td><p>Total CO2</p></td>
+<td><p>50</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>sp_power</p></th>
+<td><p>Total solar panel power</p></td>
+<td><p>10</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>sp_max_power</p></th>
+<td><p>Maximum solar panel power</p></td>
+<td><p>68.28</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>target_name</p></th>
+<td><p>Actual shuttle target</p></td>
+<td><p>NT</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>pilote_automatique</p></th>
+<td><p>If automatic pilot is on</p></td>
+<td><p>True</p></td>
+<td><p>-78.28</p></td>
+<td><p>21</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>full_pilote_automatique</p></th>
+<td><p>If automatic pilot is on</p></td>
+<td><p>True</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="buttons-states">
+<h2>Buttons states<a class="headerlink" href="#buttons-states" title="Permalink to this headline">¶</a></h2>
+<p>Buttons are almost identical than switches but are treated differently.</p>
+<ul class="simple">
+<li><p><strong>hardware key</strong> : the in-game name of this button. For information only</p></li>
+</ul>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>name</p></th>
+<th class="head"><p>comment</p></th>
+<th class="head"><p>hardware key</p></th>
+<th class="head"><p>initial value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>b_admin</p></th>
+<td><p>Admin button</p></td>
+<td><p>joystick1-button6</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>b_freq_moins</p></th>
+<td><p>Frequency - button</p></td>
+<td><p>joystick1-button4</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>b_freq_plus</p></th>
+<td><p>Frequency + button</p></td>
+<td><p>joystick1-button3</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="switch-states">
+<h2>Switch states<a class="headerlink" href="#switch-states" title="Permalink to this headline">¶</a></h2>
+<p>Like <em>Buttons</em>, switches have two states, <code class="docutils literal notranslate"><span class="pre">True</span></code> corresponding to <em>on</em> and <code class="docutils literal notranslate"><span class="pre">False</span></code> for <em>off</em> state.</p>
+<ul class="simple">
+<li><p><strong>hardware key</strong> : the in-game name of this button. For information only</p></li>
+<li><p><strong>led id</strong> : if defined, the corresponding led is switched on when state is <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><strong>defines a state</strong> : if <code class="docutils literal notranslate"><span class="pre">True</span></code>, this means that this switch has a corresponding <em>software state</em> with the same
+value and the same name without the <code class="docutils literal notranslate"><span class="pre">s_</span></code> prefix. This can be useful to de-correlate the value of the switch and its
+physical state.</p></li>
+</ul>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 15%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>name</p></th>
+<th class="head"><p>hardware key</p></th>
+<th class="head"><p>led id</p></th>
+<th class="head"><p>initial value</p></th>
+<th class="head"><p>power</p></th>
+<th class="head"><p>defines a state</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>s_batterie1</p></th>
+<td><p>joystick0-button0</p></td>
+<td><p>33</p></td>
+<td><p>False</p></td>
+<td><p>20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_batterie2</p></th>
+<td><p>joystick0-button1</p></td>
+<td><p>34</p></td>
+<td><p>False</p></td>
+<td><p>20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_batterie3</p></th>
+<td><p>joystick0-button2</p></td>
+<td><p>35</p></td>
+<td><p>False</p></td>
+<td><p>20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_batterie4</p></th>
+<td><p>joystick0-button9</p></td>
+<td><p>36</p></td>
+<td><p>False</p></td>
+<td><p>20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_batteries</p></th>
+<td><p>joystick0-button3</p></td>
+<td></td>
+<td><p>False</p></td>
+<td></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_correction_direction</p></th>
+<td><p>joystick1-button1</p></td>
+<td><p>19</p></td>
+<td><p>True</p></td>
+<td></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_correction_roulis</p></th>
+<td><p>joystick1-button2</p></td>
+<td><p>18</p></td>
+<td><p>True</p></td>
+<td></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_correction_stabilisation</p></th>
+<td><p>joystick1-button0</p></td>
+<td><p>20</p></td>
+<td><p>True</p></td>
+<td></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_moteur1</p></th>
+<td><p>joystick0-button6</p></td>
+<td><p>17</p></td>
+<td><p>True</p></td>
+<td><p>100</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_moteur2</p></th>
+<td><p>joystick0-button7</p></td>
+<td><p>15</p></td>
+<td><p>True</p></td>
+<td><p>100</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_moteur3</p></th>
+<td><p>joystick0-button4</p></td>
+<td><p>16</p></td>
+<td><p>True</p></td>
+<td><p>100</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_oxygene_secteur1</p></th>
+<td><p>joystick1-button8</p></td>
+<td><p>37</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_oxygene_secteur2</p></th>
+<td><p>joystick2-button0</p></td>
+<td><p>38</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_oxygene_secteur3</p></th>
+<td><p>joystick1-button9</p></td>
+<td><p>39</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_pilote_automatique1</p></th>
+<td><p>joystick0-button5</p></td>
+<td></td>
+<td><p>True</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_pilote_automatique2</p></th>
+<td><p>joystick1-button7</p></td>
+<td></td>
+<td><p>True</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_recyclage_CO2</p></th>
+<td><p>joystick2-button7</p></td>
+<td><p>48</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_recyclage_H2O</p></th>
+<td><p>joystick2-button8</p></td>
+<td><p>47</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_recyclage_O2</p></th>
+<td><p>joystick2-button9</p></td>
+<td><p>46</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_tension_secteur1</p></th>
+<td><p>joystick2-button1</p></td>
+<td><p>40</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_tension_secteur2</p></th>
+<td><p>joystick2-button2</p></td>
+<td><p>41</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_tension_secteur3</p></th>
+<td><p>joystick2-button3</p></td>
+<td><p>42</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_thermique_secteur1</p></th>
+<td><p>joystick2-button4</p></td>
+<td><p>43</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_thermique_secteur2</p></th>
+<td><p>joystick2-button5</p></td>
+<td><p>44</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_thermique_secteur3</p></th>
+<td><p>joystick2-button6</p></td>
+<td><p>45</p></td>
+<td><p>True</p></td>
+<td><p>-20</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_verrouillage_secteur1</p></th>
+<td></td>
+<td><p>4</p></td>
+<td><p>True</p></td>
+<td></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_verrouillage_secteur2</p></th>
+<td></td>
+<td><p>5</p></td>
+<td><p>True</p></td>
+<td></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_verrouillage_secteur3</p></th>
+<td></td>
+<td><p>11</p></td>
+<td><p>True</p></td>
+<td></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>s_joystick_pilote</p></th>
+<td><p>joystick0-button4</p></td>
+<td></td>
+<td><p>0</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>s_joystick_copilote</p></th>
+<td><p>joystick1-button5</p></td>
+<td></td>
+<td><p>0</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="joystick-states">
+<h2>Joystick states<a class="headerlink" href="#joystick-states" title="Permalink to this headline">¶</a></h2>
+<p>Switches are split in two modes : on <em>horizontal</em> and one <em>vertical</em> move. Each mode can have 3 different values ; +1.0
+or -1.0 if the joystick is moved, otherwise 0.0.</p>
+<ul class="simple">
+<li><p><strong>hardware key</strong> : the in-game name of this button. For information only</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if the <code class="docutils literal notranslate"><span class="pre">hardware</span> <span class="pre">key</span></code> is set to <em>UNDEFINED</em>, this means that the joystick is not connected</p>
+</div>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 36%" />
+<col style="width: 18%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>name</p></th>
+<th class="head"><p>comment</p></th>
+<th class="head"><p>hardware key</p></th>
+<th class="head"><p>initial value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>j_copilote_h</p></th>
+<td><p>Copilot joystick horizontal move</p></td>
+<td><p><em>UNDEFINED</em></p></td>
+<td><ol class="arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>j_copilote_v</p></th>
+<td><p>Copilot joystick vertical move</p></td>
+<td><p><em>UNDEFINED</em></p></td>
+<td><ol class="arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><th class="stub"><p>j_pilote_h</p></th>
+<td><p>Pilot joystick horizontal move</p></td>
+<td><p><em>UNDEFINED</em></p></td>
+<td><ol class="arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>j_pilote_v</p></th>
+<td><p>Pilot joystick vertical move</p></td>
+<td><p><em>UNDEFINED</em></p></td>
+<td><ol class="arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><th class="stub"><p>j_sp_orientation_h</p></th>
+<td><p>Solar panel horizontal move</p></td>
+<td><p>joystick2-axis0</p></td>
+<td><ol class="arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>j_sp_orientation_v</p></th>
+<td><p>Solar panel vertical move</p></td>
+<td><p>joystick2-axis1</p></td>
+<td><ol class="arabic simple" start="0">
+<li></li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="leds">
+<span id="id2"></span><h2>Leds<a class="headerlink" href="#leds" title="Permalink to this headline">¶</a></h2>
+<p>Leds are small light switched on when value is <code class="docutils literal notranslate"><span class="pre">True</span></code>, else switched off.</p>
+<ul class="simple">
+<li><p><strong>led id</strong> : the physical id of the led.</p></li>
+</ul>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>name</p></th>
+<th class="head"><p>comment</p></th>
+<th class="head"><p>led id</p></th>
+<th class="head"><p>hardware key</p></th>
+<th class="head"><p>initial value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>l_problem0</p></th>
+<td><p>Led problem 0</p></td>
+<td><p>0</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_problem1</p></th>
+<td><p>Led problem 1</p></td>
+<td><p>1</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_problem2</p></th>
+<td><p>Led problem 2</p></td>
+<td><p>2</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_ps_nominal</p></th>
+<td><p>Solar panel power nominal</p></td>
+<td><p>31</p></td>
+<td><p>True</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_defficience_moteur1</p></th>
+<td><p>Engine 1 problem</p></td>
+<td><p>14</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_defficience_moteur2</p></th>
+<td><p>Engine 2 problem</p></td>
+<td><p>13</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_defficience_moteur3</p></th>
+<td><p>Engine 3 problem</p></td>
+<td><p>10</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_main_O2_up</p></th>
+<td><p>O2 level raising</p></td>
+<td><p>23</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_main_O2_down</p></th>
+<td><p>O2 level lowering26</p></td>
+<td><p>False</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_main_O2_low</p></th>
+<td><p>O2 level low</p></td>
+<td><p>29</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_main_power_up</p></th>
+<td><p>power level raising</p></td>
+<td><p>24</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_main_power_down</p></th>
+<td><p>power level lowering</p></td>
+<td><p>27</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_main_power_low</p></th>
+<td><p>low power level</p></td>
+<td><p>30</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_main_CO2_up</p></th>
+<td><p>CO2 level raising</p></td>
+<td><p>22</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_main_CO2_down</p></th>
+<td><p>CO2 level lowering</p></td>
+<td><p>25</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_main_CO2_high</p></th>
+<td><p>high CO2 level</p></td>
+<td><p>28</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_antenne_com</p></th>
+<td><p>Communication is on</p></td>
+<td><p>32</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_surpression1</p></th>
+<td><p>Over-pressure 1</p></td>
+<td><p>False</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_surpression2</p></th>
+<td><p>Over-pressure 2</p></td>
+<td><p>False</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_surpression3</p></th>
+<td><p>Over-pressure 3</p></td>
+<td><p>False</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_fuite_O2</p></th>
+<td><p>O2 leak</p></td>
+<td><p>6</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_fuite_CO2</p></th>
+<td><p>CO2 leak</p></td>
+<td><p>3</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_alert0</p></th>
+<td><p>Alert 0</p></td>
+<td><p>54</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>l_alert1</p></th>
+<td><p>Alert 1</p></td>
+<td><p>55</p></td>
+<td><p>False</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>l_acceleration</p></th>
+<td><p>Acceleration on</p></td>
+<td><p>False</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="multilang.html" class="btn btn-neutral float-right" title="Multi language support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="actions.html" class="btn btn-neutral float-left" title="Action list" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Paul de Fromont
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

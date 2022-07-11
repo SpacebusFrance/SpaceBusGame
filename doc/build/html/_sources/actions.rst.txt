@@ -1,0 +1,314 @@
+.. _actions:
+
+Action list
+===========
+
+We list below all possible ``action`` values together with their mandatory and optional arguments
+
+Game actions
+############
+
+In this section, we regroup actions that can be used to control the game itself
+
+wait
+----
+
+The default step value, nothing is done.
+
+set_screen
+----------
+
+Set the background screen (the widgets in the background).
+
+:Arguments:
+
+    - ``name`` (str) : the name of the screen to set.
+
+reset_game
+----------
+
+Reset the game, stop it and reload the scenario without starting it
+
+**Note**
+
+You can also call the command ``reset``
+
+start_game
+----------
+
+Start the game, i.e. starts the first step
+
+**Note**
+
+You can also call the command ``start``
+
+restart
+-------
+
+Perform both ``reset`` and ``start`` commands
+
+stop_game
+---------
+
+Stop the current game without resetting everything.
+
+.. important:: this remove all incoming ``step`` but keep ``event``
+
+**Note**
+
+You can also call the command ``stop``
+
+end_game
+--------
+
+Displays the end game screen with score
+
+goto_step
+---------
+
+Stop current step and go to the designated step
+
+*Arguments*
+
+- ``goto_id`` (str): the ``id`` of the step to play
+
+**Note**
+
+This remove current step if it is still playing, however, this does not remove ``event``. This is very useful to reach
+a part of the scenario after a certain amount of time using an ``event``
+
+Sound actions
+#############
+
+These actions allow to control sounds in the game
+
+play_sound
+----------
+
+Plays a specified sound.
+
+*Arguments*
+
+- ``name`` (str): the name of the sound file to play
+- ``volume`` (float, optional): the volume of the sound
+- ``loop`` (bool, optional): specifies if the sound should be played in loop or not
+
+**Note**
+
+If no ``time_max`` is provided, the step is ended when the sound itself is ended. In other words, ``time_max`` is set
+to *sound_lenght + 1* seconds if no ``time_max`` is provided
+
+stop_sound
+----------
+
+Stop a sound
+
+*Arguments*
+
+- ``name`` (str): the name of the sound to stop
+
+Window actions
+##############
+
+These actions allow to popup and close windows on the screen
+
+Since only one window can be displayed at a time, when a window is open, the previous one is closed if it exists.
+
+.. important:: in the following, we *hardcoded* titles and text. It is however preferable to set a **text key** between
+    ``$``, see :ref:`text_key`
+
+All windows below can handle the following arguments
+
+*Arguments*
+
+- ``title`` (str): the text displayed in the window title. Set to ``$info_title$`` by default
+- ``text`` (str): the text displayed in the window body. Empty by default
+- ``life_time`` (float): the life time of the window in seconds. Set to infinity by default (``-1`` value)
+- ``close_on_enter`` (bool): if set to ``True``, hitting enter closes the window otherwise you have to wait its life
+  time. Set to ``True`` by default.
+- ``color`` (tuple of size 4): if set, it should a tuple in the form ``[r, g, b, a]`` where each value should be
+  between 0 and 1 (``a`` being the *alpha* key, i.e. the transparency). Set to a dark grey color by default
+- ``background_color`` (tuple of size 4): if set, it should a tuple in the form ``[r, g, b, a]``. If it is set, a uniform
+  texture of this color is shown between the background and this window. This can be useful to *hide* the background.
+- ``size_x`` (float): the size of the window in the x axis. Set to 1.0 by default.
+- ``size_y`` (float): the size of the window in the y axis. Set to 0.8 by default.
+- ``icon_size`` (float): the size of the icon in the top right corner. Set to 0.07 by default.
+- ``icon`` (str): the name of the icon file to display (should be located in *data/gui/icons* folder). Set by each
+  window by default depending on their type.
+
+info
+----
+
+Displays an information *window* on screen
+
+.. figure:: _static/info.png
+    :align: center
+
+    Example of ``info`` window with parameters ``title="Info title"`` and ``text="Place for info text"``
+
+warning
+-------
+
+Displays a warning *window* on screen, mainly an *info* warning with a different icon
+
+.. figure:: _static/warning.png
+    :align: center
+
+    Example of ``warning`` window with parameters ``title="warning title"`` and ``text="Place for warning text"``
+
+password
+--------
+
+Displays a password *window* on screen that can be unlock only by entering the correct password. Listen to keyboard
+events.
+
+.. figure:: _static/password.png
+    :align: center
+
+    Example of ``password`` window with parameters ``title="Password title"`` and ``text="Place for password text"``
+
+*Arguments*
+
+- ``password`` (str): the expected **case sensitive** password
+
+close_window
+------------
+
+Close the window actually displayed on screen
+
+**Note**
+
+This step passes immediately to the next one and ignore ``time_max`` argument.
+
+
+Special events
+##############
+
+These actions start special events in the scenario
+
+collision
+---------
+
+Start the collision event, with incoming asteroids, impact, sound an update of the shuttle state.
+
+Shuttle actions
+###############
+
+These actions control the behaviour of the shuttle (i.e. the space-bus itself)
+
+shuttle_look_at
+---------------
+
+Orientate the shuttle in order to look at a certain position.
+
+*Arguments*
+
+- ``time`` (float): the time in seconds to spin the shuttle. Set to 5.0 seconds by default
+- ``x`` (float): the x position of the point to look-at. Set to 0.0 by default
+- ``y`` (float): the y position of the point to look-at. Set to 0.0 by default
+- ``z`` (float): the z position of the point to look-at. Set to 0.0 by default
+
+shuttle_pos
+-----------
+
+Set the position of the shuttle instantaneously.
+
+*Arguments*
+
+- ``x`` (float): the x position of the shuttle. Set to 0.0 by default
+- ``y`` (float): the y position of the shuttle. Set to 0.0 by default
+- ``z`` (float): the z position of the shuttle. Set to 0.0 by default
+
+shuttle_goto
+------------
+
+Dynamically move the shuttle to an other position
+
+*Arguments*
+
+- ``x`` (float): the x position of the target. Set to 0.0 by default
+- ``y`` (float): the y position of the target. Set to 0.0 by default
+- ``z`` (float): the z position of the target. Set to 0.0 by default
+- ``power`` (float): specifies the velocity of the move. Set to 1.0 by default
+
+shuttle_stop
+------------
+
+Stop the shuttle as it is.
+
+shuttle_goto_station
+--------------------
+
+Set the shuttle to move to its original position on the station.
+
+*Arguments*
+
+- ``power`` (float): specifies the velocity of the move. Set to 1.0 by default
+
+boost
+-----
+
+Perform a boost in a specified direction
+
+*Arguments*
+
+- ``direction`` (tuple of size 3): if set, specifies the direction. By default, boost in the direction of the shuttle
+- ``power`` (float): specifies the velocity of the move. Set to 1.0 by default
+
+Hardware actions
+################
+
+These actions control the hardware of the shuttle (buttons, leds etc)
+
+reset_buttons
+-------------
+
+Reset the hardware in its original state
+
+reset_leds
+----------
+
+Reset all leds dynamically to their default values and plays a starting sound.
+
+led_on
+------
+
+Switch a led on
+
+*Arguments*
+
+- ``id`` (int): the ``led id`` number of the led (see :ref:`leds`)
+
+led_off
+-------
+
+Switch a led off
+
+*Arguments*
+
+- ``id`` (int): the ``led id`` number of the led (see :ref:`leds`)
+
+State update
+############
+
+These actions control the values of shuttle states (see :ref:`states`)
+
+update_hardware_state
+---------------------
+
+Update an *hardware* state
+
+*Arguments*
+
+- ``name`` (str): the name of the state to update
+- ``value``: its new value
+
+update_software_state
+---------------------
+
+Update a *software* state
+
+*Arguments*
+
+- ``name`` (str): the name of the state to update
+- ``value``: its new value

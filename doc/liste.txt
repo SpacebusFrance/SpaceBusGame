@@ -1,0 +1,4 @@
+leds : 46
+switch : 28
+bouttons : 2
+joysticks : 3

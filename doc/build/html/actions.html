@@ -1,0 +1,559 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Action list &mdash; SpaceBusGame 2.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="States" href="states.html" />
+    <link rel="prev" title="Scenario structure" href="scenario.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SpaceBusGame
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Creating a scenario</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="scenario.html">Scenario structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#blocking-steps">Blocking steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#ending-conditions">Ending conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-life-time">Step life-time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#step-arguments">Step arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#punctual-events">Punctual events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scenario.html#event-arguments">Event arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Action list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#game-actions">Game actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wait">wait</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-screen">set_screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reset-game">reset_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-game">start_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#restart">restart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stop-game">stop_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#end-game">end_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goto-step">goto_step</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sound-actions">Sound actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#play-sound">play_sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stop-sound">stop_sound</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#window-actions">Window actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#info">info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#warning">warning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#password">password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#close-window">close_window</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#special-events">Special events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#collision">collision</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#shuttle-actions">Shuttle actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#shuttle-look-at">shuttle_look_at</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shuttle-pos">shuttle_pos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shuttle-goto">shuttle_goto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shuttle-stop">shuttle_stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shuttle-goto-station">shuttle_goto_station</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boost">boost</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-actions">Hardware actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reset-buttons">reset_buttons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reset-leds">reset_leds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#led-on">led_on</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#led-off">led_off</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#state-update">State update</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#update-hardware-state">update_hardware_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#update-software-state">update_software_state</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="states.html">States</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="states.html#software-states">Software states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#buttons-states">Buttons states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#switch-states">Switch states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#joystick-states">Joystick states</a></li>
+<li class="toctree-l2"><a class="reference internal" href="states.html#leds">Leds</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multilang.html">Multi language support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#text-key">Text key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#sound-support">Sound support</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Existing scenario</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html">demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#demo-static">demo static</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#igor-scenario">igor scenario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final">scenario final</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final-2">scenario final 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-test">scenario test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#test">test</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SpaceBusGame</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Action list</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/actions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="action-list">
+<span id="actions"></span><h1>Action list<a class="headerlink" href="#action-list" title="Permalink to this headline">¶</a></h1>
+<p>We list below all possible <code class="docutils literal notranslate"><span class="pre">action</span></code> values together with their mandatory and optional arguments</p>
+<div class="section" id="game-actions">
+<h2>Game actions<a class="headerlink" href="#game-actions" title="Permalink to this headline">¶</a></h2>
+<p>In this section, we regroup actions that can be used to control the game itself</p>
+<div class="section" id="wait">
+<h3>wait<a class="headerlink" href="#wait" title="Permalink to this headline">¶</a></h3>
+<p>The default step value, nothing is done.</p>
+</div>
+<div class="section" id="set-screen">
+<h3>set_screen<a class="headerlink" href="#set-screen" title="Permalink to this headline">¶</a></h3>
+<p>Set the background screen (the widgets in the background).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str) : the name of the screen to set.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="reset-game">
+<h3>reset_game<a class="headerlink" href="#reset-game" title="Permalink to this headline">¶</a></h3>
+<p>Reset the game, stop it and reload the scenario without starting it</p>
+<p><strong>Note</strong></p>
+<p>You can also call the command <code class="docutils literal notranslate"><span class="pre">reset</span></code></p>
+</div>
+<div class="section" id="start-game">
+<h3>start_game<a class="headerlink" href="#start-game" title="Permalink to this headline">¶</a></h3>
+<p>Start the game, i.e. starts the first step</p>
+<p><strong>Note</strong></p>
+<p>You can also call the command <code class="docutils literal notranslate"><span class="pre">start</span></code></p>
+</div>
+<div class="section" id="restart">
+<h3>restart<a class="headerlink" href="#restart" title="Permalink to this headline">¶</a></h3>
+<p>Perform both <code class="docutils literal notranslate"><span class="pre">reset</span></code> and <code class="docutils literal notranslate"><span class="pre">start</span></code> commands</p>
+</div>
+<div class="section" id="stop-game">
+<h3>stop_game<a class="headerlink" href="#stop-game" title="Permalink to this headline">¶</a></h3>
+<p>Stop the current game without resetting everything.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>this remove all incoming <code class="docutils literal notranslate"><span class="pre">step</span></code> but keep <code class="docutils literal notranslate"><span class="pre">event</span></code></p>
+</div>
+<p><strong>Note</strong></p>
+<p>You can also call the command <code class="docutils literal notranslate"><span class="pre">stop</span></code></p>
+</div>
+<div class="section" id="end-game">
+<h3>end_game<a class="headerlink" href="#end-game" title="Permalink to this headline">¶</a></h3>
+<p>Displays the end game screen with score</p>
+</div>
+<div class="section" id="goto-step">
+<h3>goto_step<a class="headerlink" href="#goto-step" title="Permalink to this headline">¶</a></h3>
+<p>Stop current step and go to the designated step</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">goto_id</span></code> (str): the <code class="docutils literal notranslate"><span class="pre">id</span></code> of the step to play</p></li>
+</ul>
+<p><strong>Note</strong></p>
+<p>This remove current step if it is still playing, however, this does not remove <code class="docutils literal notranslate"><span class="pre">event</span></code>. This is very useful to reach
+a part of the scenario after a certain amount of time using an <code class="docutils literal notranslate"><span class="pre">event</span></code></p>
+</div>
+</div>
+<div class="section" id="sound-actions">
+<h2>Sound actions<a class="headerlink" href="#sound-actions" title="Permalink to this headline">¶</a></h2>
+<p>These actions allow to control sounds in the game</p>
+<div class="section" id="play-sound">
+<h3>play_sound<a class="headerlink" href="#play-sound" title="Permalink to this headline">¶</a></h3>
+<p>Plays a specified sound.</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): the name of the sound file to play</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">volume</span></code> (float, optional): the volume of the sound</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loop</span></code> (bool, optional): specifies if the sound should be played in loop or not</p></li>
+</ul>
+<p><strong>Note</strong></p>
+<p>If no <code class="docutils literal notranslate"><span class="pre">time_max</span></code> is provided, the step is ended when the sound itself is ended. In other words, <code class="docutils literal notranslate"><span class="pre">time_max</span></code> is set
+to <em>sound_lenght + 1</em> seconds if no <code class="docutils literal notranslate"><span class="pre">time_max</span></code> is provided</p>
+</div>
+<div class="section" id="stop-sound">
+<h3>stop_sound<a class="headerlink" href="#stop-sound" title="Permalink to this headline">¶</a></h3>
+<p>Stop a sound</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): the name of the sound to stop</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="window-actions">
+<h2>Window actions<a class="headerlink" href="#window-actions" title="Permalink to this headline">¶</a></h2>
+<p>These actions allow to popup and close windows on the screen</p>
+<p>Since only one window can be displayed at a time, when a window is open, the previous one is closed if it exists.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>in the following, we <em>hardcoded</em> titles and text. It is however preferable to set a <strong>text key</strong> between
+<code class="docutils literal notranslate"><span class="pre">$</span></code>, see <a class="reference internal" href="multilang.html#text-key"><span class="std std-ref">Text key</span></a></p>
+</div>
+<p>All windows below can handle the following arguments</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> (str): the text displayed in the window title. Set to <code class="docutils literal notranslate"><span class="pre">$info_title$</span></code> by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">text</span></code> (str): the text displayed in the window body. Empty by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">life_time</span></code> (float): the life time of the window in seconds. Set to infinity by default (<code class="docutils literal notranslate"><span class="pre">-1</span></code> value)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">close_on_enter</span></code> (bool): if set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, hitting enter closes the window otherwise you have to wait its life
+time. Set to <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> (tuple of size 4): if set, it should a tuple in the form <code class="docutils literal notranslate"><span class="pre">[r,</span> <span class="pre">g,</span> <span class="pre">b,</span> <span class="pre">a]</span></code> where each value should be
+between 0 and 1 (<code class="docutils literal notranslate"><span class="pre">a</span></code> being the <em>alpha</em> key, i.e. the transparency). Set to a dark grey color by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">background_color</span></code> (tuple of size 4): if set, it should a tuple in the form <code class="docutils literal notranslate"><span class="pre">[r,</span> <span class="pre">g,</span> <span class="pre">b,</span> <span class="pre">a]</span></code>. If it is set, a uniform
+texture of this color is shown between the background and this window. This can be useful to <em>hide</em> the background.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size_x</span></code> (float): the size of the window in the x axis. Set to 1.0 by default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size_y</span></code> (float): the size of the window in the y axis. Set to 0.8 by default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">icon_size</span></code> (float): the size of the icon in the top right corner. Set to 0.07 by default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">icon</span></code> (str): the name of the icon file to display (should be located in <em>data/gui/icons</em> folder). Set by each
+window by default depending on their type.</p></li>
+</ul>
+<div class="section" id="info">
+<h3>info<a class="headerlink" href="#info" title="Permalink to this headline">¶</a></h3>
+<p>Displays an information <em>window</em> on screen</p>
+<div class="figure align-center" id="id1">
+<img alt="_images/info.png" src="_images/info.png" />
+<p class="caption"><span class="caption-text">Example of <code class="docutils literal notranslate"><span class="pre">info</span></code> window with parameters <code class="docutils literal notranslate"><span class="pre">title=&quot;Info</span> <span class="pre">title&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">text=&quot;Place</span> <span class="pre">for</span> <span class="pre">info</span> <span class="pre">text&quot;</span></code></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="warning">
+<h3>warning<a class="headerlink" href="#warning" title="Permalink to this headline">¶</a></h3>
+<p>Displays a warning <em>window</em> on screen, mainly an <em>info</em> warning with a different icon</p>
+<div class="figure align-center" id="id2">
+<img alt="_images/warning.png" src="_images/warning.png" />
+<p class="caption"><span class="caption-text">Example of <code class="docutils literal notranslate"><span class="pre">warning</span></code> window with parameters <code class="docutils literal notranslate"><span class="pre">title=&quot;warning</span> <span class="pre">title&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">text=&quot;Place</span> <span class="pre">for</span> <span class="pre">warning</span> <span class="pre">text&quot;</span></code></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="password">
+<h3>password<a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h3>
+<p>Displays a password <em>window</em> on screen that can be unlock only by entering the correct password. Listen to keyboard
+events.</p>
+<div class="figure align-center" id="id3">
+<img alt="_images/password.png" src="_images/password.png" />
+<p class="caption"><span class="caption-text">Example of <code class="docutils literal notranslate"><span class="pre">password</span></code> window with parameters <code class="docutils literal notranslate"><span class="pre">title=&quot;Password</span> <span class="pre">title&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">text=&quot;Place</span> <span class="pre">for</span> <span class="pre">password</span> <span class="pre">text&quot;</span></code></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (str): the expected <strong>case sensitive</strong> password</p></li>
+</ul>
+</div>
+<div class="section" id="close-window">
+<h3>close_window<a class="headerlink" href="#close-window" title="Permalink to this headline">¶</a></h3>
+<p>Close the window actually displayed on screen</p>
+<p><strong>Note</strong></p>
+<p>This step passes immediately to the next one and ignore <code class="docutils literal notranslate"><span class="pre">time_max</span></code> argument.</p>
+</div>
+</div>
+<div class="section" id="special-events">
+<h2>Special events<a class="headerlink" href="#special-events" title="Permalink to this headline">¶</a></h2>
+<p>These actions start special events in the scenario</p>
+<div class="section" id="collision">
+<h3>collision<a class="headerlink" href="#collision" title="Permalink to this headline">¶</a></h3>
+<p>Start the collision event, with incoming asteroids, impact, sound an update of the shuttle state.</p>
+</div>
+</div>
+<div class="section" id="shuttle-actions">
+<h2>Shuttle actions<a class="headerlink" href="#shuttle-actions" title="Permalink to this headline">¶</a></h2>
+<p>These actions control the behaviour of the shuttle (i.e. the space-bus itself)</p>
+<div class="section" id="shuttle-look-at">
+<h3>shuttle_look_at<a class="headerlink" href="#shuttle-look-at" title="Permalink to this headline">¶</a></h3>
+<p>Orientate the shuttle in order to look at a certain position.</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code> (float): the time in seconds to spin the shuttle. Set to 5.0 seconds by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code> (float): the x position of the point to look-at. Set to 0.0 by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> (float): the y position of the point to look-at. Set to 0.0 by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code> (float): the z position of the point to look-at. Set to 0.0 by default</p></li>
+</ul>
+</div>
+<div class="section" id="shuttle-pos">
+<h3>shuttle_pos<a class="headerlink" href="#shuttle-pos" title="Permalink to this headline">¶</a></h3>
+<p>Set the position of the shuttle instantaneously.</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code> (float): the x position of the shuttle. Set to 0.0 by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> (float): the y position of the shuttle. Set to 0.0 by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code> (float): the z position of the shuttle. Set to 0.0 by default</p></li>
+</ul>
+</div>
+<div class="section" id="shuttle-goto">
+<h3>shuttle_goto<a class="headerlink" href="#shuttle-goto" title="Permalink to this headline">¶</a></h3>
+<p>Dynamically move the shuttle to an other position</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code> (float): the x position of the target. Set to 0.0 by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> (float): the y position of the target. Set to 0.0 by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code> (float): the z position of the target. Set to 0.0 by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span></code> (float): specifies the velocity of the move. Set to 1.0 by default</p></li>
+</ul>
+</div>
+<div class="section" id="shuttle-stop">
+<h3>shuttle_stop<a class="headerlink" href="#shuttle-stop" title="Permalink to this headline">¶</a></h3>
+<p>Stop the shuttle as it is.</p>
+</div>
+<div class="section" id="shuttle-goto-station">
+<h3>shuttle_goto_station<a class="headerlink" href="#shuttle-goto-station" title="Permalink to this headline">¶</a></h3>
+<p>Set the shuttle to move to its original position on the station.</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span></code> (float): specifies the velocity of the move. Set to 1.0 by default</p></li>
+</ul>
+</div>
+<div class="section" id="boost">
+<h3>boost<a class="headerlink" href="#boost" title="Permalink to this headline">¶</a></h3>
+<p>Perform a boost in a specified direction</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">direction</span></code> (tuple of size 3): if set, specifies the direction. By default, boost in the direction of the shuttle</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span></code> (float): specifies the velocity of the move. Set to 1.0 by default</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="hardware-actions">
+<h2>Hardware actions<a class="headerlink" href="#hardware-actions" title="Permalink to this headline">¶</a></h2>
+<p>These actions control the hardware of the shuttle (buttons, leds etc)</p>
+<div class="section" id="reset-buttons">
+<h3>reset_buttons<a class="headerlink" href="#reset-buttons" title="Permalink to this headline">¶</a></h3>
+<p>Reset the hardware in its original state</p>
+</div>
+<div class="section" id="reset-leds">
+<h3>reset_leds<a class="headerlink" href="#reset-leds" title="Permalink to this headline">¶</a></h3>
+<p>Reset all leds dynamically to their default values and plays a starting sound.</p>
+</div>
+<div class="section" id="led-on">
+<h3>led_on<a class="headerlink" href="#led-on" title="Permalink to this headline">¶</a></h3>
+<p>Switch a led on</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> (int): the <code class="docutils literal notranslate"><span class="pre">led</span> <span class="pre">id</span></code> number of the led (see <a class="reference internal" href="states.html#leds"><span class="std std-ref">Leds</span></a>)</p></li>
+</ul>
+</div>
+<div class="section" id="led-off">
+<h3>led_off<a class="headerlink" href="#led-off" title="Permalink to this headline">¶</a></h3>
+<p>Switch a led off</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> (int): the <code class="docutils literal notranslate"><span class="pre">led</span> <span class="pre">id</span></code> number of the led (see <a class="reference internal" href="states.html#leds"><span class="std std-ref">Leds</span></a>)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="state-update">
+<h2>State update<a class="headerlink" href="#state-update" title="Permalink to this headline">¶</a></h2>
+<p>These actions control the values of shuttle states (see <a class="reference internal" href="states.html#states"><span class="std std-ref">States</span></a>)</p>
+<div class="section" id="update-hardware-state">
+<h3>update_hardware_state<a class="headerlink" href="#update-hardware-state" title="Permalink to this headline">¶</a></h3>
+<p>Update an <em>hardware</em> state</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): the name of the state to update</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: its new value</p></li>
+</ul>
+</div>
+<div class="section" id="update-software-state">
+<h3>update_software_state<a class="headerlink" href="#update-software-state" title="Permalink to this headline">¶</a></h3>
+<p>Update a <em>software</em> state</p>
+<p><em>Arguments</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): the name of the state to update</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: its new value</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="states.html" class="btn btn-neutral float-right" title="States" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="scenario.html" class="btn btn-neutral float-left" title="Scenario structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Paul de Fromont
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
