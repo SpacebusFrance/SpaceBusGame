@@ -75,9 +75,9 @@ class ChronoWindow(Window):
 
     def reset(self, time=None):
         """
-        Reset the to its original state
+        Reset to its original state
 
-        .. note:: this does not starts the counter, you must call :func:`start` explicitly
+        .. note:: this does not start the counter, you must call :func:`start` explicitly
 
         Args:
             time (:obj:`float`, optional): if specified, set the time

@@ -55,7 +55,7 @@ class MainScreen(DirectObject.DirectObject):
 
     def notify_event(self, event, **kwargs):
         """
-        Notify that the an event is asked for this screen
+        Notify that an event is asked for this screen
 
         Args:
             event (str): the name of the event

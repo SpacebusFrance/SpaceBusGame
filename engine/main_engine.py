@@ -109,7 +109,7 @@ class Game(ShowBase):
             self.sound_manager = SoundManager(self, load=False)
 
             # control screen
-            self.gui = Gui(self) # if self('use_new_gui') else ControlScreen(self)
+            self.gui = Gui(self)
 
             # environment
             self.earth = Earth(self)
@@ -252,6 +252,9 @@ class Game(ShowBase):
             scenario (:obj:`str`, optional): if specified, loads the given scenario
             start (:obj:`bool`, optional): if :code:`True`, starts the scenario
         """
+        # remove admin key trigger
+        self.ignore(self('admin_key'))
+
         self.clock.reset()
         self.sound_manager.reset()
 
@@ -260,12 +263,13 @@ class Game(ShowBase):
         self.power.reset()
         self.hardware.all_leds_off()
 
-        if scenario is not None:
-            self.scenario.reset()
+        self.scenario.reset()
+        if isinstance(scenario, str):
+            self.scenario.remove_incoming_events()
             self.scenario.load_scenario(scenario)
 
         self.shuttle.reset()
-        self.gui.reset()
+        self.gui.reset(show_menu=not start)
 
         if start:
             self.start_game()
@@ -281,6 +285,7 @@ class Game(ShowBase):
         """
         Starts the current scenario
         """
+        self.accept(self('admin_key'), self.gui.admin_screen)
         self.sound_manager.play_ambient_sound()
         self.scenario.start_game()
 

@@ -30,6 +30,7 @@ class Window(BaseWidget):
                  text_align=TextNode.ALeft,
                  password=None,
                  on_password_find=None,
+                 on_password_fail=None,
                  on_entry_add=None,
                  on_entry_delete=None,
                  entry_hint='',
@@ -37,6 +38,7 @@ class Window(BaseWidget):
                  icon=None,
                  icon_size=.07,
                  focus=1,
+                 hide_password=False,
                  shadow=True,
                  background_color=None,
                  **kwargs):
@@ -44,7 +46,6 @@ class Window(BaseWidget):
 
         self._background = None
         if background_color is not None:
-            Logger.warning('setting a window background color', background_color)
             ar = self._gui_engine.engine('screen_resolution')[0] / self._gui_engine.engine('screen_resolution')[1]
             cm = CardMaker('back')
             cm.set_color(self.color(background_color) if isinstance(background_color, str) else background_color)
@@ -53,7 +54,6 @@ class Window(BaseWidget):
             self._background.setTransparency(TransparencyAttrib.MAlpha)
 
         # now create the node
-        Logger.warning('creating a window with color', color)
         self._widget = DirectFrame(
             frameColor=self.color(color) if isinstance(color, str) else self.color('dark') if color is None else color,
             frameSize=(-.5 * size_x, .5 * size_x, -0.5 * size_y, 0.5 * size_y),
@@ -93,12 +93,14 @@ class Window(BaseWidget):
         self._text_tooltip = None
         self._entry = None
         self._on_password_find = on_password_find
+        self._on_password_fail = on_password_fail
         self._password = password
 
         if password is not None:
             text_width = 10
             self._text_tooltip = entry_hint
             self._entry = DirectEntry(
+                obscured=hide_password,
                 command=self.check,
                 focusInCommand=self._on_focus,
                 width=text_width,
@@ -127,8 +129,8 @@ class Window(BaseWidget):
 
             self._widget.ignore_all()
         elif callable(on_enter):
-            # accept on_enter at most 0.5 secs after (to avoid event conflicts)
-            self._widget.do_method_later(min(0.5, 0.5 * life_time) if life_time > 0.0 else 0.5,
+            # accept on_enter at most 0.05 secs after (to avoid event conflicts)
+            self._widget.do_method_later(min(0.05, 0.95 * life_time),
                                          lambda task: self._widget.accept_once('enter', on_enter, extraArgs=[self]),
                                          'accepting')
         if icon is not None:
@@ -141,9 +143,7 @@ class Window(BaseWidget):
                 im.hprInterval(2.0, Vec3(0, 0, 360)).loop()
 
         if life_time > 0.0:
-            self._gui_engine.doMethodLater(life_time,
-                                           lambda *args: self.destroy(),
-                                           name="window_lifetime")
+            self._widget.doMethodLater(life_time, lambda *args: self.destroy(), 'remove_window')
         if shadow:
             self.set_shadow()
 
@@ -154,6 +154,7 @@ class Window(BaseWidget):
         if self._background is not None:
             self._background.remove_node()
         self._widget.ignore_all()
+        self._widget.remove_all_tasks()
         self._widget.destroy()
 
     def check(self, entry_text=None):
@@ -168,7 +169,11 @@ class Window(BaseWidget):
                 self.remove_node()
         else:
             self._gui_engine.engine.sound_manager.play('wrong')
-            self.gain_focus()
+            if callable(self._on_password_fail):
+                self._on_password_fail()
+            else:
+                # try again
+                self.gain_focus()
 
     def get_entry_text(self):
         """

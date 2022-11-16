@@ -1,9 +1,3 @@
-import datetime
-import re
-
-from direct.gui.OnscreenText import OnscreenText
-from panda3d.core import TextNode
-
 from engine.gui.widgets.button import Button
 from engine.gui.windows.window import Window
 
@@ -21,8 +15,6 @@ class ButtonWindow(Window):
                  **kwargs):
         super(ButtonWindow, self).__init__(gui_engine, size_x=size_x, size_y=size_y, title=title, text=text, **kwargs)
 
-        widget_pad = 0.05
-        text_scale = 0.2
         self._current_selected = 0
         self._buttons = list()
         self._widget.accept('arrow_down', self.select_next)
@@ -47,7 +39,7 @@ class ButtonWindow(Window):
         self._buttons[self._current_selected].un_select()
         self._current_selected += 1
         if self._current_selected >= len(self._buttons):
-            self._current_selected = len(self._buttons) - 1
+            self._current_selected = 0
         self._buttons[self._current_selected].select()
 
     def select_previous(self):
@@ -57,10 +49,10 @@ class ButtonWindow(Window):
         self._buttons[self._current_selected].un_select()
         self._current_selected -= 1
         if self._current_selected < 0:
-            self._current_selected = 0
+            self._current_selected = len(self._buttons) - 1
         self._buttons[self._current_selected].select()
 
-    def add_button(self, size_x, size_y, text, pos=None,on_select=None, extra_args=None, **kwargs):
+    def add_button(self, size_x, size_y, text, pos=None, on_select=None, extra_args=None, **kwargs):
         """
         """
         self._buttons.append(Button(self._gui_engine,
@@ -74,3 +66,9 @@ class ButtonWindow(Window):
         self._buttons[-1].reparent_to(self._widget)
         if pos is not None:
             self._buttons[-1].set_pos(pos)
+
+    def destroy(self) -> None:
+        for btn in self._buttons:
+            btn.destroy()
+        self._buttons.clear()
+        super().destroy()

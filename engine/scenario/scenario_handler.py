@@ -2,6 +2,7 @@ import datetime
 import re
 import pandas as pd
 from direct.showbase.DirectObject import DirectObject
+from direct.task.TaskManagerGlobal import taskMgr
 from panda3d.core import LVector3f, LVector4f
 
 from engine.scenario.scenario_event import Event
@@ -17,7 +18,7 @@ class Scenario(DirectObject):
     Once these conditions are fulfilled, the scenario moves to the next step.
     """
     def __init__(self, game_engine):
-        DirectObject.__init__(self)
+        super().__init__()
 
         self.engine = game_engine
         self.shuttle = None
@@ -29,6 +30,8 @@ class Scenario(DirectObject):
         Step.step_counter = 0
         self.start_time = None
         self.last_score = None
+
+        self._paused_tasks = []
 
     def _new_step(self, id, end_conditions=None, action=None, time_max=None, start_time=None, args_dict=None,
                   win_sound=None, loose_sound=None, fulfill_if_lost=False, hint_sound=None, hint_time=None):
@@ -145,6 +148,14 @@ class Scenario(DirectObject):
                         if "/>" in line:
                             self._new_step(**current)
                             current = def_args.copy()
+                    if kind == 'group':
+                        # it is a group, we add it as an empty step
+                        args = read_xml_args(line)
+                        current["action"] = "group" # noqa
+                        current["id"] = args.pop("id", 'step_{}'.format(len(self.steps)))
+                        current["time_max"] = 0.0   # noqa
+                        self._new_step(**current)
+                        current = def_args.copy()
                     if "</step>" in line:
                         self._new_step(**current)
                         current = def_args.copy()
@@ -188,9 +199,7 @@ class Scenario(DirectObject):
             with open(self.engine("score_file"), 'a') as file:
                 file.write(str(self.last_score) + "\n")
 
-        if show_end_screen:
-            print(self.last_score, str(datetime.timedelta(seconds=self.last_score)))
-            # format time
+        if show_end_screen:            # format time
             hours, minutes, seconds = re.match(r'^(?P<hour>\d+):(?P<mins>\d+):(?P<seconds>\d+).*$',
                                                str(datetime.timedelta(seconds=self.last_score))).groups()
             with open(self.engine("score_file"), 'r') as f:
@@ -201,30 +210,6 @@ class Scenario(DirectObject):
                                        total_players=total,
                                        time_minutes=minutes,
                                        time_seconds=seconds)
-
-    # def get_score(self):
-    #     """
-    #     Get the last registered score.
-    #
-    #     Returns:
-    #         the position of the last game ad an :obj:`int`, the total number of games (:obj:`int`) and the score
-    #         itself representing the time as a :obj:`str` as ``HH:MM``
-    #     """
-    #     if self.last_score is not None:
-    #         results = pd.read_csv(self.engine('score_file'))
-    #         position = len(results.sort_values('score').loc[lambda x: x.score < self.last_score])
-    #         tot_games = len(results) + 1
-    #
-    #         # append new score and save file
-    #         results.append(pd.DataFrame({'score': [self.last_score],
-    #                                     'time': [pd.to_datetime('today').strftime('%Y-%m-%d %H:%M')]}),
-    #                        sort=False).to_csv(self.engine('score_file'), index=False)
-    #
-    #         hours, minutes, seconds = re.match(r'^(?P<hour>\d+):(?P<mins>\d+):(?P<seconds>\d+)$',
-    #                                            str(datetime.timedelta(seconds=self.last_score))).groups()
-    #         return position, tot_games, '{}:{}'.format(minutes, seconds)
-    #         # return scores.index(self.last_score) + 1, len(scores), str(datetime.timedelta(seconds=self.last_score))
-    #     return None, None, None
 
     def start_game(self):
         """
@@ -292,6 +277,8 @@ class Scenario(DirectObject):
             self.engine.reset_game()
 
         elif event_name == "restart":
+            # remove all steps
+            self.remove_incoming_events()
             self.engine.reset_game()
             self.start_game()
 
@@ -300,38 +287,34 @@ class Scenario(DirectObject):
 
         elif event_name in ['stop', 'stop_game']:
             self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
-            # this avoid to play next step
+            # this avoids to play next step
             self.current_step = len(self.steps)
-            # remove all incoming tasks but keep steps
-            for task in list(self._taskList.values()):
-                if not task.get_name().startswith('event'):
-                    self.remove_task(task)
+
+            # remove all incoming events but keep steps
+            self.remove_incoming_events()
 
         elif event_name == 'goto_step':
             # stop game
             self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
 
-            # remove all incoming tasks but keep steps
-            for task in list(self._taskList.values()):
-                if not task.get_name().startswith('event'):
-                    self.remove_task(task)
+            # remove all incoming events but keep steps
+            self.remove_incoming_events()
 
             # goto next step
             target_step = arg_dict['goto_id']
             self.current_step = None
             for i, step in enumerate(self.steps):
                 if step.id == target_step:
+                    # take i - 1 since will call "start_newt_step()" roght after that
                     self.current_step = i - 1
                     break
             if self.current_step is None:
-                raise KeyError(f'goto_id {target_step} does not exist !')
+                raise KeyError(f'goto_id "{target_step}" does not exist !')
             self.start_next_step()
 
         elif event_name == "end_game":
             # remove all incoming events
-            for task in list(self._taskList.values()):
-                if not task.get_name().startswith('event'):
-                    self.remove_task(task)
+            self.remove_incoming_events()
 
             # call the end game
             self.end_game(show_end_screen=arg_dict.get('show_end_screen', True),
@@ -339,9 +322,7 @@ class Scenario(DirectObject):
 
         elif event_name == "back_to_menu":
             # stop current game
-            for task in list(self._taskList.values()):
-                if not task.get_name().startswith('event'):
-                    self.remove_task(task)
+            self.remove_incoming_events()
 
             # and go to main menu
             self.engine.gui.reset(show_menu=True)
@@ -445,10 +426,6 @@ class Scenario(DirectObject):
                                  name='sound_o2_2',
                                  extraArgs=['voice_alert_O2_3_17'])
 
-        # elif event_name == "info_text":
-        #     self.engine.gui.info_text(arg_dict.get("text", ""),
-        #                                          close_time=arg_dict.get("close_time", None))
-
         elif event_name == "oxygen":
             self.engine.gui.event("set_gauge_goto_time", gauge="main_O2", time=arg_dict.get("time", 420.0))
             self.engine.update_soft_state("main_O2", arg_dict.get("value", 0.0))
@@ -489,6 +466,9 @@ class Scenario(DirectObject):
         elif event_name == "wait":
             pass
 
+        elif event_name == "group":
+            pass
+
         elif event_name == "boost":
             self.engine.shuttle.boost(arg_dict.get("direction", None), arg_dict.get("power", 1))
 
@@ -527,7 +507,39 @@ class Scenario(DirectObject):
                 arg_dict['close_time'] = min(arg_dict.get('close_time', 1E3), arg_dict.pop('time_max'))
             self.engine.gui.event(event_name, **arg_dict)
 
-        # self.update_scenario()
+    def remove_incoming_events(self) -> None:
+        """
+        Remove all incoming events
+        """
+        if hasattr(self, '_taskList'):
+            # _taskList attribute is dynamically set when adding a task
+            for task in list(self._taskList.values()):
+                if not task.get_name().startswith('event'):
+                    self.remove_task(task)
+
+    def pause(self) -> None:
+        """
+        Pauses the game, removing all incoming tasks
+        """
+        self._paused_tasks.clear()
+        if hasattr(self, '_taskList'):
+            # _taskList attribute is dynamically set when adding a task
+            for task in list(self._taskList.values()):
+                # incoming tasks have a non-null delay and negative elapsed_time which is the time to its start
+                if task.get_delay() > 0.0 and task.get_elapsed_time() < 0:
+                    self._paused_tasks.append([task, -task.get_elapsed_time()])
+                    self.remove_task(task)
+
+    def resume(self) -> None:
+        """
+        Resume the game paused with :func:`pause`
+        """
+        for paused_task, delay in self._paused_tasks:
+            # set new delay for each task and add them to the task manager
+            paused_task.set_delay(delay)
+            self.add_task(paused_task)
+        # remove all paused tasks
+        self._paused_tasks.clear()
 
     def fulfill_current_step(self):
         """

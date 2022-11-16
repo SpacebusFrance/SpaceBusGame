@@ -54,6 +54,28 @@ class Gui(DirectObject.DirectObject):
         self._text_file = pd.read_csv(self.engine('text_file'), sep=',', index_col='key').fillna('NaN')
         self.screen = None
 
+    def admin_screen(self):
+        """
+        Displays an admin screen, if password is correct, leads back to menu
+        """
+        self.engine.scenario.pause()
+
+        def reset_game() -> None:
+            # close admin window
+            self._current_window.destroy()
+            # resume game
+            self.engine.scenario.resume()
+
+        self.event('password',
+                   title='Admin window',
+                   text='Administrator password',
+                   close_time=20,
+                   password=self.engine('admin_password'),
+                   hide_password=True,
+                   on_password_fail=reset_game,
+                   on_password_find=lambda *args: self.engine.reset_game(None, False),
+                   )
+
     def end_screen(self, player_position=None, total_players=None, time_minutes=None, time_seconds=None):
         """
         Displays an end screen
@@ -100,7 +122,9 @@ class Gui(DirectObject.DirectObject):
             except KeyError:
                 new_value = 'NaN'
             if new_value == 'NaN':
-                new_value = '!{}!'.format(value)
+                # can be either missing key or language
+                Logger.error(f'missing text "{value}" for lang "{self.engine("lang")}"')
+                new_value = f'!{value}!'
             text = text.replace('{key}{value}{key}'.format(key=key, value=value), new_value)
         return text.replace('\\1', '\1').replace('\\2', '\2').replace('\\n', "\n").replace('\\t', '\t')
 
@@ -113,6 +137,7 @@ class Gui(DirectObject.DirectObject):
             **kwargs: parameters to instantiate the window
         """
         if self._current_window is not None and not self._current_window.is_empty():
+            print('removing a window', self._current_window)
             self._current_window.destroy()
         if 'background_color' not in kwargs:
             kwargs['background_color'] = (0.0, 0.0, 0.0, 0.5)
@@ -139,7 +164,14 @@ class Gui(DirectObject.DirectObject):
             self.screen = cls(self)
         self.screen.make()
 
-    def event(self, message, **kwargs):
+    def event(self, message, **kwargs) -> None:
+        """
+        Process an event
+
+        Args:
+            message (str): event name
+            **kwargs: optional args
+        """
         if message == 'set_screen':
             scenario_name = kwargs["name"].lower()
 
@@ -182,7 +214,7 @@ class Gui(DirectObject.DirectObject):
                 text=self.process_text(kwargs.pop('text', '')),
                 life_time=kwargs.pop('close_time', -1),
                 password=kwargs.pop('password'),
-                on_password_find=self.close_window_and_go,
+                on_password_find=kwargs.pop('on_password_find', self.close_window_and_go),
                 color=kwargs.pop('color', 'dark-window'),
                 **kwargs
             )
@@ -229,9 +261,14 @@ class Gui(DirectObject.DirectObject):
         """
         Display the main menu
         """
+        # reset the screen, displays a black empty image
         self.set_screen()
 
         def choose_game(*args):
+            """
+            function called when hitting "play" button
+            """
+            print('-> Choosing game menu')
             self.set_current_window(
                 win=ButtonWindow,
                 title=self.process_text('$game_title$'),
@@ -248,9 +285,20 @@ class Gui(DirectObject.DirectObject):
                                                 on_select=lambda x: self.engine.reset_game(scenario=x, start=True),
                                                 extra_args=[game.replace('.xml', '')],
                                                 pos=(0.0, 0.0, 0.4 - i * 0.18))
+
+            self._current_window.add_button(size_x=0.5,
+                                            size_y=0.15,
+                                            text='\1golden\1back\2',
+                                            color='blue',
+                                            on_select=self.show_menu,
+                                            pos=(0.0, 0.0, - 0.9))
+
             self._current_window.select_button()
 
         def options(*args):
+            """
+            Function called when hitting "option" button
+            """
             self.set_current_window(
                 win=OptionWindow,
                 title=self.process_text('$options_title$'),
@@ -305,6 +353,7 @@ class Gui(DirectObject.DirectObject):
             b.reparent_to(self._current_window._widget)
             b.set_pos(-0.5, 0, -0.5 * 1.8 + 0.1)
 
+        # current window is a ButtonWindow with several buttons
         self.set_current_window(
             win=ButtonWindow,
             title=self.process_text('$menu_title$'),

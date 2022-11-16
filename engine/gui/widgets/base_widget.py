@@ -55,3 +55,7 @@ class BaseWidget(object):
         place_shadow_im('_r', x2 + scale, 0.5 * (y1 + y2) - scale, scale, 0.5 * (y2 - y1) - scale)
         place_shadow_im('_ur', x2 + scale, y2 - scale)
         node.flatten_strong()
+
+    def destroy(self):
+        if self._widget is not None:
+            self._widget.destroy()

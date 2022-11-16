@@ -18,7 +18,7 @@ class Button(BaseWidget):
                  on_click=None,
                  extra_args=None,
                  **kwargs):
-        super(Button, self).__init__(gui_engine, shadow_scale=0.07, **kwargs)
+        super().__init__(gui_engine, shadow_scale=0.07, **kwargs)
         txt_color = self.color(kwargs.pop('text_color', 'light'))
         self._is_selected = False
 
@@ -42,7 +42,7 @@ class Button(BaseWidget):
             tb = self.component('text0').getTightBounds()
             cx, cy = self.getCenter()
             self._widget['text_pos'] = (0.1 - cx if icon_left else -0.1 - cx,
-                                - 0.5 * (tb[1][2] + tb[0][2]) - 0.5 * self.getHeight())
+                                        - 0.5 * (tb[1][2] + tb[0][2]) - 0.5 * self.getHeight())
             self._widget['image_pos'] = self._widget['image_pos'] + LVector3f(-cx, 0, - cy - 0.5 * self.getHeight())
             if image_color is not None:
                 self._widget['image_color'] = txt_color if image_color == 'text_color' else image_color
@@ -54,18 +54,18 @@ class Button(BaseWidget):
         """
         Select the button and accept 'enter' as a click
         """
-        self._widget.set_color_scale(1.3)
+        self._widget.set_color_scale(2.0, 1.5, 1.8, 1.0)
         self._is_selected = True
         if callable(self._widget['command']):
-            self._widget.accept('enter', self._widget['command'], extraArgs=self._widget['extraArgs'])
+            self._widget.accept_once('enter', self._widget['command'], extraArgs=self._widget['extraArgs'])
 
     def un_select(self):
         """
         Unselect the button
         """
-        self._widget.set_color_scale(1.0)
+        self._widget.clear_color_scale()
         self._is_selected = False
-        self._widget.ignore('enter')
+        self._widget.ignore_all()
 
     def set_size(self, size_x, size_y):
         # now set the correct size for the frame

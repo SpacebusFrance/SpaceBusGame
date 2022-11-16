@@ -73,11 +73,11 @@ class Step:
         """
         Start this step
         """
-        Logger.print('\n[{0}] starting step {1} (id "{2}", n° {3}, starts in {4} s.)'.format(self.engine.get_time(True),
-                                                                                             self.name,
-                                                                                             self.id,
-                                                                                             self.counter,
-                                                                                             self.t_start),
+        Logger.print('\n[{0}] starting step "{1}" (id "{2}", n° {3}, starts in {4} s.)'.format(self.engine.get_time(True),
+                                                                                               self.name,
+                                                                                               self.id,
+                                                                                               self.counter,
+                                                                                               self.t_start),
                      color='blue')
         Logger.print('\t- time max \t\t: {} s.'.format(self.t_max if self.t_max is not None else 'infinity'),
                      color='blue')
@@ -149,11 +149,11 @@ class Step:
         """
         # removing the loose task
         if self._loose_task is not None:
-            self.scenario.remove(self._loose_task)
+            self.scenario.remove_task(self._loose_task)
         if self._to_do_task is not None:
-            self.scenario.remove(self._to_do_task)
+            self.scenario.remove_task(self._to_do_task)
         if self._hint_task is not None:
-            self.scenario.remove(self._hint_task)
+            self.scenario.remove_task(self._hint_task)
 
     def end(self, win):
         """
