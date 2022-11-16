@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,6 +11,11 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="_static/logo.ico"/>
   
@@ -19,24 +23,22 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+    
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script type="text/javascript" src="_static/searchtools.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <script type="text/javascript" src="_static/searchtools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="#" /> 
 </head>
@@ -52,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> SpaceBusGame
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SpaceBusGame
           
 
           
@@ -78,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -98,6 +101,7 @@
 <li class="toctree-l3"><a class="reference internal" href="scenario.html#event-arguments">Event arguments</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#scenario-specific-events">Scenario specific events</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="multilang.html">Multi language support</a><ul>
@@ -114,6 +118,7 @@
 <li class="toctree-l3"><a class="reference internal" href="actions.html#restart">restart</a></li>
 <li class="toctree-l3"><a class="reference internal" href="actions.html#stop-game">stop_game</a></li>
 <li class="toctree-l3"><a class="reference internal" href="actions.html#end-game">end_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#back-to-menu">back_to_menu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="actions.html#goto-step">goto_step</a></li>
 </ul>
 </li>
@@ -156,6 +161,23 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="screens.html">Screens</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="screens.html#go-to-mars-scenario">Go to mars scenario</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#start-chrono">start-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#id2">start-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#reset-chrono">reset-chrono</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="screens.html#lost-astronaut-scenario">Lost astronaut scenario</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#id3">start-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#id4">start-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#id5">reset-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#terminal-show">terminal-show</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#terminal-focus">terminal-focus</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="states.html">States</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="states.html#software-states">Software states</a></li>
 <li class="toctree-l2"><a class="reference internal" href="states.html#buttons-states">Buttons states</a></li>
@@ -169,9 +191,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html">demo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html#demo-static">demo static</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#igor-scenario">igor scenario</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final">scenario final</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final-2">scenario final 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#go-to-mars">go to mars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#lost-astronaut">lost astronaut</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-test">scenario test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html#test">test</a></li>
 </ul>
@@ -179,6 +200,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -217,7 +239,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Search</li>
     
@@ -239,8 +261,7 @@
   <noscript>
   <div id="fallback" class="admonition warning">
     <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
+      Please activate JavaScript to enable the search functionality.
     </p>
   </div>
   </noscript>
@@ -260,11 +281,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Paul de Fromont
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -275,7 +304,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

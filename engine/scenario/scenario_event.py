@@ -1,9 +1,7 @@
-import sys
-
 from engine.utils.logger import Logger
 
 
-class Event(object):
+class Event:
     """
     Class representing a single event that is played outside current steps
     """

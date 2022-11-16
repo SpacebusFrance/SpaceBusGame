@@ -2,7 +2,7 @@ from os import listdir
 import numpy as num
 
 from engine.utils.logger import Logger
-from utils import read_file_as_list
+from engine.utils.ini_parser import read_file_as_list
 
 
 class SoundManager:

@@ -5,7 +5,7 @@ from engine.gui.windows.window import Window
 
 class VideoWindow(Window):
     """
-    A custom widget representing a chronometer
+    A custom widget playing a video
     """
     def __init__(self,
                  gui_engine,

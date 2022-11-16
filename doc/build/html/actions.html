@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,6 +11,11 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="_static/logo.ico"/>
   
@@ -19,27 +23,24 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="States" href="states.html" />
-    <link rel="prev" title="Scenario structure" href="scenario.html" /> 
+    <link rel="next" title="Screens" href="screens.html" />
+    <link rel="prev" title="Multi language support" href="multilang.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -53,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> SpaceBusGame
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SpaceBusGame
           
 
           
@@ -79,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -99,6 +101,12 @@
 <li class="toctree-l3"><a class="reference internal" href="scenario.html#event-arguments">Event arguments</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="scenario.html#scenario-specific-events">Scenario specific events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multilang.html">Multi language support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#text-key">Text key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multilang.html#sound-support">Sound support</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Action list</a><ul>
@@ -110,6 +118,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#restart">restart</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#stop-game">stop_game</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#end-game">end_game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#back-to-menu">back_to_menu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#goto-step">goto_step</a></li>
 </ul>
 </li>
@@ -152,6 +161,23 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="screens.html">Screens</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="screens.html#go-to-mars-scenario">Go to mars scenario</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#start-chrono">start-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#id2">start-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#reset-chrono">reset-chrono</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="screens.html#lost-astronaut-scenario">Lost astronaut scenario</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#id3">start-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#id4">start-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#id5">reset-chrono</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#terminal-show">terminal-show</a></li>
+<li class="toctree-l3"><a class="reference internal" href="screens.html#terminal-focus">terminal-focus</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="states.html">States</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="states.html#software-states">Software states</a></li>
 <li class="toctree-l2"><a class="reference internal" href="states.html#buttons-states">Buttons states</a></li>
@@ -160,19 +186,13 @@
 <li class="toctree-l2"><a class="reference internal" href="states.html#leds">Leds</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="multilang.html">Multi language support</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="multilang.html#text-key">Text key</a></li>
-<li class="toctree-l2"><a class="reference internal" href="multilang.html#sound-support">Sound support</a></li>
-</ul>
-</li>
 </ul>
 <p class="caption"><span class="caption-text">Existing scenario</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html">demo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html#demo-static">demo static</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#igor-scenario">igor scenario</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final">scenario final</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-final-2">scenario final 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#go-to-mars">go to mars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scenario_list.html#lost-astronaut">lost astronaut</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html#scenario-test">scenario test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html#test">test</a></li>
 </ul>
@@ -180,6 +200,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -218,7 +239,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Action list</li>
     
@@ -290,6 +311,10 @@
 <h3>end_game<a class="headerlink" href="#end-game" title="Permalink to this headline">¶</a></h3>
 <p>Displays the end game screen with score</p>
 </div>
+<div class="section" id="back-to-menu">
+<h3>back_to_menu<a class="headerlink" href="#back-to-menu" title="Permalink to this headline">¶</a></h3>
+<p>Stops current game and displays the main menu</p>
+</div>
 <div class="section" id="goto-step">
 <h3>goto_step<a class="headerlink" href="#goto-step" title="Permalink to this headline">¶</a></h3>
 <p>Stop current step and go to the designated step</p>
@@ -354,6 +379,13 @@ texture of this color is shown between the background and this window. This can 
 <li><p><code class="docutils literal notranslate"><span class="pre">icon</span></code> (str): the name of the icon file to display (should be located in <em>data/gui/icons</em> folder). Set by each
 window by default depending on their type.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p>by default, all windows called within the scenario have a gery background color</p></li>
+<li><p>if you set <code class="docutils literal notranslate"><span class="pre">icon=&quot;load_spinner&quot;</span></code>, this will display a loading icon that spin automatically</p></li>
+</ol>
+</div>
 <div class="section" id="info">
 <h3>info<a class="headerlink" href="#info" title="Permalink to this headline">¶</a></h3>
 <p>Displays an information <em>window</em> on screen</p>
@@ -515,10 +547,10 @@ events.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="states.html" class="btn btn-neutral float-right" title="States" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="screens.html" class="btn btn-neutral float-right" title="Screens" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="scenario.html" class="btn btn-neutral float-left" title="Scenario structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="multilang.html" class="btn btn-neutral float-left" title="Multi language support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -527,11 +559,19 @@ events.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Paul de Fromont
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -542,7 +582,6 @@ events.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

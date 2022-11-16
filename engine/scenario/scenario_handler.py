@@ -153,8 +153,6 @@ class Scenario(DirectObject):
                         self._new_step(action=args.pop("action"), start_time=args.pop('start_time', 0.0),
                                        args_dict=args, id=args.pop("id", 'event_{}'.format(event_counter)))
                         event_counter += 1
-                    # elif "<end_conditions>" in line:
-                    #     current["end_conditions"] = dict()
                     elif "<condition" in line and "key" in line and "value" in line:
                         args = read_xml_args(line)
                         if current['end_conditions'] is None:
@@ -326,7 +324,7 @@ class Scenario(DirectObject):
                     self.current_step = i - 1
                     break
             if self.current_step is None:
-                raise KeyError('goto_id {} does not exist !'.format(target_step))
+                raise KeyError(f'goto_id {target_step} does not exist !')
             self.start_next_step()
 
         elif event_name == "end_game":
@@ -339,10 +337,17 @@ class Scenario(DirectObject):
             self.end_game(show_end_screen=arg_dict.get('show_end_screen', True),
                           save_score=arg_dict.get('save_score', True))
 
+        elif event_name == "back_to_menu":
+            # stop current game
+            for task in list(self._taskList.values()):
+                if not task.get_name().startswith('event'):
+                    self.remove_task(task)
+
+            # and go to main menu
+            self.engine.gui.reset(show_menu=True)
+
         elif event_name == "collision_new":
-            """
-            The first impact function
-            """
+            # The first impact function
             self.engine.taskMgr.add(self.shuttle.impact, name="shake shuttle")
             self.engine.update_soft_state("collision_occurred", True)
             self.engine.sound_manager.stop_bips()
@@ -383,9 +388,6 @@ class Scenario(DirectObject):
             self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
 
         elif event_name == "collision":
-            """
-            The first impact function
-            """
             self.engine.taskMgr.add(self.shuttle.impact, name="shake shuttle")
             self.engine.update_soft_state("collision_occurred", True)
             self.engine.sound_manager.stop_bips()
@@ -456,7 +458,6 @@ class Scenario(DirectObject):
             self.engine.update_soft_state("main_CO2", arg_dict.get("value", 0.0))
 
         # elementary functions
-
         elif event_name == "shuttle_look_at":
             if arg_dict.get("time", 5.0) == 0.0:
                 self.engine.shuttle.look_at(
@@ -487,17 +488,6 @@ class Scenario(DirectObject):
 
         elif event_name == "wait":
             pass
-
-        # elif event_name == "show_score":
-        #     score, tot, time = self.get_score()
-        #     t = time.split(":")[1] + " minutes, " + time.split(":")[2].split(".")[0] + " secondes."
-        #     self.engine.gui.event("image_screen_text",
-        #                           text="Bravo équipage !\n\nVotre temps : " + t +"\nVous êtes " + str(score) + "ème sur " + str(tot),
-        #                           pos_y=0.2,
-        #                           size=6,
-        #                           color=LVector4f(0.886, 0.725, 0.443, 1.0),
-        #                           alpha_time=arg_dict.get("alpha_time", 3.0)
-        #                           )
 
         elif event_name == "boost":
             self.engine.shuttle.boost(arg_dict.get("direction", None), arg_dict.get("power", 1))

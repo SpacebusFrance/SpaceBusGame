@@ -136,6 +136,7 @@ class TestScreen:
         self.window.requestProperties(self.props)
 
 
-game = MainScreen()
-game.run()
+if __name__ == "__main__":
+    game = MainScreen()
+    game.run()
 

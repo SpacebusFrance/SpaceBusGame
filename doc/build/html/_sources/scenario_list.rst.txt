@@ -12,22 +12,16 @@ demo static
 .. literalinclude:: ../../data/scenarios/demo_static.xml
 	:language: xml
 
-igor scenario
-#############
+go to mars
+##########
 
-.. literalinclude:: ../../data/scenarios/igor_scenario.xml
+.. literalinclude:: ../../data/scenarios/go_to_mars.xml
 	:language: xml
 
-scenario final
+lost astronaut
 ##############
 
-.. literalinclude:: ../../data/scenarios/scenario_final.xml
-	:language: xml
-
-scenario final 2
-################
-
-.. literalinclude:: ../../data/scenarios/scenario_final_2.xml
+.. literalinclude:: ../../data/scenarios/lost_astronaut.xml
 	:language: xml
 
 scenario test

@@ -4,7 +4,7 @@
 <!--        <event action="goto_step" goto_id="end_game" start_time="10"/>-->
 
         <step action="play_sound" name="ok" time_max="0"/>
-        <step action="set_screen" time_max="0.0" name="new_scenario"/>
+        <step action="set_screen" time_max="0.0" name="lost_astronaut"/>
 
         <step action="password" password="Aa" title="$unlock_title$" text="$unlock_text$" background_color="(0.0, 0.0, 0.0, 1.0)"/>
 

@@ -181,3 +181,10 @@ Below is the list of possible arguments that can be included in **any** event.
 - ``action`` : the name of the action to perform (see XXX for the list of them)
 - ``start_time`` : the time between the start of the game and this event in seconds.
 - ``id`` : the identifier for the step. If not provided, ``id`` is set to ``event_{n}`` where ``{n}`` is its number (from 0)
+
+
+Scenario specific events
+------------------------
+
+In addition to these general events and step, each specific scenario has its own
+events. See the dedicated section below

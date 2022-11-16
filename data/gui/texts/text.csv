@@ -67,10 +67,11 @@ text_procedure_pa2,Enclencher Systèmes Survies 1-4,
 unlock_title,Session verrouillée,Warning
 unlock_text,Entrer le mot de passe de Claudie, Entrer le mot de passe
 terminal_title,,
-terminal_text_0,Tentative de dévérouillage de session ...\nRécupération des systemes de boot ... \1green\1OK\2\nRécupération du cache systeme ... \1green\1OK\2\nAnalyse des fichiers cache ...\n\tfichiers cache ADM_1 ... \1green\1OK\2\n\tfichiers cache ADM_2 ... \1green\1OK\2\n\tfichiers cache Atx_boot ... \1green\1OK\2\n\tfichiers cache DMC_device_1 ... \1green\1OK\2\n\tfichiers cache DMC_device_2 ... \1green\1OK\2\n\tfichiers cache boot_state ... \1red\1ERREUR\2\n\1red\1Fichier boot_state corrompus\2\nTentative de récupération ...\nChargement du cache secondaire ...\n\1red\1ERREUR\2Lecture impossible, fichiers corrompus\n...
+terminal_text_0,Tentative de déverrouillage de session ...\nRécupération des systemes de boot ... \1green\1OK\2\nRécupération du cache systeme ... \1green\1OK\2\nAnalyse des fichiers cache ...\n\tfichiers cache ADM_1 ... \1green\1OK\2\n\tfichiers cache ADM_2 ... \1green\1OK\2\n\tfichiers cache Atx_boot ... \1green\1OK\2\n\tfichiers cache DMC_device_1 ... \1green\1OK\2\n\tfichiers cache DMC_device_2 ... \1green\1OK\2\n\tfichiers cache boot_state ... \1red\1ERREUR\2\n\1red\1Fichier boot_state corrompus\2\nTentative de récupération ...\nChargement du cache secondaire ...\n\1red\1ERREUR\2Lecture impossible, fichiers corrompus\n...
 reboot_title,Erreur session,
 reboot_text_0,Chargement de la sauvegarde de session ...,
 reboot_text_1,Chargement de la sauvegarde de session ...\nRécupération des données ...,
 reboot_text_2,Chargement de la sauvegarde de session ...\nRécupération des données ...\nLecture du fichier video ...,
 score_header,\1title\1Merci d'avoir joué avec SpaceBus !\2\n\nVotre score : MINUTES minutes et SECONDS secondes\nVous êtes POSITIONème sur TOTAL,
 score_text,\1title\1Conception et programmation\2\n\nPaul de Fromont\n\n\1title\1Scénario\2\n\nTabatha Sauvaget\nRaphaël Peralta\nDiane Bérard\nPaul de Fromont\n\n\1title\1Design et construction des décors\2\n\nJean-Louis Bérard\nKarine Bérard\nPaul de Fromont\nDiane Bérard\n\n\1title\1Electronique\2\n\nPaul de Fromont\nDiane Bérard\n\n\1title\1Sons et voix off\2\n\nPaul de Fromont\nMusique d’interstallar\nMusique Sweet home alabama\n\n\1title\1Un grand merci également à tous nos beta-testeurs !\2,
+chrono_title,temps avant erreur,time before crash

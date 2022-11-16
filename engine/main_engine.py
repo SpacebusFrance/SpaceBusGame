@@ -24,7 +24,6 @@ from engine.meshes.moon_base_spacecraft import NewSpaceCraft
 from engine.meshes.sky_dome import SkyDome
 from engine.utils.ini_parser import ParamUtils
 from engine.utils.logger import Logger
-from utils import smart_cast
 
 
 # TODO : écran de fin
@@ -110,7 +109,7 @@ class Game(ShowBase):
             self.sound_manager = SoundManager(self, load=False)
 
             # control screen
-            self.gui = Gui(self) if self('use_new_gui') else ControlScreen(self)
+            self.gui = Gui(self) # if self('use_new_gui') else ControlScreen(self)
 
             # environment
             self.earth = Earth(self)
@@ -214,15 +213,20 @@ class Game(ShowBase):
         """
         Generate screens for the game. Either with or without 3D screens
         """
-        self.gui.set_single_window(self('show_3d_windows'))
+        self.gui.set_single_window(self('show_3d_windows'), screen_number=self('screen_number'))
 
         if self("show_3d_windows"):
             # and setting the other display regions
             self.screens.clear()
-            self.screens.append(FakeScreen3D(self, 1, shuttle_angle=-90, shift_y=-4.0))
-            self.screens.append(FakeScreen3D(self, 2, shuttle_angle=-self("front_screen_angle")))
-            self.screens.append(FakeScreen3D(self, 3, shuttle_angle=self("front_screen_angle")))
-            self.screens.append(FakeScreen3D(self, 4, shuttle_angle=90, shift_y=-4.0))
+            screen_number = self('screen_number')
+            if screen_number >= 2:
+                self.screens.append(FakeScreen3D(self, 1, shuttle_angle=-90, shift_y=-4.0))
+            if screen_number >= 3:
+                self.screens.append(FakeScreen3D(self, 2, shuttle_angle=-self("front_screen_angle")))
+            if screen_number >= 4:
+                self.screens.append(FakeScreen3D(self, 3, shuttle_angle=self("front_screen_angle")))
+            if screen_number >= 5:
+                self.screens.append(FakeScreen3D(self, 4, shuttle_angle=90, shift_y=-4.0))
 
     def get_time(self, string_format=False, round_result=True):
         """
@@ -251,8 +255,6 @@ class Game(ShowBase):
         self.clock.reset()
         self.sound_manager.reset()
 
-        # self.hard_states = ParamUtils.read_ini_file(self("hardware_states_file"))
-        # self.soft_states = ParamUtils.read_ini_file(self("software_states_file"))
         self.load_config()
 
         self.power.reset()
@@ -317,7 +319,7 @@ class Game(ShowBase):
 
         # build the initial state
         for c, l in self.hardware_map.iterrows():
-            value = smart_cast(l['initial_value'])
+            value = ParamUtils.smart_cast(l['initial_value'])
             if l['id'].startswith(('j_', 'b_', 'l_', 's_')):
                 self.hard_states[l['id']] = value
                 if l['defines_a_state']:

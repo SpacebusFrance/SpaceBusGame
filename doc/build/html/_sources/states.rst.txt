@@ -139,8 +139,8 @@ Leds are small light switched on when value is ``True``, else switched off.
 - **led id** : the physical id of the led.
 
 .. csv-table::
-    :widths: 10, 10, 5, 5, 5
-    :header: name,comment,led id, hardware key,initial value
+    :widths: 10, 10, 5, 5
+    :header: name,comment,led id, hardware key
     :stub-columns: 1
 
     l_problem0,Led problem 0,0,False

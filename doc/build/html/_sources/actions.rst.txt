@@ -63,6 +63,11 @@ end_game
 
 Displays the end game screen with score
 
+back_to_menu
+------------
+
+Stops current game and displays the main menu
+
 goto_step
 ---------
 
@@ -135,6 +140,10 @@ All windows below can handle the following arguments
 - ``icon_size`` (float): the size of the icon in the top right corner. Set to 0.07 by default.
 - ``icon`` (str): the name of the icon file to display (should be located in *data/gui/icons* folder). Set by each
   window by default depending on their type.
+
+.. note::
+    1. by default, all windows called within the scenario have a gery background color
+    2. if you set ``icon="load_spinner"``, this will display a loading icon that spin automatically
 
 info
 ----

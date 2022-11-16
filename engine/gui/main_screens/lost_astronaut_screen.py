@@ -8,12 +8,12 @@ from engine.gui.windows.terminal_window import TerminalWindow
 from engine.gui.windows.window import Window
 
 
-class Screen2(MainScreen):
+class LostAstronautScreen(MainScreen):
     """
     Main screen for new scenario
     """
     def __init__(self, gui_engine, *args, **kwargs):
-        super(Screen2, self).__init__(gui_engine, *args, **kwargs)
+        super().__init__(gui_engine, *args, **kwargs)
         self._terminal = None
         self._chrono = None
 

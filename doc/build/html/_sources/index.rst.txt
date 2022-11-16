@@ -13,6 +13,7 @@ Welcome to SpaceBusGame's documentation!
    scenario
    multilang
    actions
+   screens
    states
 
 .. toctree::

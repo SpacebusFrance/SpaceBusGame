@@ -4,4 +4,4 @@ data/control_board/gimp
 test_arduino.py
 tests.py
 .idea/
-doc/
+doc/build/

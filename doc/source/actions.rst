@@ -63,6 +63,11 @@ end_game
 
 Displays the end game screen with score
 
+back_to_menu
+------------
+
+Stops current game and displays the main menu
+
 goto_step
 ---------
 

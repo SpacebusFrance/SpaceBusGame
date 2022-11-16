@@ -7,12 +7,12 @@ from engine.gui.windows.gauge_window import GaugeWindow
 from engine.gui.windows.window import Window
 
 
-class MarsScenario(MainScreen):
+class GoToMarsScreen(MainScreen):
     """
     Main screen for Mars Scenario (default game)
     """
     def __init__(self, gui_engine, *args, **kwargs):
-        super(MarsScenario, self).__init__(gui_engine, *args, **kwargs)
+        super(GoToMarsScreen, self).__init__(gui_engine, *args, **kwargs)
 
         self._left_panel = ['batterie1',
                             'batterie2',
@@ -99,7 +99,7 @@ class MarsScenario(MainScreen):
                      icon=None,
                      pos=(pos_x, 0.65))
         self._texts['freq_comm'] = OnscreenText(
-            text='\1title\1{}\2  \1light\1[MHZ]\2'.format(self._format('freq_comm', True)),
+            text=f'\1title\1{self._format("freq_comm", True)}\2  \1light\1[MHZ]\2',
             align=TextNode.ACenter,
             pos=(0.0, - 0.5 * size_y + self._large_pad),
             scale=self._text_scale,

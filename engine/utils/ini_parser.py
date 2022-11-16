@@ -87,7 +87,6 @@ class ParamUtils:
                     # new category
                     current_category = line.strip().split(']')[0].replace('[', '').strip()
                 elif not line.strip().startswith('['):
-                    print(line.strip())
                     # it is not a comment but if belongs to the previous line
                     previous[1] += line.strip()
 
@@ -99,3 +98,17 @@ class ParamUtils:
             return categories
         else:
             return params
+
+
+def read_file_as_list(file_name, cast=True):
+    file = open(file_name, "r")
+    lines = file.readlines()
+    file.close()
+    l = []
+    if cast:
+        for line in lines:
+            l.append(ParamUtils.smart_cast(line.strip()))
+    else:
+        for line in lines:
+            l.append(line.strip())
+    return l

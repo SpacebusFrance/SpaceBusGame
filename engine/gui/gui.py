@@ -7,8 +7,8 @@ from direct.gui.OnscreenText import WindowProperties
 from direct.showbase import DirectObject
 
 from engine.gui.main_screens.main_screen import MainScreen
-from engine.gui.main_screens.mars_scenario_screen import MarsScenario
-from engine.gui.main_screens.scenario2_screen import Screen2
+from engine.gui.main_screens.got_to_mars_screen import GoToMarsScreen
+from engine.gui.main_screens.lost_astronaut_screen import LostAstronautScreen
 from engine.gui.utils import build_text_properties
 from engine.gui.widgets.button import Button
 from engine.gui.windows.button_window import ButtonWindow
@@ -22,6 +22,7 @@ from engine.utils.logger import Logger
 class Gui(DirectObject.DirectObject):
     """
     Class that represents the [old]ControlScreen that must be unlocked.
+    Displayed on the control screen
     """
     colors = {'green': (0.2, 0.8, 0.1, 1.0),
               'red': (0.8, 0.2, 0.1, 1.0),
@@ -140,10 +141,14 @@ class Gui(DirectObject.DirectObject):
 
     def event(self, message, **kwargs):
         if message == 'set_screen':
-            # todo: screen name should not be hard coded
-            self.set_screen(MarsScenario if kwargs["name"] == 'shuttle_state'
-                            else Screen2 if kwargs['name'] == 'new_scenario'
-                            else None)
+            scenario_name = kwargs["name"].lower()
+
+            if scenario_name in ['go_to_mars', 'gotomars']:
+                self.set_screen(GoToMarsScreen)
+            elif scenario_name in ['lost_astronaut', 'lostastronaut']:
+                self.set_screen(LostAstronautScreen)
+            else:
+                self.set_screen(None)
 
         elif message == 'end_screen':
             self.end_screen()
@@ -324,11 +329,11 @@ class Gui(DirectObject.DirectObject):
                                         on_select=self.engine.quit)
         self._current_window.select_button()
 
-    def set_single_window(self, with_3dscreens):
+    def set_single_window(self, with_3d_screens, screen_number):
         # setting the main window
         props = WindowProperties()
-        if with_3dscreens:
-            props.set_size((5 * self.engine('screen_resolution')[0],
+        if with_3d_screens:
+            props.set_size((screen_number * self.engine('screen_resolution')[0],
                             self.engine('screen_resolution')[1]))
         else:
             props.set_size(self.engine('screen_resolution'))
@@ -337,12 +342,12 @@ class Gui(DirectObject.DirectObject):
         props.setUndecorated(not self.engine('decorated_window'))
         self.engine.win.requestProperties(props)
 
-        if with_3dscreens:
+        if with_3d_screens:
             # setting the dimensions of the gui display region
             for dr in self.engine.win.get_display_regions():
                 cam = dr.get_camera()
                 if cam and "cam2d" in cam.name:
-                    dr.set_dimensions(0, 0.2, 0, 1)
+                    dr.set_dimensions(0, 1 / screen_number, 0, 1)
 
     # def set_fullsd_ccreen(self):
     #     #     props = WindowProperties()

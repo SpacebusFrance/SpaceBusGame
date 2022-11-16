@@ -4,7 +4,7 @@ from direct.task.Task import Task
 from panda3d.core import LVector3f, NodePath, WindowProperties
 
 from engine.utils.logger import Logger
-from utils import get_hpr, get_distance
+from engine.utils.geometric_utils import get_hpr, get_distance
 
 TO_RAD = 0.017453293
 TO_DEG = 57.295779513
