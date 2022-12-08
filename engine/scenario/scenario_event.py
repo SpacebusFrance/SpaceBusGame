@@ -1,3 +1,4 @@
+from engine.utils.event_handler import send_event
 from engine.utils.logger import Logger
 
 
@@ -35,4 +36,5 @@ class Event:
                      color='green')
 
         if self._event_name is not None:
-            self.scenario.event(self._event_name, self._event_kwargs)
+            send_event(self._event_name, **self._event_kwargs)
+            # self.scenario.event(self._event_name, self._event_kwargs)

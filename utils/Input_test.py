@@ -208,7 +208,7 @@ class HardwareHandler(DirectObject.DirectObject):
                                                                                       extraArgs=[in_game_name, value])
                 else:
                     # firewall !
-                    if self.tasks[event_name]is not None:
+                    if self.tasks[event_name] is not None:
                         print("\033[92mPossible ghost from", event_name, "\033[0m (", dt, ')')
                         self.tasks[event_name].remove()
         return task.cont

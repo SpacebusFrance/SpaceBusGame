@@ -1,10 +1,8 @@
 import math
 import os
 import re
-
 import pandas as pd
 from direct.gui.OnscreenText import WindowProperties
-from direct.showbase import DirectObject
 
 from engine.gui.main_screens.main_screen import MainScreen
 from engine.gui.main_screens.got_to_mars_screen import GoToMarsScreen
@@ -16,10 +14,11 @@ from engine.gui.windows.end_window import EndWindow
 from engine.gui.windows.option_window import OptionWindow
 from engine.gui.windows.video_window import VideoWindow
 from engine.gui.windows.window import Window
+from engine.utils.event_handler import EventObject, event
 from engine.utils.logger import Logger
 
 
-class Gui(DirectObject.DirectObject):
+class Gui(EventObject):
     """
     Class that represents the [old]ControlScreen that must be unlocked.
     Displayed on the control screen
@@ -41,7 +40,8 @@ class Gui(DirectObject.DirectObject):
               }
 
     def __init__(self, engine):
-        DirectObject.DirectObject.__init__(self)
+        super().__init__()
+
         self.engine = engine
         self._current_window = None
 
@@ -94,7 +94,7 @@ class Gui(DirectObject.DirectObject):
 
     def reset(self, show_menu=True):
         """
-        Reset the gui and display the main menu
+        Reset the gui and optionally display the main menu
 
         Args:
             show_menu (bool): specifies if the main menu should be displayed or not
@@ -137,7 +137,6 @@ class Gui(DirectObject.DirectObject):
             **kwargs: parameters to instantiate the window
         """
         if self._current_window is not None and not self._current_window.is_empty():
-            print('removing a window', self._current_window)
             self._current_window.destroy()
         if 'background_color' not in kwargs:
             kwargs['background_color'] = (0.0, 0.0, 0.0, 0.5)
@@ -164,9 +163,108 @@ class Gui(DirectObject.DirectObject):
             self.screen = cls(self)
         self.screen.make()
 
+    @event('set_screen')
+    def on_set_screen(self, name=""):
+        scenario_name = name.lower()
+
+        if scenario_name in ['go_to_mars', 'gotomars']:
+            self.set_screen(GoToMarsScreen)
+        elif scenario_name in ['lost_astronaut', 'lostastronaut']:
+            self.set_screen(LostAstronautScreen)
+        else:
+            self.set_screen(None)
+
+    @event('end_screen')
+    def on_end_screen(self):
+        self.end_screen()
+
+    @event('info')
+    def on_info(self, icon='chat', title='$info_title$', text='', close_time=-1, close_on_enter=True,
+                color='dark-window', **kwargs):
+        self.set_current_window(
+            icon=icon,
+            title=self.process_text(title),
+            text=self.process_text(text),
+            life_time=close_time,
+            on_enter=self.close_window_and_go if close_on_enter else None,
+            color=color,
+            **kwargs
+        )
+
+    @event('password')
+    def on_password(self, icon='caution', title='$password_title$', text='', close_time=-1, password='', format=None,
+                    on_password_find=None, color='dark-window', **kwargs):
+        def format_target(x):
+            x = x.replace('-', '')[:6]
+            self._current_window.set_entry_text('-'.join([x[2 * i:2 * (i + 1)] for i in range(math.ceil(len(x) / 2))]))
+
+        if format is not None:
+            if format == 'target':
+                kwargs['on_entry_add'] = format_target
+                kwargs['on_entry_delete'] = format_target
+            else:
+                Logger.error('unknown text format {}'.format(format))
+
+        self.set_current_window(
+            icon=icon,
+            title=self.process_text(title),
+            text=self.process_text(text),
+            life_time=close_time,
+            password=password,
+            on_password_find=self.close_window_and_go if on_password_find is not None else on_password_find,
+            color=color,
+            **kwargs
+        )
+
+    @event('video')
+    def on_video(self, name, size_x=1.0, size_y=0.8, close_time=-1, start=True, color='dark-window',
+                 title='$video_title$', text='$video_text$', **kwargs):
+        self.set_current_window(
+            VideoWindow,
+            color=color,
+            video_path=name,
+            size_x=size_x,
+            size_y=size_y,
+            life_time=close_time,
+            start=start,
+            title=self.process_text(title),
+            text=self.process_text(text),
+            file_format='avi',
+            **kwargs
+        )
+
+    @event('warning')
+    def on_warning(self, icon='caution', close_time=-1, color='dark-window', title='$warning_title$', text='',
+                   close_on_enter=True, **kwargs):
+        self.set_current_window(
+            color=color,
+            icon=icon,
+            title=self.process_text(title),
+            text=self.process_text(text),
+            life_time=close_time,
+            on_enter=self.close_window_and_go if close_on_enter else None,
+            **kwargs
+        )
+
+    @event('menu')
+    def on_menu(self):
+        self.show_menu()
+
+    @event('update_state')
+    def on_update_state(self, key=None):
+        self.screen.notify_update(key)
+
+    @event('close_window')
+    def on_close_window(self):
+        self.close_window_and_go()
+
+# else:
+# # finally, pass event to the screen itself
+# self.screen.notify_event(message, **kwargs)
+
     def event(self, message, **kwargs) -> None:
         """
-        Process an event
+        Process an event that wasn't used in scenario handler
 
         Args:
             message (str): event name
@@ -255,6 +353,7 @@ class Gui(DirectObject.DirectObject):
             self.close_window_and_go()
 
         else:
+            # finally, pass event to the screen itself
             self.screen.notify_event(message, **kwargs)
 
     def show_menu(self):

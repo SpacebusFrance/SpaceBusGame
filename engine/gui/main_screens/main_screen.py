@@ -2,15 +2,16 @@ from direct.gui.OnscreenText import OnscreenText
 from direct.showbase import DirectObject
 from panda3d.core import CardMaker
 
+from engine.utils.event_handler import EventObject
 from engine.utils.logger import Logger
 
 
-class MainScreen(DirectObject.DirectObject):
+class MainScreen(EventObject):
     """
     Base class for main game screen
     """
     def __init__(self, gui_engine, force_fulfill_key='f1'):
-        super(MainScreen, self).__init__()
+        super().__init__()
 
         self.gui = gui_engine
         self.engine = gui_engine.engine
@@ -53,15 +54,15 @@ class MainScreen(DirectObject.DirectObject):
         """
         self._background.set_color(self.gui.colors[color] if isinstance(color, str) else color)
 
-    def notify_event(self, event, **kwargs):
-        """
-        Notify that an event is asked for this screen
-
-        Args:
-            event (str): the name of the event
-            **kwargs (dict): event's parameters.
-        """
-        pass
+    # def notify_event(self, event, **kwargs):
+    #     """
+    #     Notify that an event is asked for this screen
+    #
+    #     Args:
+    #         event (str): the name of the event
+    #         **kwargs (dict): event's parameters.
+    #     """
+    #     pass
 
     def notify_update(self, key):
         """

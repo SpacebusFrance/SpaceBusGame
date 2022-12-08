@@ -6,13 +6,12 @@ from serial.tools import list_ports
 from engine.utils.logger import Logger
 
 
-class WriteOnlyArduino(object):
+class WriteOnlyArduino:
     """
     A class representing the read-only _arduino used to manage leds.
     """
     def __init__(self, engine):
         self.task_mgr = engine.task_mgr
-        self.engine = engine
 
         ports = list(list_ports.comports())
         self.board = None
@@ -22,17 +21,21 @@ class WriteOnlyArduino(object):
                 self.board = Serial(p[0], 9600, timeout=5)
 
         if self.board is None:
-            Logger.warning("no _arduino connected !")
+            Logger.warning("no arduino board connected !")
         else:
             if self.board.isOpen():
                 Logger.info("port is open. Closing it")
                 self.board.close()
 
-            Logger.info("opening the port")
+            Logger.info("opening the port for arduino connection")
             self.board.open()
 
         time.sleep(1.0)
         self.all_off()
+
+    @property
+    def is_connected(self) -> bool:
+        return self.board is not None and self.board.isOpen()
 
     def __exit__(self, **kwargs):
         if self.board.isOpen():
@@ -64,9 +67,9 @@ class WriteOnlyArduino(object):
         """
         if isinstance(id, list):
             for i in id:
-                self.send("<" + str(i) + "-1>")
+                self.send(f"<{i}'-1>")
         else:
-            self.send("<" + str(id) + "-1>")
+            self.send(f"<{id}-1>")
 
     def led_off(self, id):
         """
@@ -75,9 +78,9 @@ class WriteOnlyArduino(object):
         """
         if isinstance(id, list):
             for i in id:
-                self.send("<" + str(i) + "-0>")
+                self.send(f"<{i}-0>")
         else:
-            self.send("<" + str(id) + "-0>")
+            self.send(f"<{id}-0>")
 
     def all_on(self):
         """

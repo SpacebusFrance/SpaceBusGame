@@ -52,7 +52,7 @@ class Game(ShowBase):
 
         # self.generate_files()
 
-        self._admin_task = None
+        # self._admin_task = None
         self.clock = ClockObject()
 
         if self("test_3D"):
@@ -116,7 +116,6 @@ class Game(ShowBase):
             self.moon = Moon(self)
             self.sun = Sun(self)
             self.space_craft = NewSpaceCraft(self, quality=self("quality"))
-
             self.asteroid = Asteroid(self)
 
             # initial position and angle
@@ -186,7 +185,7 @@ class Game(ShowBase):
         if key in self.params:
             return self.params[key] if not default else self.default_params[key]
         else:
-            Logger.error('option {} does not exists'.format(key))
+            Logger.error(f'option {key} does not exists')
             return None
 
     def set_option(self, name, value):
@@ -265,7 +264,7 @@ class Game(ShowBase):
 
         self.scenario.reset()
         if isinstance(scenario, str):
-            self.scenario.remove_incoming_events()
+            # load a new scenario
             self.scenario.load_scenario(scenario)
 
         self.shuttle.reset()

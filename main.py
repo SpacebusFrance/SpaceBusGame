@@ -1,15 +1,15 @@
+import logging
 from engine.main_engine import Game
-
-# quality_level = 0
-# test = 0
-# scenario = "default"
-#
-# # reading second arg if present
-# if len(sys.argv) == 2:
-#     print('Quality = ', sys.argv[1])
-#     quality_level = int(sys.argv[1])
+from pathlib import Path
 
 if __name__ == '__main__':
+    # check if 'params.ini' file exists, otherwise create it as a copy of params_default.ini
+    custom_params = Path('params.ini')
+    if not custom_params.exists():
+        logging.info('custom parameter file does not exist, creating it.')
+        src = Path('params_default.ini')
+        custom_params.write_text(src.read_text())  # for text files
+
+    # start game
     game = Game(param_file='params.ini', default_param_file='params_default.ini')
-    # game.start_game()
     game.run()

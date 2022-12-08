@@ -1,11 +1,12 @@
 import re
+from typing import Any, Dict
 
 from engine.utils.ini_parser import ParamUtils
 
 
-def read_xml_args(line):
+def read_xml_args(line: str) -> Dict[str, Any]:
     """
-    read a line formatted as `a = "value a" b='value b'` etc and returns a :obj:`dictionary` with
+    read a line formatted as `a = "value a" b='value b'` etc. and returns a :obj:`dictionary` with
     `{'a': value a, 'b': value b}`
 
     Args:

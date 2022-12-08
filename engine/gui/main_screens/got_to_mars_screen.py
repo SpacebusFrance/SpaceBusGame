@@ -5,6 +5,7 @@ from engine.gui.main_screens.main_screen import MainScreen
 from engine.gui.windows.chrono_window import ChronoWindow
 from engine.gui.windows.gauge_window import GaugeWindow
 from engine.gui.windows.window import Window
+from engine.utils.event_handler import event
 
 
 class GoToMarsScreen(MainScreen):
@@ -35,20 +36,35 @@ class GoToMarsScreen(MainScreen):
         self._engine_panel = ['moteur1', 'moteur2', 'moteur3']
         self._solar_panel = ['offset_ps_x', 'offset_ps_y', 'sp_power']
 
-    def notify_event(self, event, **kwargs):
-        """
-        Notify an event
-        """
-        event = event.lower().strip()
+    @event('start_chrono')
+    def on_start_chrono(self, time=None):
+        if time is not None:
+            self._chrono.set_time(time)
+        self._chrono.start()
 
-        if event == 'start-chrono':
-            if 'time' in kwargs:
-                self._chrono.set_time(kwargs['time'])
-            self._chrono.start()
-        elif event == 'stop-chrono':
-            self._chrono.stop()
-        elif event == 'reset-chrono':
-            self._chrono.reset(time=kwargs.get('time', None))
+    @event('stop-chrono')
+    def on_stop_chrono(self):
+        self._chrono.stop()
+
+    @event('reset-chrono')
+    def on_reset_chrono(self, time=None):
+        self._chrono.reset(time=time)
+    #
+    #
+    # def notify_event(self, event, **kwargs):
+    #     """
+    #     Notify an event
+    #     """
+    #     event = event.lower().strip()
+    #
+    #     if event == 'start-chrono':
+    #         if 'time' in kwargs:
+    #             self._chrono.set_time(kwargs['time'])
+    #         self._chrono.start()
+    #     elif event == 'stop-chrono':
+    #         self._chrono.stop()
+    #     elif event == 'reset-chrono':
+    #         self._chrono.reset(time=kwargs.get('time', None))
 
     def make(self):
         """

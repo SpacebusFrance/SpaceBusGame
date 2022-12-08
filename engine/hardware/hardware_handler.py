@@ -47,8 +47,8 @@ class HardwareHandler(DirectObject.DirectObject):
         self.firewall_time = self.engine('hardware_input_firewall_time')
         for j in range(3):
             for b in range(10):
-                self.times['joystick' + str(j) + '-button' + str(b)] = self.engine.get_time(round_result=False)
-                self.tasks['joystick' + str(j) + '-button' + str(b)] = None
+                self.times[f'joystick{j}-button{b}'] = self.engine.get_time(round_result=False)
+                self.tasks[f'joystick{j}-button{b}'] = None
 
         self.reset()
 

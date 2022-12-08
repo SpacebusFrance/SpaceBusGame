@@ -1,5 +1,4 @@
-import sys
-
+from engine.utils.event_handler import send_event
 from engine.utils.logger import Logger
 
 
@@ -90,11 +89,13 @@ class Step:
                                                            name=self.name)
         if self._event_name is not None:
             if self.t_start > 0:
-                self._to_do_task = self.scenario.doMethodLater(self.t_start, self.scenario.event,
-                                                               extraArgs=[self._event_name, self._event_kwargs],
+                self._to_do_task = self.scenario.doMethodLater(self.t_start,
+                                                               lambda *args: send_event(self._event_name,
+                                                                                        **self._event_kwargs),
                                                                name=self.name)
             else:
-                self.scenario.event(self._event_name, self._event_kwargs)
+                send_event(self._event_name, **self._event_kwargs)
+                # self.scenario.event(self._event_name, self._event_kwargs)
         if self._hint_sound is not None and self._hint_time is not None:
             self._hint_task = self.scenario.doMethodLater(self.t_start + self._hint_time,
                                                           self.engine.sound_manager.play,
