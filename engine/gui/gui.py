@@ -14,7 +14,7 @@ from engine.gui.windows.end_window import EndWindow
 from engine.gui.windows.option_window import OptionWindow
 from engine.gui.windows.video_window import VideoWindow
 from engine.gui.windows.window import Window
-from engine.utils.event_handler import EventObject, event
+from engine.utils.event_handler import EventObject, event, send_event
 from engine.utils.logger import Logger
 
 
@@ -66,7 +66,7 @@ class Gui(EventObject):
             # resume game
             self.engine.scenario.resume()
 
-        self.event('password',
+        send_event('password',
                    title='Admin window',
                    text='Administrator password',
                    close_time=20,
@@ -102,7 +102,8 @@ class Gui(EventObject):
         if self._current_window is not None and not self._current_window.is_empty():
             self._current_window.destroy()
         if show_menu:
-            self.event('menu')
+            send_event('menu')
+            # self.event('menu')
 
     def process_text(self, text, key='$'):
         """
@@ -211,7 +212,7 @@ class Gui(EventObject):
             text=self.process_text(text),
             life_time=close_time,
             password=password,
-            on_password_find=self.close_window_and_go if on_password_find is not None else on_password_find,
+            on_password_find=self.close_window_and_go if on_password_find is None else on_password_find,
             color=color,
             **kwargs
         )
@@ -262,99 +263,99 @@ class Gui(EventObject):
 # # finally, pass event to the screen itself
 # self.screen.notify_event(message, **kwargs)
 
-    def event(self, message, **kwargs) -> None:
-        """
-        Process an event that wasn't used in scenario handler
-
-        Args:
-            message (str): event name
-            **kwargs: optional args
-        """
-        if message == 'set_screen':
-            scenario_name = kwargs["name"].lower()
-
-            if scenario_name in ['go_to_mars', 'gotomars']:
-                self.set_screen(GoToMarsScreen)
-            elif scenario_name in ['lost_astronaut', 'lostastronaut']:
-                self.set_screen(LostAstronautScreen)
-            else:
-                self.set_screen(None)
-
-        elif message == 'end_screen':
-            self.end_screen()
-
-        elif message == 'info':
-            self.set_current_window(
-                icon=kwargs.pop('icon', 'chat'),
-                title=self.process_text(kwargs.pop('title', '$info_title$')),
-                text=self.process_text(kwargs.pop('text', '')),
-                life_time=kwargs.pop('close_time', -1),
-                on_enter=self.close_window_and_go if kwargs.pop('close_on_enter', True) else None,
-                color=kwargs.pop('color', 'dark-window'),
-                **kwargs
-            )
-
-        elif message == 'password':
-            def format_target(x):
-                x = x.replace('-', '')[:6]
-                self._current_window.set_entry_text('-'.join([x[2 * i:2 * (i + 1)] for i in range(math.ceil(len(x) / 2))]))
-
-            if 'format' in kwargs:
-                if kwargs['format'] == 'target':
-                    kwargs['on_entry_add'] = format_target
-                    kwargs['on_entry_delete'] = format_target
-                else:
-                    Logger.error('unknown text format {}'.format(kwargs['format']))
-
-            self.set_current_window(
-                icon=kwargs.pop('icon', 'caution'),
-                title=self.process_text(kwargs.pop('title', '$password_title$')),
-                text=self.process_text(kwargs.pop('text', '')),
-                life_time=kwargs.pop('close_time', -1),
-                password=kwargs.pop('password'),
-                on_password_find=kwargs.pop('on_password_find', self.close_window_and_go),
-                color=kwargs.pop('color', 'dark-window'),
-                **kwargs
-            )
-
-        elif message == 'video':
-            self.set_current_window(
-                VideoWindow,
-                color=kwargs.pop('color', 'dark-window'),
-                video_path=kwargs['name'],
-                size_x=kwargs.pop('size_x', 1.0),
-                size_y=kwargs.pop('size_y', 0.8),
-                life_time=kwargs.pop('close_time', -1),
-                start=kwargs.pop('start', True),
-                title=self.process_text(kwargs.pop('title', '$video_title$')),
-                text=self.process_text(kwargs.pop('text', '$video_text$')),
-                file_format='avi',
-                **kwargs
-            )
-
-        elif message == 'warning':
-            self.set_current_window(
-                color=kwargs.pop('color', 'dark-window'),
-                icon=kwargs.pop('icon', 'caution'),
-                title=self.process_text(kwargs.pop('title', '$warning_title$')),
-                text=self.process_text(kwargs.pop('text', '')),
-                life_time=kwargs.pop('close_time', -1),
-                on_enter=self.close_window_and_go if kwargs.pop('close_on_enter', True) else None,
-                **kwargs
-            )
-
-        elif message == 'menu':
-            self.show_menu()
-
-        elif message == 'update_state':
-            self.screen.notify_update(kwargs.get('key', None))
-
-        elif message == 'close_window':
-            self.close_window_and_go()
-
-        else:
-            # finally, pass event to the screen itself
-            self.screen.notify_event(message, **kwargs)
+    # def event(self, message, **kwargs) -> None:
+    #     """
+    #     Process an event that wasn't used in scenario handler
+    #
+    #     Args:
+    #         message (str): event name
+    #         **kwargs: optional args
+    #     """
+        # if message == 'set_screen':
+        #     scenario_name = kwargs["name"].lower()
+        #
+        #     if scenario_name in ['go_to_mars', 'gotomars']:
+        #         self.set_screen(GoToMarsScreen)
+        #     elif scenario_name in ['lost_astronaut', 'lostastronaut']:
+        #         self.set_screen(LostAstronautScreen)
+        #     else:
+        #         self.set_screen(None)
+        #
+        # elif message == 'end_screen':
+        #     self.end_screen()
+        #
+        # elif message == 'info':
+        #     self.set_current_window(
+        #         icon=kwargs.pop('icon', 'chat'),
+        #         title=self.process_text(kwargs.pop('title', '$info_title$')),
+        #         text=self.process_text(kwargs.pop('text', '')),
+        #         life_time=kwargs.pop('close_time', -1),
+        #         on_enter=self.close_window_and_go if kwargs.pop('close_on_enter', True) else None,
+        #         color=kwargs.pop('color', 'dark-window'),
+        #         **kwargs
+        #     )
+        #
+        # elif message == 'password':
+        #     def format_target(x):
+        #         x = x.replace('-', '')[:6]
+        #         self._current_window.set_entry_text('-'.join([x[2 * i:2 * (i + 1)] for i in range(math.ceil(len(x) / 2))]))
+        #
+        #     if 'format' in kwargs:
+        #         if kwargs['format'] == 'target':
+        #             kwargs['on_entry_add'] = format_target
+        #             kwargs['on_entry_delete'] = format_target
+        #         else:
+        #             Logger.error('unknown text format {}'.format(kwargs['format']))
+        #
+        #     self.set_current_window(
+        #         icon=kwargs.pop('icon', 'caution'),
+        #         title=self.process_text(kwargs.pop('title', '$password_title$')),
+        #         text=self.process_text(kwargs.pop('text', '')),
+        #         life_time=kwargs.pop('close_time', -1),
+        #         password=kwargs.pop('password'),
+        #         on_password_find=kwargs.pop('on_password_find', self.close_window_and_go),
+        #         color=kwargs.pop('color', 'dark-window'),
+        #         **kwargs
+        #     )
+        #
+        # elif message == 'video':
+        #     self.set_current_window(
+        #         VideoWindow,
+        #         color=kwargs.pop('color', 'dark-window'),
+        #         video_path=kwargs['name'],
+        #         size_x=kwargs.pop('size_x', 1.0),
+        #         size_y=kwargs.pop('size_y', 0.8),
+        #         life_time=kwargs.pop('close_time', -1),
+        #         start=kwargs.pop('start', True),
+        #         title=self.process_text(kwargs.pop('title', '$video_title$')),
+        #         text=self.process_text(kwargs.pop('text', '$video_text$')),
+        #         file_format='avi',
+        #         **kwargs
+        #     )
+        #
+        # elif message == 'warning':
+        #     self.set_current_window(
+        #         color=kwargs.pop('color', 'dark-window'),
+        #         icon=kwargs.pop('icon', 'caution'),
+        #         title=self.process_text(kwargs.pop('title', '$warning_title$')),
+        #         text=self.process_text(kwargs.pop('text', '')),
+        #         life_time=kwargs.pop('close_time', -1),
+        #         on_enter=self.close_window_and_go if kwargs.pop('close_on_enter', True) else None,
+        #         **kwargs
+        #     )
+        #
+        # elif message == 'menu':
+        #     self.show_menu()
+        #
+        # elif message == 'update_state':
+        #     self.screen.notify_update(kwargs.get('key', None))
+        #
+        # elif message == 'close_window':
+        #     self.close_window_and_go()
+        #
+        # else:
+        #     # finally, pass event to the screen itself
+        #     self.screen.notify_event(message, **kwargs)
 
     def show_menu(self):
         """
@@ -367,7 +368,6 @@ class Gui(EventObject):
             """
             function called when hitting "play" button
             """
-            print('-> Choosing game menu')
             self.set_current_window(
                 win=ButtonWindow,
                 title=self.process_text('$game_title$'),
@@ -478,24 +478,30 @@ class Gui(EventObject):
         self._current_window.select_button()
 
     def set_single_window(self, with_3d_screens, screen_number):
-        # setting the main window
+        # setting the main window properties
         props = WindowProperties()
+        # screen resolutions
+        x, y = self.engine('screen_resolution')
         if with_3d_screens:
-            props.set_size((screen_number * self.engine('screen_resolution')[0],
-                            self.engine('screen_resolution')[1]))
+            # set window size
+            props.set_size((screen_number * x, y))
         else:
-            props.set_size(self.engine('screen_resolution'))
+            props.set_size((x, y))
         if self.engine('screen_position') is not None:
             props.set_origin(self.engine('screen_position'))
+
         props.setUndecorated(not self.engine('decorated_window'))
         self.engine.win.requestProperties(props)
 
         if with_3d_screens:
             # setting the dimensions of the gui display region
             for dr in self.engine.win.get_display_regions():
+                print('->', dr)
                 cam = dr.get_camera()
+                e = 1 / screen_number
                 if cam and "cam2d" in cam.name:
-                    dr.set_dimensions(0, 1 / screen_number, 0, 1)
+                    print('cam2d region:', dr)
+                    dr.set_dimensions(0, 1, 0, 1)
 
     # def set_fullsd_ccreen(self):
     #     #     props = WindowProperties()

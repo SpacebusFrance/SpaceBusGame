@@ -22,6 +22,7 @@ from engine.meshes.flat_sun import Sun
 from engine.meshes.grid import Grid
 from engine.meshes.moon_base_spacecraft import NewSpaceCraft
 from engine.meshes.sky_dome import SkyDome
+from engine.utils.event_handler import send_event
 from engine.utils.ini_parser import ParamUtils
 from engine.utils.logger import Logger
 
@@ -106,7 +107,7 @@ class Game(ShowBase):
 
             # sound manager
             # todo : if we set sounds, this fails ... why ?
-            self.sound_manager = SoundManager(self, load=False)
+            self.sound_manager = SoundManager(self, load=True)
 
             # control screen
             self.gui = Gui(self)
@@ -375,7 +376,8 @@ class Game(ShowBase):
                     self.power.switch_on(state_key)
 
                 # check for gui:
-                self.gui.event("update_state", key=state_key)
+                send_event('update_state', key=state_key)
+                # self.gui.event("update_state", key=state_key)
 
                 # particular actions ?
                 if state_key == "offset_ps_x" or state_key == "offset_ps_y":

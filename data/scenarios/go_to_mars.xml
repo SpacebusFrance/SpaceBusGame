@@ -5,8 +5,8 @@
         <step action="set_screen" time_max="0.0" name="go_to_mars"/>
 
         <!-- set chronometer and time limit -->
-        <event action="goto_step" goto_id="wrong_end" start_time="40"/>
-        <step action="start-chrono" time="40" time_max="0"/>
+<!--        <event action="goto_step" goto_id="wrong_end" start_time="40"/>-->
+<!--        <step action="start-chrono" time="40" time_max="0"/>-->
 
         <!-- wait 5 seconds -->
         <step action="wait" time_max="5"/>
@@ -154,8 +154,8 @@
     </group>
 
     <!--    This should not be reached until time end -->
-    <group name="wrong end">
-        <step action="info" id="wrong_end" title="end of game !!!" text="this should be the end of game ..."
+    <group name="wrong_end">
+        <step action="info" title="end of game !!!" text="this should be the end of game ..."
               time_max="5"/>
 
         <step action="end_game"/>

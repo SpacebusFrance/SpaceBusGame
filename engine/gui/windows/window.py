@@ -163,9 +163,12 @@ class Window(BaseWidget):
         """
         if entry_text == self._password:
             self._gui_engine.engine.sound_manager.play('ok')
+            print('password OK')
             if callable(self._on_password_find):
+                print('calling on password find', self._on_password_find)
                 self._on_password_find(self)
             else:
+                print('NO CALLING', self._on_password_find)
                 self.remove_node()
         else:
             self._gui_engine.engine.sound_manager.play('wrong')

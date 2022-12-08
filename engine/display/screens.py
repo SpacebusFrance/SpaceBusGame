@@ -4,22 +4,16 @@ from direct.gui.OnscreenText import OnscreenText, TextNode
 from engine.utils.logger import Logger
 
 
-class FakeScreen3D(object):
+class FakeScreen3D:
     def __init__(self, engine, screen_number, shuttle_angle=0, shift_x=0, shift_y=0.0):
         self._engine = engine
         self.screen = screen_number
 
         aspect_ratio = self._engine('screen_resolution')[0] / self._engine('screen_resolution')[1]
-
         self.cam_node = self._engine.make_camera(self._engine.win,
                                                  displayRegion=(0.2 * screen_number, 0.2 * (screen_number + 1), 0, 1),
                                                  aspectRatio=aspect_ratio,
                                                  )
-
-        self.gui_cam_node = self._engine.make_camera2d(self._engine.win,
-                                                       displayRegion=(0.2 * screen_number, 0.2 * (screen_number + 1), 0, 1),
-                                                       cameraName=str(self.screen)
-                                                       )
 
         self.lens = self.cam_node.node().getLens()
         self.lens.setFov(self._engine("cam_fov"))
@@ -30,23 +24,10 @@ class FakeScreen3D(object):
         self.cam_node.set_hpr(-shuttle_angle, 0, 0)
         self.cam_node.set_x(shift_x)
         self.cam_node.set_y(shift_y)
-
-        self._text = None
-
         for dr in self._engine.win.get_display_regions():
             cam = dr.get_camera()
             if cam and "cam2d" in cam.name:
                 dr.set_dimensions(0, 0.2, 0, 1)
-
-    def display_text(self, text, pos_x=0.0, pos_y=0.0, scale=0.06):
-        self._text = OnscreenText(text=text,
-                                  align=TextNode.ACenter,
-                                  mayChange=True,
-                                  pos=(pos_x, pos_y),
-                                  scale=(scale, 16/9 * scale),
-                                  fg=LVector4f(1, 1, 1, 1),
-                                  parent=self.gui_cam_node,
-                                  )
 
     def set_angle(self, incr):
         self.cam_node.set_h(self.cam_node.get_h() + incr)
