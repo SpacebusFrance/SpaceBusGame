@@ -106,8 +106,7 @@ class Game(ShowBase):
             self.scenario = Scenario(self)
 
             # sound manager
-            # todo : if we set sounds, this fails ... why ?
-            self.sound_manager = SoundManager(self, load=True)
+            self.sound_manager = SoundManager(self, load=self('play_sound'))
 
             # control screen
             self.gui = Gui(self)

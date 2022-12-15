@@ -34,7 +34,7 @@ class MainScreen(EventObject):
         # cm.set_frame(-1, 1, -1., 1.0)
         # cm.set_frame(0, 1, -1., 1.0)
         self._background = self.engine.aspect2d.attachNewNode(cm.generate())
-        self._background.set_sx(5.2)
+        # self._background.set_sx(5.2)
         # self._background = self.engine.render2d.attachNewNode(cm.generate())
 
         if force_fulfill_key is not None:

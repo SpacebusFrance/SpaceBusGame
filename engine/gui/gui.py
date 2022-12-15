@@ -488,10 +488,12 @@ class Gui(EventObject):
         else:
             props.set_size((x, y))
         if self.engine('screen_position') is not None:
+            print('setting screen position to', self.engine('screen_position'))
             props.set_origin(self.engine('screen_position'))
 
-        props.setUndecorated(not self.engine('decorated_window'))
-        self.engine.win.requestProperties(props)
+        props.set_undecorated(not self.engine('decorated_window'))
+        self.engine.win.request_properties(props)
+        self.engine.cam2d.node().getLens().setAspectRatio(x / y)
 
         if with_3d_screens:
             # setting the dimensions of the gui display region
@@ -501,7 +503,7 @@ class Gui(EventObject):
                 e = 1 / screen_number
                 if cam and "cam2d" in cam.name:
                     print('cam2d region:', dr)
-                    dr.set_dimensions(0, 1, 0, 1)
+                    dr.set_dimensions(0, e, 0, 1)
 
     # def set_fullsd_ccreen(self):
     #     #     props = WindowProperties()
