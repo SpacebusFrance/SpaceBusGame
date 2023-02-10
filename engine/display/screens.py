@@ -24,10 +24,11 @@ class FakeScreen3D:
         self.cam_node.set_hpr(-shuttle_angle, 0, 0)
         self.cam_node.set_x(shift_x)
         self.cam_node.set_y(shift_y)
-        for dr in self._engine.win.get_display_regions():
-            cam = dr.get_camera()
-            if cam and "cam2d" in cam.name:
-                dr.set_dimensions(0, 0.2, 0, 1)
+        # don't know if this is necessary ?
+        # for dr in self._engine.win.get_display_regions():
+        #     cam = dr.get_camera()
+        #     if cam and "cam2d" in cam.name:
+        #         dr.set_dimensions(0, 0.2, 0, 1)
 
     def set_angle(self, incr):
         self.cam_node.set_h(self.cam_node.get_h() + incr)

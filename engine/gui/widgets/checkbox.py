@@ -1,7 +1,7 @@
 import os
 
 from direct.gui.DirectButton import DirectButton
-from direct.gui.DirectGuiGlobals import FLAT
+from direct.gui.DirectGuiGlobals import FLAT, NORMAL, ENTER, EXIT
 from panda3d.core import TransparencyAttrib, LVector3f, TextNode, LVector2f
 
 from engine.gui.widgets.base_widget import BaseWidget
@@ -27,6 +27,10 @@ class CheckBox(BaseWidget):
                                     command=self.set_value,
                                     )
 
+        self._widget['state'] = NORMAL
+        self._widget.bind(ENTER, self.select)
+        self._widget.bind(EXIT, self.un_select)
+
         self._widget.setTransparency(TransparencyAttrib.MAlpha)
         # self.set_size(size_x, size_y)
 
@@ -40,22 +44,28 @@ class CheckBox(BaseWidget):
     def get(self, _=None):
         return self._value
 
-    def select(self):
+    def select(self, *_):
         """
         Select the button and accept 'enter' as a click
         """
+        if BaseWidget._selected_button != self and BaseWidget._selected_button is not None:
+            BaseWidget._selected_button.un_select()
+        BaseWidget._selected_button = self
+
         self._widget.set_color_scale(1.3)
         self._is_selected = True
         if callable(self._widget['command']):
             self._widget.accept('enter', self._widget['command'], extraArgs=self._widget['extraArgs'])
 
-    def un_select(self):
+    def un_select(self, *_):
         """
         Unselect the button
         """
-        self._widget.set_color_scale(1.0)
-        self._is_selected = False
-        self._widget.ignore('enter')
+        BaseWidget._selected_button = None
+        if not self._widget.is_empty():
+            self._widget.set_color_scale(1.0)
+            self._is_selected = False
+            self._widget.ignore('enter')
 
     # def set_size(self, size_x, size_y):
     #     # now set the correct size for the frame

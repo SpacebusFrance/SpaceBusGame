@@ -27,11 +27,6 @@ from engine.utils.ini_parser import ParamUtils
 from engine.utils.logger import Logger
 
 
-# TODO : écran de fin
-# TODO : fichier de sauvegarde
-# TODO : désactiver touches rémanentes => voir les options de Ubuntu !
-# TODO : puissance et oxygène à setter ailleurs que dans les jauges ?
-
 class Game(ShowBase):
     def __init__(self, param_file, default_param_file):
         ShowBase.__init__(self)
@@ -226,6 +221,9 @@ class Game(ShowBase):
                 self.screens.append(FakeScreen3D(self, 3, shuttle_angle=self("front_screen_angle")))
             if screen_number >= 5:
                 self.screens.append(FakeScreen3D(self, 4, shuttle_angle=90, shift_y=-4.0))
+
+            # correct gui position
+            self.aspect2d.set_pos(1/screen_number - 1, 0, 0)
 
     def get_time(self, string_format=False, round_result=True):
         """

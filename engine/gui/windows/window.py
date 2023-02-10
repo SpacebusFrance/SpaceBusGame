@@ -7,7 +7,6 @@ from direct.gui.OnscreenText import OnscreenText
 from panda3d.core import TransparencyAttrib, TextNode, CardMaker, Vec3
 
 from engine.gui.widgets.base_widget import BaseWidget
-from engine.utils.logger import Logger
 
 
 class Window(BaseWidget):

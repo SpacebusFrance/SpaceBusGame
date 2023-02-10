@@ -89,7 +89,7 @@ class OptionWindow(BaseWidget):
         self._widget.destroy()
 
     def add_option(self, name, value):
-        self._text_scale = 0.06
+        self._text_scale = 0.04
         df = DirectFrame(
             frameColor=(0.0, 0.0, 0.0, 0.0),
             frameSize=(-.5 * self._size[0],

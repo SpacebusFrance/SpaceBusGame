@@ -36,7 +36,7 @@ class ButtonWindow(Window):
         """
         Select next button
         """
-        self._buttons[self._current_selected].un_select()
+        # self._buttons[self._current_selected].un_select()
         self._current_selected += 1
         if self._current_selected >= len(self._buttons):
             self._current_selected = 0
@@ -46,7 +46,7 @@ class ButtonWindow(Window):
         """
         Select previous button
         """
-        self._buttons[self._current_selected].un_select()
+        # self._buttons[self._current_selected].un_select()
         self._current_selected -= 1
         if self._current_selected < 0:
             self._current_selected = len(self._buttons) - 1

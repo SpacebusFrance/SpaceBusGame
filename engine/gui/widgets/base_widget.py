@@ -4,8 +4,9 @@ from direct.gui.OnscreenImage import OnscreenImage
 from panda3d.core import TransparencyAttrib, NodePath
 
 
-class BaseWidget(object):
+class BaseWidget:
     shadows_path = 'data/gui/shadow'
+    _selected_button = None
 
     def __init__(self,
                  gui_engine,

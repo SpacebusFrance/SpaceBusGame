@@ -3,6 +3,7 @@ import os
 import re
 import pandas as pd
 from direct.gui.OnscreenText import WindowProperties
+from panda3d.core import PGTop
 
 from engine.gui.main_screens.main_screen import MainScreen
 from engine.gui.main_screens.got_to_mars_screen import GoToMarsScreen
@@ -375,8 +376,8 @@ class Gui(EventObject):
                 size_x=1.0,
                 size_y=1.8,
             )
-            for i, game in enumerate([k for k in os.listdir(self.engine('scenario_path'))
-                                      if k.endswith('.xml')]):
+            files = [k for k in os.listdir(self.engine('scenario_path')) if k.endswith('.xml')]
+            for i, game in enumerate(files):
                 self._current_window.add_button(size_x=0.5,
                                                 size_y=0.15,
                                                 text='\1golden\1{}\2'.format(
@@ -390,7 +391,7 @@ class Gui(EventObject):
                                             text='\1golden\1back\2',
                                             color='blue',
                                             on_select=self.show_menu,
-                                            pos=(0.0, 0.0, - 0.9))
+                                            pos=(0., 0.0, -0.7))
 
             self._current_window.select_button()
 
@@ -488,22 +489,27 @@ class Gui(EventObject):
         else:
             props.set_size((x, y))
         if self.engine('screen_position') is not None:
-            print('setting screen position to', self.engine('screen_position'))
             props.set_origin(self.engine('screen_position'))
 
         props.set_undecorated(not self.engine('decorated_window'))
         self.engine.win.request_properties(props)
-        self.engine.cam2d.node().getLens().setAspectRatio(x / y)
 
-        if with_3d_screens:
-            # setting the dimensions of the gui display region
-            for dr in self.engine.win.get_display_regions():
-                print('->', dr)
-                cam = dr.get_camera()
-                e = 1 / screen_number
-                if cam and "cam2d" in cam.name:
-                    print('cam2d region:', dr)
-                    dr.set_dimensions(0, e, 0, 1)
+        # aspectRatio = self.engine.getAspectRatio()
+        # self.myAspect2d = self.engine.render2d.attachNewNode(PGTop('myAspect2d'))
+        # self.myAspect2d.setScale(y/x, 1.0, 1.0)
+        # self.myAspect2d.node().setMouseWatcher(self.engine.mouseWatcherNode)
+
+        # this causes GUI to render wrongly
+        # self.engine.cam2d.node().getLens().setAspectRatio(x / y)
+            # # setting the dimensions of the gui display region
+            # for dr in self.engine.win.get_display_regions():
+            #     print('->', dr)
+            #     cam = dr.get_camera()
+            #     e = 1 / screen_number
+            #     if cam and "cam2d" in cam.name:
+            #         print('cam2d region:', dr)
+            #         dr.set_dimensions(0, e, 0, 1)
+            #         cam.node().getLens().setAspectRatio(x / (screen_number * y))
 
     # def set_fullsd_ccreen(self):
     #     #     props = WindowProperties()

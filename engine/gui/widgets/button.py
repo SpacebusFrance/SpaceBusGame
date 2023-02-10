@@ -2,10 +2,12 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectGuiGlobals import FLAT
 from panda3d.core import TransparencyAttrib, LVector3f, TextNode, LVector2f
 
+from direct.gui.DirectGuiGlobals import B1PRESS, B1RELEASE, NORMAL, ENTER, EXIT, DISABLED
 from engine.gui.widgets.base_widget import BaseWidget
 
 
 class Button(BaseWidget):
+
     def __init__(self,
                  gui_engine,
                  text,
@@ -35,7 +37,6 @@ class Button(BaseWidget):
                                     )
 
         self.setTransparency(TransparencyAttrib.MAlpha)
-        self.initialiseoptions(Button)
 
         # set the position of the image
         if icon is not None:
@@ -50,22 +51,32 @@ class Button(BaseWidget):
 
         self.set_size(size_x, size_y)
 
-    def select(self):
+        self._widget['state'] = NORMAL
+        self._widget.bind(ENTER, self.select)
+        self._widget.bind(EXIT, self.un_select)
+        self.initialiseoptions(Button)
+
+    def select(self, *_):
         """
         Select the button and accept 'enter' as a click
         """
         self._widget.set_color_scale(2.0, 1.5, 1.8, 1.0)
         self._is_selected = True
+        if BaseWidget._selected_button != self and BaseWidget._selected_button is not None:
+            BaseWidget._selected_button.un_select()
+        BaseWidget._selected_button = self
         if callable(self._widget['command']):
             self._widget.accept_once('enter', self._widget['command'], extraArgs=self._widget['extraArgs'])
 
-    def un_select(self):
+    def un_select(self, *_):
         """
         Unselect the button
         """
-        self._widget.clear_color_scale()
-        self._is_selected = False
-        self._widget.ignore_all()
+        if not self._widget.is_empty():
+            self._widget.clear_color_scale()
+            self._is_selected = False
+            self._widget.ignore('enter')
+        BaseWidget._selected_button = None
 
     def set_size(self, size_x, size_y):
         # now set the correct size for the frame
@@ -77,7 +88,7 @@ class Button(BaseWidget):
                                      - 0.5 * size_y,
                                      0.5 * size_y)
         # self._widget['frameColor'] = color
-        self.resetFrameSize()
+        # self.resetFrameSize()
         self.set_shadow()
 
     def set_on_click(self, func, extra_args=None):

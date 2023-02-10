@@ -83,7 +83,7 @@ class MainScreen(EventObject):
                 # it is a gauge, set the value between 0 and 1
                 self._texts[key].set_value(self._get_value(key) / 100)
         else:
-            Logger.warning('key {} to update is not in the screen !'.format(key))
+            Logger.warning(f'key "{key}" to update is not in the screen !')
 
     def _format(self, name, value=False):
         """
