@@ -15,22 +15,19 @@
         <step action="start_chrono" time="900" time_max="0"/>
         <event action="goto_step" goto_id="end" start_time="900"/>
 
-        <!-- game unlock condition -->
+<!--        <step action="update_software_state" name="listen_to_hardware" value="True" time_max="0"/>-->
+<!--        &lt;!&ndash; game unlock condition &ndash;&gt;-->
 <!--        <step action="wait">-->
-<!--            <condition key="thermique_secteur2" value="False"/>-->
-<!--            <condition key="thermique_secteur3" value="False"/>-->
-<!--            <condition key="oxygene_secteur2" value="False"/>-->
-<!--            <condition key="oxygene_secteur3" value="False"/>-->
-<!--            <condition key="tension_secteur2" value="False"/>-->
-<!--            <condition key="tension_secteur3" value="False"/>-->
-<!--            <condition key="recyclage_H2O" value="False"/>-->
-<!--            <condition key="recyclage_CO2" value="False"/>-->
-<!--            <condition key="recyclage_O2" value="False"/>-->
+<!--            <condition key="pilote_automatique1" value="True"/>-->
+<!--            <condition key="pilote_automatique2" value="True"/>-->
+<!--            <condition key="correction_roulis" value="True"/>-->
+<!--            <condition key="correction_stabilisation" value="True"/>-->
+<!--            <condition key="correction_direction" value="True"/>-->
 <!--        </step>-->
 
         <step action="info" title="$la_game_info_title$" text="$la_game_info_text$" time_max="15" icon="gamecontroller"/>
         <!-- start game -->
-        <step action="2d_game_start" goal="10"/>
+        <step action="2d_game_start" goal="30"/>
         <!-- display code -->
         <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" time_max="5"/>
 

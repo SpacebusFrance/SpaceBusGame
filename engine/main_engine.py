@@ -493,6 +493,9 @@ class Game(ShowBase):
             self.update_soft_state(state_key.split('_', 1)[1], value)
 
             return True
+        elif not self.get_soft_state("listen_to_hardware"):
+            Logger.warning(f'Ignoring hardware: soft state "listen_to_hardware" set to False while trying to set '
+                           f'"{value}" to "{state_key}"')
         return False
 
     def reset_hardware(self):

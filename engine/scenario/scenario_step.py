@@ -108,8 +108,8 @@ class Step:
         Logger.warning('fulfilling step', self.name)
 
         if self.constraints is not None:
-            for key in self.constraints:
-                value = self.constraints[key]
+            print(self.constraints)
+            for value, key in self.constraints.items():
                 if isinstance(value, list):
                     value = 0.5*(value[1] + value[0])
                 if not self.engine.update_hard_state(key, value):
