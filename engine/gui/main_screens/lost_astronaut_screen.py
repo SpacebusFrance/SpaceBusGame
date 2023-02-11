@@ -1,11 +1,6 @@
-from direct.gui.OnscreenText import OnscreenText
-from panda3d.core import TextNode
-
 from engine.gui.main_screens.main_screen import MainScreen
 from engine.gui.windows.chrono_window import ChronoWindow
-from engine.gui.windows.gauge_window import GaugeWindow
-from engine.gui.windows.terminal_window import TerminalWindow
-from engine.gui.windows.window import Window
+from engine.gui.windows.game_window import GameWindow
 from engine.utils.event_handler import event
 
 
@@ -23,16 +18,20 @@ class LostAstronautScreen(MainScreen):
         Build the screen
         """
         self._build_chrono()
-        self._build_terminal()
+        # self._build_terminal()
         # # # self._build_gauge()
 
-    @event('terminal-show')
-    def on_terminal_show(self, text='$no_text$', focus=False, dt=0.0):
-        self._terminal.add_text(text, give_focus=focus, time_between_lines=dt)
+    # @event('terminal_show')
+    # def on_terminal_show(self, text='$no_text$', focus=False, dt=0.0):
+    #     self._terminal.add_text(text, give_focus=focus, time_between_lines=dt)
 
-    @event('terminal-focus')
-    def on_terminal_focus(self, focus=None):
-        self._terminal.set_focus(focus)
+    # @event('terminal_focus')
+    # def on_terminal_focus(self, focus=None):
+    #     self._terminal.set_focus(focus)
+
+    @event('set_chrono')
+    def on_set_chrono(self, time):
+        self._chrono.set_time(time)
 
     @event('start_chrono')
     def on_start_chrono(self, time=None):
@@ -40,13 +39,20 @@ class LostAstronautScreen(MainScreen):
             self._chrono.set_time(time)
         self._chrono.start()
 
-    @event('stop-chrono')
+    @event('stop_chrono')
     def on_stop_chrono(self):
         self._chrono.stop()
 
-    @event('reset-chrono')
+    @event('reset_chrono')
     def on_reset_chrono(self, time=None):
         self._chrono.reset(time=time)
+
+    @event('2d_game_start')
+    def on_2d_game_start(self, goal=30):
+        self.gui.set_current_window(
+            win=GameWindow,
+            goal=goal
+        )
 
     # def notify_event(self, event, **kwargs):
     #     """
@@ -68,18 +74,18 @@ class LostAstronautScreen(MainScreen):
     #     elif event == 'reset-chrono':
     #         self._chrono.reset(time=kwargs.get('time', None))
 
-    def _build_terminal(self):
-        self._terminal = TerminalWindow(self.gui,
-                                        title='$terminal_title$',
-                                        text_size=0.05,
-                                        size_x=2.2,
-                                        size_y=1.5,
-                                        pos=(-0.6, 0.1))
+    # def _build_terminal(self):
+    #     self._terminal = TerminalWindow(self.gui,
+    #                                     title='$terminal_title$',
+    #                                     text_size=0.05,
+    #                                     size_x=2.2,
+    #                                     size_y=1.5,
+    #                                     pos=(-0.6, 0.1))
 
     def _build_chrono(self, size_x=0.8, size_y=1.0):
         self._chrono = ChronoWindow(self.gui,
-                                    title=self.gui.process_text('$chrono_title$'),
-                                    text=self.gui.process_text('$chrono_text$'),
+                                    title=self.gui.process_text('$la_chrono_title$'),
+                                    text=self.gui.process_text('$la_chrono_text$'),
                                     size_y=size_y,
                                     size_x=size_x,
                                     icon_size=self._icon_size,

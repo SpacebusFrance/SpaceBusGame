@@ -75,3 +75,14 @@ reboot_text_2,Chargement de la sauvegarde de session ...\nRécupération des don
 score_header,\1title\1Merci d'avoir joué avec SpaceBus !\2\n\nVotre score : MINUTES minutes et SECONDS secondes\nVous êtes POSITIONème sur TOTAL,
 score_text,\1title\1Conception et programmation\2\n\nPaul de Fromont\n\n\1title\1Scénario\2\n\nTabatha Sauvaget\nRaphaël Peralta\nDiane Bérard\nPaul de Fromont\n\n\1title\1Design et construction des décors\2\n\nJean-Louis Bérard\nKarine Bérard\nPaul de Fromont\nDiane Bérard\n\n\1title\1Electronique\2\n\nPaul de Fromont\nDiane Bérard\n\n\1title\1Sons et voix off\2\n\nPaul de Fromont\nMusique d’interstallar\nMusique Sweet home alabama\n\n\1title\1Un grand merci également à tous nos beta-testeurs !\2,
 chrono_title,temps avant erreur,time before crash
+la_unlocked_title,Information, Information
+la_unlocked_info,Bravo équipage. Mon nombre secret est ...,Well done crew. My secret number is: ...
+la_game_title,Survivant de l'espace,Space survivor
+la_game_info_title,Instructions,Instructions
+la_game_info_text,Ramassez les étoiles et évitez les astéroïdes en utilisant les flèches du clavier,Collect stars and avoid asteroids using arrow keys
+la_game_lost,Perdu ...,Lost ...
+la_game_win,Bravo !,Bravo !
+la_chrono_title,Décompte,Chronometer
+la_chrono_text,Temps avant péremption de l'échantillon,Time before sample expiration
+la_chrono_end_title,Alerte,Alert
+la_chrono_end_text,Temps consumé ! L'échantillon est périmé si vous ne l'avez pas encore récupéré.\n\n\1bold\1Sortez de la navette\2,

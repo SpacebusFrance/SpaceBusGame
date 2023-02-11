@@ -1,6 +1,6 @@
 import datetime
 import re
-from panda3d.core import LVector3f
+from panda3d.core import LVector3f, WindowProperties
 
 from engine.scenario.scenario_event import Event
 from engine.utils.event_handler import EventObject, event, send_event
@@ -49,9 +49,10 @@ class Scenario(EventObject):
                     end_conditions = {"is_moving": False}
                 elif action == "play_sound":
                     time_max = self.engine.sound_manager.get_sound_length(args_dict.get("name", None)) + 1.0
-                elif action in ["shuttle_stop", "led_off", "led_on", "restart", "end_game", "start_game", "show_score",
+                elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score",
                                 "stop_sound", "sound_volume"]:
                     time_max = 0.0
+                # elif action == 'end_game':
 
             if action == "info_text":
                 if args_dict is None:
@@ -129,12 +130,16 @@ class Scenario(EventObject):
             for line in lines:
                 line = line.strip()
                 # parse each line
-                if not line.startswith('<!--'):
+                if not line.startswith('<!--') and len(line) > 0:
                     # line is not a comment
                     # read line kind defined as "<XXXX", can be 'group' or 'step' or 'event'
                     kind = re.search(r'<\s*(\w*)\s', line).group(1) if re.search(r'<\s*(\w*)\s', line) is not None \
                         else None
 
+                    # all lines should start with "<" and end with ">", no multi-line supported
+                    assert line.startswith('<') and line.endswith('>'), f'Parsing error on line : "{line}"'
+
+                    # check if step or action
                     if kind == 'step' and "action=" in line:
                         # read arguments
                         args = read_xml_args(line)
@@ -236,6 +241,7 @@ class Scenario(EventObject):
         """
         Starts the game. Stops the shuttle, reset the time and starts the first step
         """
+        Logger.title('Starting new scenario')
         self.current_step = 0
         self.start_time = self.engine.get_time()
         self.shuttle.stop(play_sound=False)
@@ -249,7 +255,7 @@ class Scenario(EventObject):
         if len(self.steps) > 0:
             self.steps[0].start()
 
-    @event(['rest_game', 'reset'])
+    @event(['reset_game', 'reset'])
     def on_reset(self):
         self.engine.reset_game()
 
@@ -486,275 +492,6 @@ class Scenario(EventObject):
     def on_update_software_state(self, name=None, value=None):
         self.engine.update_soft_state(name, value)
 
-    # def event(self, event_name, arg_dict=None):
-    #     """
-    #     Call a scenario event
-    #
-    #     So far, possible events are:
-    #
-    #     - *start_game*
-    #     - *reset_game*
-    #     - *restart*
-    #     - *end_game*
-    #     - *show_score*
-    #     - *raw_collision*
-    #     - *collision*
-    #     - *asteroid*
-    #     - *oxygen_leak*
-    #     - *oxygen*
-    #     - *CO2*
-    #     - *info_text*
-    #     - *shuttle_look_at*
-    #     - *shuttle_pos*
-    #     - *shuttle_goto*
-    #     - *shuttle_stop*
-    #     - *shuttle_goto_station*
-    #     - *shuttle_goto_station*
-    #     - *boost*
-    #     - *wait*
-    #     - *control_screen_event*
-    #     - *terminal_start_session*
-    #     - *terminal_print_file*
-    #     - *terminal_question*
-    #     - *play_sound*
-    #     - *stop_sound*
-    #     - *reset_buttons*
-    #     - *reset_leds*
-    #     - *led_on*
-    #     - *led_off*
-    #     - *update_hardware_state*
-    #     - *update_software_state*
-    #
-    #     Args:
-    #         event_name (str): the name of the event
-    #         arg_dict (dict): optional arguments passed to the event
-    #     """
-    #     arg_dict = arg_dict if arg_dict is not None else {}
-    #
-    #     if event_name in ["reset_game", 'reset']:
-    #         self.engine.reset_game()
-    #
-    #     elif event_name == "restart":
-    #         self.engine.reset_game(start=True)
-    #
-    #     elif event_name in ["start_game", 'start']:
-    #         self.start_game()
-    #
-    #     elif event_name in ['stop', 'stop_game']:
-    #         self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
-    #         # this avoids to play next step
-    #         self.current_step = len(self.steps)
-    #
-    #         # remove all incoming events but keep steps
-    #         self.remove_incoming_events()
-    #
-    #     elif event_name == 'goto_step':
-    #         # stop game
-    #         self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
-    #
-    #         # remove all incoming events but keep steps
-    #         self.remove_incoming_events()
-    #
-    #         # goto next step
-    #         target_step = arg_dict['goto_id']
-    #         self.current_step = None
-    #         for i, step in enumerate(self.steps):
-    #             if step.id == target_step:
-    #                 # take i - 1 since will call "start_newt_step()" right after that
-    #                 self.current_step = i - 1
-    #                 break
-    #         if self.current_step is None:
-    #             raise KeyError(f'goto_id "{target_step}" does not exist !')
-    #         self.start_next_step()
-    #
-    #     elif event_name == "end_game":
-    #         # remove all incoming events
-    #         self.remove_incoming_events()
-    #
-    #         # call the end game
-    #         self.end_game(show_end_screen=arg_dict.get('show_end_screen', True),
-    #                       save_score=arg_dict.get('save_score', True))
-    #
-    #     elif event_name == "collision_new":
-    #         # The first impact function
-    #         self.engine.taskMgr.add(self.shuttle.impact, name="shake shuttle")
-    #         self.engine.update_soft_state("collision_occurred", True)
-    #         self.engine.sound_manager.stop_bips()
-    #
-    #         self.engine.taskMgr.doMethodLater(0.5, self.engine.sound_manager.play, 'fi3',
-    #                                           extraArgs=['gaz_leak', True, 0.5])
-    #         self.engine.sound_manager.stop("start_music")
-    #
-    #         # leds
-    #         self.engine.hardware.set_led_on("l_defficience_moteur1")
-    #         self.engine.hardware.set_led_on("l_defficience_moteur2")
-    #         self.engine.hardware.set_led_on("l_defficience_moteur3")
-    #         self.engine.hardware.set_led_on("l_problem0")
-    #         self.engine.hardware.set_led_on("l_problem1")
-    #         self.engine.hardware.set_led_on("l_problem2")
-    #         self.engine.hardware.set_led_on("l_fuite_O2")
-    #         self.engine.hardware.set_led_on("l_alert0")
-    #         self.engine.hardware.set_led_on("l_alert1")
-    #
-    #         self.engine.hardware.set_led_off("l_antenne_com")
-    #
-    #         def detection(_=None):
-    #             # energy problems !
-    #             self.engine.update_soft_state("listen_to_hardware", True)
-    #             self.engine.update_hard_state("s_pilote_automatique1", False, silent=True)
-    #             self.engine.update_hard_state("s_pilote_automatique2", False, silent=True)
-    #             self.engine.update_hard_state("s_correction_direction", False, silent=True)
-    #             self.engine.update_hard_state("s_correction_roulis", False, silent=True)
-    #             self.engine.update_hard_state("s_correction_stabilisation", False, silent=True)
-    #             self.engine.update_soft_state("listen_to_hardware", False)
-    #
-    #             self.engine.update_soft_state("moteur1", False, silent=True)
-    #             self.engine.update_soft_state("moteur2", False, silent=True)
-    #             self.engine.update_soft_state("moteur3", False, silent=True)
-    #             self.engine.update_soft_state("offset_ps_x", 2, silent=True)
-    #             self.engine.update_soft_state("offset_ps_y", 1, silent=True)
-    #
-    #         self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
-    #
-    #     elif event_name == "collision":
-    #         self.engine.taskMgr.add(self.shuttle.impact, name="shake shuttle")
-    #         self.engine.update_soft_state("collision_occurred", True)
-    #         self.engine.sound_manager.stop_bips()
-    #
-    #         self.engine.taskMgr.doMethodLater(0.5, self.engine.sound_manager.play, 'fi3',
-    #                                           extraArgs=['gaz_leak', True, 0.5])
-    #         self.engine.sound_manager.stop("start_music")
-    #
-    #         # leds
-    #         self.engine.hardware.set_led_on("l_defficience_moteur1")
-    #         self.engine.hardware.set_led_on("l_defficience_moteur2")
-    #         self.engine.hardware.set_led_on("l_defficience_moteur3")
-    #         self.engine.hardware.set_led_on("l_problem0")
-    #         self.engine.hardware.set_led_on("l_problem1")
-    #         self.engine.hardware.set_led_on("l_problem2")
-    #         self.engine.hardware.set_led_on("l_fuite_O2")
-    #         self.engine.hardware.set_led_on("l_alert0")
-    #         self.engine.hardware.set_led_on("l_alert1")
-    #
-    #         self.engine.hardware.set_led_off("l_antenne_com")
-    #
-    #         def detection(e):
-    #             # energy problems !
-    #             self.engine.update_soft_state("listen_to_hardware", True)
-    #             self.engine.update_hard_state("s_pilote_automatique1", False, silent=True)
-    #             self.engine.update_hard_state("s_pilote_automatique2", False, silent=True)
-    #             self.engine.update_hard_state("s_correction_direction", False, silent=True)
-    #             self.engine.update_hard_state("s_correction_roulis", False, silent=True)
-    #             self.engine.update_hard_state("s_correction_stabilisation", False, silent=True)
-    #             self.engine.update_soft_state("listen_to_hardware", False)
-    #
-    #             self.engine.update_soft_state("moteur1", False, silent=True)
-    #             self.engine.update_soft_state("moteur2", False, silent=True)
-    #             self.engine.update_soft_state("moteur3", False, silent=True)
-    #             self.engine.update_soft_state("offset_ps_x", 2, silent=True)
-    #             self.engine.update_soft_state("offset_ps_y", 1, silent=True)
-    #
-    #             # self.engine.gui.event("alert_screen")
-    #             # self.engine.gui.event("warning", )
-    #
-    #         self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
-    #
-    #     elif event_name == "asteroid":
-    #         self.engine.asteroid.spawn()
-    #
-    #     elif event_name == "oxygen_leak":
-    #         send_event("set_gauge_goto_time", gauge="main_O2", time=800)
-    #         self.engine.update_soft_state("main_O2", 0.0)
-    #         self.do_method_later(180,
-    #                              self.engine.sound_manager.play,
-    #                              name='sound_o2_1',
-    #                              extraArgs=['voice_alert_O2_5_33'])
-    #         self.do_method_later(330,
-    #                              self.engine.sound_manager.play,
-    #                              name='sound_o2_2',
-    #                              extraArgs=['voice_alert_O2_3_17'])
-    #
-    #     elif event_name == "oxygen":
-    #         send_event("set_gauge_goto_time", gauge="main_O2", time=arg_dict.get("time", 420.0))
-    #         self.engine.update_soft_state("main_O2", arg_dict.get("value", 0.0))
-    #
-    #     elif event_name == "CO2":
-    #         send_event("set_gauge_goto_time", gauge="main_CO2", time=arg_dict.get("time", 420.0))
-    #         self.engine.update_soft_state("main_CO2", arg_dict.get("value", 0.0))
-    #
-    #     # elementary functions
-    #     elif event_name == "shuttle_look_at":
-    #         if arg_dict.get("time", 5.0) == 0.0:
-    #             self.engine.shuttle.look_at(
-    #                 LVector3f(arg_dict.get("x", 0.0), arg_dict.get("y", 0.0), arg_dict.get("z", 0.0)))
-    #         else:
-    #             self.engine.shuttle.dynamic_look_at(
-    #                 LVector3f(arg_dict.get("x", 0.0), arg_dict.get("y", 0.0), arg_dict.get("z", 0.0)),
-    #                 time=arg_dict.get("time", 5.0))
-    #
-    #     elif event_name == "shuttle_pos":
-    #         self.engine.shuttle.set_pos(
-    #             LVector3f(arg_dict.get("x", 0.0), arg_dict.get("y", 0.0), arg_dict.get("z", 0.0)))
-    #
-    #     elif event_name == "shuttle_goto":
-    #         self.engine.shuttle.dynamic_goto(LVector3f(arg_dict.get("x", 0.0), arg_dict.get("y", 0.0),
-    #                                                    arg_dict.get("z", 0.0)), arg_dict.get("power", 1.0))
-    #
-    #     elif event_name == "shuttle_stop":
-    #         self.engine.shuttle.stop(arg_dict.get("play_sound", True))
-    #
-    #     elif event_name == "shuttle_goto_station":
-    #         pos, hpr = self.engine.space_craft.get_connection_pos_and_hpr()
-    #
-    #         def _end(t=None):
-    #             self.engine.shuttle.dynamic_goto_hpr(hpr, time=7)
-    #
-    #         self.engine.shuttle.dynamic_goto(pos, power=arg_dict.get("power", 1.0), t_spin=7.0, end_func=_end)
-    #
-    #     elif event_name == "wait":
-    #         pass
-    #
-    #     elif event_name == "group":
-    #         pass
-    #
-    #     elif event_name == "boost":
-    #         self.engine.shuttle.boost(arg_dict.get("direction", None), arg_dict.get("power", 1))
-    #
-    #     elif event_name == "play_sound":
-    #         self.engine.sound_manager.play(arg_dict.get("name", None),
-    #                                        volume=arg_dict.get("volume", None),
-    #                                        loop=arg_dict.get('loop', False))
-    #
-    #     elif event_name == "stop_sound":
-    #         self.engine.sound_manager.stop(arg_dict.get("name", None))
-    #
-    #     elif event_name == "reset_buttons":
-    #         self.engine.reset_hardware()
-    #
-    #     elif event_name == "reset_leds":
-    #         self.engine.sound_manager.play("engine_starts")
-    #         self.engine.hardware.hello_world()
-    #         self.engine.hardware.init_states()
-    #
-    #     elif event_name == "led_on":
-    #         self.engine.hardware.set_led_on(arg_dict.get("id", None))
-    #
-    #     elif event_name == "led_off":
-    #         self.engine.hardware.set_led_off(arg_dict.get("id", None))
-    #
-    #     elif event_name == "update_hardware_state":
-    #         self.engine.update_hard_state(arg_dict.get("name", None), arg_dict.get("value", None))
-    #
-    #     elif event_name == "update_software_state":
-    #         self.engine.update_soft_state(arg_dict.get("name", None), arg_dict.get("value", None))
-    #
-    #     else:
-    #         # pass to gui
-    #         if 'time_max' in arg_dict and arg_dict['time_max'] is not None:
-    #             # remove the window at the end
-    #             arg_dict['close_time'] = min(arg_dict.get('close_time', 1E3), arg_dict.pop('time_max'))
-    #         self.engine.gui.event(event_name, **arg_dict)
-
     def remove_incoming_events(self) -> None:
         """
         Remove all incoming events
@@ -763,7 +500,10 @@ class Scenario(EventObject):
             # _taskList attribute is dynamically set when adding a task
             for task in list(self._taskList.values()):
                 if not task.get_name().startswith('event'):
+                    Logger.info(f'removing task "{task.get_name()}"')
                     self.remove_task(task)
+                else:
+                    Logger.info(f'keeping task "{task.get_name()}"')
 
     def pause(self) -> None:
         """
@@ -809,7 +549,6 @@ class Scenario(EventObject):
             self.steps[self.current_step].start()
         else:
             send_event('end_game')
-            # self.event("end_game")
 
     def update_scenario(self, wait_end_if_fulfilled=True):
         """

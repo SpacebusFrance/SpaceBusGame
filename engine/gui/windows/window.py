@@ -35,7 +35,7 @@ class Window(BaseWidget):
                  entry_hint='',
                  entry_width=0.8,
                  icon=None,
-                 icon_size=.07,
+                 icon_size=.05,
                  focus=1,
                  hide_password=False,
                  shadow=True,

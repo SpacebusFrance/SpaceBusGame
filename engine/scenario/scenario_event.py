@@ -23,6 +23,7 @@ class Event:
         self.scenario = engine.scenario
         self.sound_player = engine.sound_manager
         self.name = action
+        assert id.startswith('event'), f'"event" names should start as "event...", not {id}'
         self.id = id
 
         self._event_kwargs = args_dict if args_dict is not None else {}

@@ -60,6 +60,10 @@ class ChronoWindow(Window):
             time (float): the time in seconds
         """
         self._time = time
+        self._chrono.setText('\1{color}\1{time}\2'.
+                             format(color='chrono' if self._time >= self._alert else 'chrono-alert',
+                                    time=re.search(r'\d*:(\d*:\d*)',
+                                                   str(datetime.timedelta(seconds=self._time))).group(1)))
 
     def start(self):
         """

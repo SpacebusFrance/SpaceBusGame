@@ -154,9 +154,8 @@
     </group>
 
     <!--    This should not be reached until time end -->
-    <group name="wrong_end">
-        <step action="info" title="end of game !!!" text="this should be the end of game ..."
-              time_max="5"/>
+    <group id="wrong_end">
+        <step action="info" title="end of game !!!" text="this should be the end of game ..." time_max="5"/>
 
         <step action="end_game"/>
 

@@ -17,7 +17,12 @@ def send_event(_event_name, *_, **kwargs) -> None:
         **kwargs: optional named arguments
     """
     Logger.info(f'sending event "{_event_name}" with params, {kwargs}')
-    messenger.send(f'event_{_event_name}', sentArgs=[kwargs])
+    # check if this event is recorded somewhere
+    if f'event_{_event_name}' not in event_handler.events:
+        Logger.error(f'-> no listener for event "{_event_name}" !')
+    else:
+        # send it
+        messenger.send(f'event_{_event_name}', sentArgs=[kwargs])
 
 
 class _EventHandler:
@@ -35,6 +40,10 @@ class _EventHandler:
             Logger.info(f'-> catching event "{name}"')
             for func, args in self._methods[name]:
                 func(*args, kwargs)
+
+    @property
+    def events(self):
+        return list(self._methods.keys())
 
     def accept(self, name, method, extra_args):
         if name not in self._methods:

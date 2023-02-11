@@ -283,6 +283,7 @@ class Game(ShowBase):
         Starts the current scenario
         """
         self.accept(self('admin_key'), self.gui.admin_screen)
+        self.gui.hide_cursor()
         self.sound_manager.play_ambient_sound()
         self.scenario.start_game()
 

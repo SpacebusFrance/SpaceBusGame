@@ -91,7 +91,27 @@ class Gui(EventObject):
                                 time_minutes=time_minutes,
                                 time_seconds=time_seconds,
                                 total_players=total_players,
-                                background_color=self.colors['black'],)
+                                background_color=self.colors['black'],
+                                )
+
+        self.accept_once('enter', self.reset)
+        # buy default, reset menu after a certain delay
+        self.do_method_later(self.engine('end_game_reset_delay'), self.reset, name='menu_reset_task')
+
+    def hide_cursor(self):
+        # hide cursor
+        Logger.error('HIDING cursor')
+        props = WindowProperties()
+        props.setCursorHidden(True)
+        self.engine.win.requestProperties(props)
+
+    def show_cursor(self):
+        # show cursor
+        Logger.error('SHOWING cursor')
+        props = WindowProperties()
+        props.setCursorFilename(os.path.join(self.engine('image_path'), self.engine('cursor_file')))
+        props.setCursorHidden(False)
+        self.engine.win.requestProperties(props)
 
     def reset(self, show_menu=True):
         """
@@ -100,11 +120,13 @@ class Gui(EventObject):
         Args:
             show_menu (bool): specifies if the main menu should be displayed or not
         """
+        Logger.title('GUI reset')
+        self.ignore_all()
+        self.remove_all_tasks()
         if self._current_window is not None and not self._current_window.is_empty():
             self._current_window.destroy()
         if show_menu:
             send_event('menu')
-            # self.event('menu')
 
     def process_text(self, text, key='$'):
         """
@@ -364,6 +386,9 @@ class Gui(EventObject):
         """
         # reset the screen, displays a black empty image
         self.set_screen()
+
+        # show cursor
+        self.show_cursor()
 
         def choose_game(*args):
             """
