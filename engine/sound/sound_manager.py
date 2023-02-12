@@ -1,5 +1,5 @@
 from os import listdir
-import numpy as num
+import numpy as np
 
 from engine.utils.logger import Logger
 from engine.utils.ini_parser import read_file_as_list
@@ -13,6 +13,7 @@ class SoundManager:
         self._sounds = dict()
         self._ambient_sounds = dict()
         self._engine = engine
+        self._supported_sound_format = ('wav', )
 
         self._ambient_volume = 1.0
         self._ambient_loop = None
@@ -38,29 +39,45 @@ class SoundManager:
 
             self._engine.taskMgr.doMethodLater(last.length() + 0.2, self._start_next, name="music_overlap")
 
+    @staticmethod
+    def _get_file_name(name: str) -> str:
+        """
+        Remove sound extension
+        """
+        return name.split('.')[0]
+
     def load_sounds(self):
         """
         Load all sounds
         """
         folder = self._engine("sound_folder")
-        for file in listdir(folder):
-            if file.endswith((".mp3", ".wav")) and 'old' not in file:
-                Logger.info('loading sound : {}'.format(file.replace(".wav", "").replace(".mp3", "")))
-                self._sounds[file.replace(".wav", "").replace(".mp3", "")] = self._engine.loader.loadSfx(folder + file)
+        files = listdir(folder)
+        np.random.shuffle(files)
+        for file in files:
+            key = self._get_file_name(file)
+            if file.endswith(self._supported_sound_format) and 'old' not in file:
+                Logger.info(f'loading sound : {file}')
+                self._sounds[key] = self._engine.loader.loadSfx(folder + file)
+            else:
+                Logger.warning(f'ignoring sound "{key}"')
 
         ambient_folder = self._engine("ambient_sound_folder")
         for file in listdir(ambient_folder):
-            if file.endswith((".mp3", ".wav")):
-                Logger.info('loading ambient sound : {}'.format(file.replace(".wav", "").replace(".mp3", "")))
-                self._ambient_sounds[file.replace(".wav", "").replace(".mp3", "")] = self._engine.loader.loadSfx(ambient_folder + file)
+            key = self._get_file_name(file)
+            if file.endswith(self._supported_sound_format):
+                Logger.info(f'loading ambient sound : {key}')
+                self._ambient_sounds[key] = self._engine.loader.loadSfx(ambient_folder + file)
+            else:
+                Logger.warning(f'ignoring ambient sound "{key}"')
 
-        if self._engine("ambient_loop_file").replace(".wav", "").replace(".mp3", "") in self._ambient_sounds:
-            self._ambient_loop = self._ambient_sounds.pop(self._engine("ambient_loop_file").replace(".wav", "").replace(".mp3", ""))
+        ambiant_loop_file = self._get_file_name(self._engine("ambient_loop_file"))
+        if ambiant_loop_file in self._ambient_sounds:
+            self._ambient_loop = self._ambient_sounds.pop(ambiant_loop_file)
         if "bips" in self._ambient_sounds:
             self._bips = self._ambient_sounds.pop("bips")
 
     def reset(self, n=5, t_max=900):
-        for id in range(len(self._ambient_tasks)):
+        for _ in range(len(self._ambient_tasks)):
             self._engine.taskMgr.remove(self._ambient_tasks.pop())
 
         # stop current playing sounds
@@ -72,7 +89,7 @@ class SoundManager:
 
         # random times
         for name in self._ambient_sounds:
-            t = t_max * num.random.rand(n)
+            t = t_max * np.random.rand(n)
             for i in t:
                 self._ambient_tasks.append(self._engine.taskMgr.doMethodLater(i,
                                                                               self._play_ambient,
@@ -118,12 +135,14 @@ class SoundManager:
         else:
             return 0.0
 
-    def play(self, name, loop=False, volume=None):
+    def play(self, name, loop=False, volume=None, avoid_playing_twice=True):
         if name in self._sounds:
             sound = self._sounds[name]
 
             # avoid playing the same sound many times
-            if (len(self._queue) > 0 and name == self._queue[-1].get_name()) or sound.status() == sound.PLAYING:
+            if avoid_playing_twice and \
+                    ((len(self._queue) > 0 and name == self._queue[-1].get_name())
+                     or sound.status() == sound.PLAYING):
                 return
 
             if loop:
@@ -149,3 +168,9 @@ class SoundManager:
             sound = self._sounds[name]
             if sound.status() == sound.PLAYING:
                 sound.stop()
+
+    def __getitem__(self, item):
+        """
+        Get a sound file
+        """
+        return self._sounds.get(item, None)

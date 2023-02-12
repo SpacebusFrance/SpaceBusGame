@@ -15,6 +15,12 @@ class BaseWidget:
         self._widget = None
         self._shadow_scale = shadow_scale
 
+    def play_sound(self, sound_name: str) -> None:
+        """
+        Plays a sound file
+        """
+        self._gui_engine.engine.sound_manager.play(sound_name, avoid_playing_twice=False)
+
     def color(self, color_name):
         """
         Get the globally defined color

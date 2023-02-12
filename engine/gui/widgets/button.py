@@ -23,6 +23,7 @@ class Button(BaseWidget):
         super().__init__(gui_engine, shadow_scale=0.07, **kwargs)
         txt_color = self.color(kwargs.pop('text_color', 'light'))
         self._is_selected = False
+        self._cmd = on_click
 
         self._widget = DirectButton(text=text,
                                     image=icon,
@@ -32,7 +33,7 @@ class Button(BaseWidget):
                                     text_align=TextNode.A_left if icon_left else TextNode.A_right,
                                     color=self.color(color),
                                     relief=FLAT,
-                                    command=on_click,
+                                    command=self._on_click,
                                     extraArgs=extra_args if extra_args is not None else [],
                                     )
 
@@ -56,17 +57,22 @@ class Button(BaseWidget):
         self._widget.bind(EXIT, self.un_select)
         self.initialiseoptions(Button)
 
+    def _on_click(self, *_):
+        self.play_sound('ui_click')
+        self._cmd(*self._widget['extraArgs'])
+
     def select(self, *_):
         """
         Select the button and accept 'enter' as a click
         """
+        self.play_sound('ui_hover')
         self._widget.set_color_scale(2.0, 1.5, 1.8, 1.0)
         self._is_selected = True
         if BaseWidget._selected_button != self and BaseWidget._selected_button is not None:
             BaseWidget._selected_button.un_select()
         BaseWidget._selected_button = self
         if callable(self._widget['command']):
-            self._widget.accept_once('enter', self._widget['command'], extraArgs=self._widget['extraArgs'])
+            self._widget.accept_once('enter', self._on_click)
 
     def un_select(self, *_):
         """

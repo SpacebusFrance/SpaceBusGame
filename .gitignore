@@ -1,4 +1,3 @@
-data/sound/
 data/control_board/gimp
 *.xcf
 test_arduino.py
