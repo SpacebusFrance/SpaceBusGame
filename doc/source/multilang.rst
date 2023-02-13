@@ -74,4 +74,4 @@ language (*en*, *fr* etc). If this file exists, it will be played, otherwise ``m
 
         <step action="play_sound" name="my_sound"/>
 
-    will play ``fr_my_sound`` if this file exists, otherwise ``my_sound``
+    will play_sfx ``fr_my_sound`` if this file exists, otherwise ``my_sound``

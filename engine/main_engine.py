@@ -87,8 +87,8 @@ class Game(ShowBase):
             self.accept('y', self.space_craft.spin, extraArgs=['h', -1])
             self.accept('q', self.space_craft.solar_panel_increment, extraArgs=[1])
             self.accept('s', self.space_craft.solar_panel_increment, extraArgs=[-1])
-            self.accept('enter', self.sound_manager.play, extraArgs=['engine_fails'])
-            self.accept('space', self.sound_manager.play, extraArgs=['engine_starts'])
+            self.accept('enter', self.sound_manager.play_sfx, extraArgs=['engine_fails'])
+            self.accept('space', self.sound_manager.play_sfx, extraArgs=['engine_starts'])
         else:
             # hardware
             self.hardware = HardwareHandler(self)
@@ -284,6 +284,7 @@ class Game(ShowBase):
         """
         self.accept(self('admin_key'), self.gui.admin_screen)
         self.gui.hide_cursor()
+        self.sound_manager.stop_music()
         self.sound_manager.play_ambient_sound()
         self.scenario.start_game()
 
@@ -349,10 +350,10 @@ class Game(ShowBase):
                 if state_key in ["correction_roulis", "correction_direction", "correction_stabilisation"] and value and not self.soft_states["pilote_automatique"]:
                     return True
                 if state_key.startswith("batterie") and not state_key.endswith('s') and not self.soft_states["batteries"]:
-                    self.sound_manager.play("batterie_wrong")
+                    self.sound_manager.play_sfx("batterie_wrong")
                     return True
                 if state_key.startswith("moteur") and value and self.get_soft_state("collision_occurred"):
-                    self.sound_manager.play("engine_fails")
+                    self.sound_manager.play_sfx("engine_fails")
                     return True
 
                 # now we switch it on
@@ -366,11 +367,11 @@ class Game(ShowBase):
                 # maybe it changes the energy and maybe it plays an automatic sound
                 if not value:
                     if not silent:
-                        self.sound_manager.play(state_key + "_off")
+                        self.sound_manager.play_sfx(state_key + "_off")
                     self.power.switch_off(state_key)
                 else:
                     if not silent:
-                        self.sound_manager.play(state_key + "_on")
+                        self.sound_manager.play_sfx(state_key + "_on")
                     self.power.switch_on(state_key)
 
                 # check for gui:
@@ -384,7 +385,7 @@ class Game(ShowBase):
                                                1 + self.get_soft_state("offset_ps_x") ** 2 + self.get_soft_state(
                                                    "offset_ps_y") ** 2), 3))
                     if self.get_soft_state("offset_ps_x") == self.get_soft_state("offset_ps_y") == 0:
-                        self.sound_manager.play("sp_nominal")
+                        self.sound_manager.play_sfx("sp_nominal")
                         self.hardware.set_led_on("l_ps_nominal")
                     else:
                         self.hardware.set_led_off("l_ps_nominal")
@@ -405,7 +406,7 @@ class Game(ShowBase):
                             break
                     self.soft_states["full_pilote_automatique"] = on
                 elif state_key.startswith("moteur") and value:
-                    self.sound_manager.play("engine_starts")
+                    self.sound_manager.play_sfx("engine_starts")
 
                 elif state_key == "pilote_automatique_failed" and value:
                     # removing it in a few frames
@@ -421,7 +422,7 @@ class Game(ShowBase):
                     Logger.print("(soft state update) : {0} -> {1}".format(state_key, False), color='bold')
             else:
                 if state_key.startswith('moteur') and value:
-                    self.sound_manager.play("engine_fails")
+                    self.sound_manager.play_sfx("engine_fails")
                 elif value and not self.power.can_be_switched_on(state_key):
                     if state_key == "pilote_automatique":
                         # sets the failed to True and immediately after to False.
@@ -459,9 +460,9 @@ class Game(ShowBase):
             # maybe it plays an automatic sound
             if not silent:
                 if value:
-                    self.sound_manager.play(state_key + "_on")
+                    self.sound_manager.play_sfx(state_key + "_on")
                 else:
-                    self.sound_manager.play(state_key + "_off")
+                    self.sound_manager.play_sfx(state_key + "_off")
 
             self.scenario.update_scenario()
 

@@ -43,10 +43,10 @@ class EntryPassword(BaseWidget):
         Check if the password is correct
         """
         if self.get_text() == self._password:
-            self._gui_engine.sound_manager.play('ok')
+            self._gui_engine.sound_manager.play_sfx('ok')
             self._on_ok()
         else:
-            self._gui_engine.sound_manager.play('wrong')
+            self._gui_engine.sound_manager.play_sfx('wrong')
         self._widget.enterText('')
 
     def get_text(self):

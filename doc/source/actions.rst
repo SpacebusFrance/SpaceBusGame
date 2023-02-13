@@ -75,7 +75,7 @@ Stop current step and go to the designated step
 
 *Arguments*
 
-- ``goto_id`` (str): the ``id`` of the step to play
+- ``goto_id`` (str): the ``id`` of the step to play_sfx
 
 **Note**
 
@@ -94,7 +94,7 @@ Plays a specified sound.
 
 *Arguments*
 
-- ``name`` (str): the name of the sound file to play
+- ``name`` (str): the name of the sound file to play_sfx
 - ``volume`` (float, optional): the volume of the sound
 - ``loop`` (bool, optional): specifies if the sound should be played in loop or not
 

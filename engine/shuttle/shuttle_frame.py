@@ -78,7 +78,7 @@ class ShuttleFrame(DirectObject.DirectObject):
         self.stop(play_sound=False)
         task = Task(shake_task)
         self._engine.taskMgr.add(task, "shaking", extraArgs=[task])
-        self._engine.sound_manager.play("impact", volume=1.5)
+        self._engine.sound_manager.play_sfx("impact", volume=1.5)
 
     def align_along(self, axis):
         d = {'x': LVector3f(1, 0, 0),
@@ -178,9 +178,9 @@ class ShuttleFrame(DirectObject.DirectObject):
 
     def _boost_sound(self, t=0.0):
         if t > 0.0:
-            self._engine.taskMgr.doMethodLater(t, self._engine.sound_manager.play, name="boost_sound", extraArgs=["boost_new"])
+            self._engine.taskMgr.doMethodLater(t, self._engine.sound_manager.play_sfx, name="boost_sound", extraArgs=["boost_new"])
         else:
-            self._engine.sound_manager.play("boost_new")
+            self._engine.sound_manager.play_sfx("boost_new")
 
     def boost(self, direction, power=1, play_sound=True):
         if not self._is_boost:

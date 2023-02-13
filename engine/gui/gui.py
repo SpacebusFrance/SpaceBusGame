@@ -282,110 +282,15 @@ class Gui(EventObject):
     def on_close_window(self):
         self.close_window_and_go()
 
-# else:
-# # finally, pass event to the screen itself
-# self.screen.notify_event(message, **kwargs)
-
-    # def event(self, message, **kwargs) -> None:
-    #     """
-    #     Process an event that wasn't used in scenario handler
-    #
-    #     Args:
-    #         message (str): event name
-    #         **kwargs: optional args
-    #     """
-        # if message == 'set_screen':
-        #     scenario_name = kwargs["name"].lower()
-        #
-        #     if scenario_name in ['go_to_mars', 'gotomars']:
-        #         self.set_screen(GoToMarsScreen)
-        #     elif scenario_name in ['lost_astronaut', 'lostastronaut']:
-        #         self.set_screen(LostAstronautScreen)
-        #     else:
-        #         self.set_screen(None)
-        #
-        # elif message == 'end_screen':
-        #     self.end_screen()
-        #
-        # elif message == 'info':
-        #     self.set_current_window(
-        #         icon=kwargs.pop('icon', 'chat'),
-        #         title=self.process_text(kwargs.pop('title', '$info_title$')),
-        #         text=self.process_text(kwargs.pop('text', '')),
-        #         life_time=kwargs.pop('close_time', -1),
-        #         on_enter=self.close_window_and_go if kwargs.pop('close_on_enter', True) else None,
-        #         color=kwargs.pop('color', 'dark-window'),
-        #         **kwargs
-        #     )
-        #
-        # elif message == 'password':
-        #     def format_target(x):
-        #         x = x.replace('-', '')[:6]
-        #         self._current_window.set_entry_text('-'.join([x[2 * i:2 * (i + 1)] for i in range(math.ceil(len(x) / 2))]))
-        #
-        #     if 'format' in kwargs:
-        #         if kwargs['format'] == 'target':
-        #             kwargs['on_entry_add'] = format_target
-        #             kwargs['on_entry_delete'] = format_target
-        #         else:
-        #             Logger.error('unknown text format {}'.format(kwargs['format']))
-        #
-        #     self.set_current_window(
-        #         icon=kwargs.pop('icon', 'caution'),
-        #         title=self.process_text(kwargs.pop('title', '$password_title$')),
-        #         text=self.process_text(kwargs.pop('text', '')),
-        #         life_time=kwargs.pop('close_time', -1),
-        #         password=kwargs.pop('password'),
-        #         on_password_find=kwargs.pop('on_password_find', self.close_window_and_go),
-        #         color=kwargs.pop('color', 'dark-window'),
-        #         **kwargs
-        #     )
-        #
-        # elif message == 'video':
-        #     self.set_current_window(
-        #         VideoWindow,
-        #         color=kwargs.pop('color', 'dark-window'),
-        #         video_path=kwargs['name'],
-        #         size_x=kwargs.pop('size_x', 1.0),
-        #         size_y=kwargs.pop('size_y', 0.8),
-        #         life_time=kwargs.pop('close_time', -1),
-        #         start=kwargs.pop('start', True),
-        #         title=self.process_text(kwargs.pop('title', '$video_title$')),
-        #         text=self.process_text(kwargs.pop('text', '$video_text$')),
-        #         file_format='avi',
-        #         **kwargs
-        #     )
-        #
-        # elif message == 'warning':
-        #     self.set_current_window(
-        #         color=kwargs.pop('color', 'dark-window'),
-        #         icon=kwargs.pop('icon', 'caution'),
-        #         title=self.process_text(kwargs.pop('title', '$warning_title$')),
-        #         text=self.process_text(kwargs.pop('text', '')),
-        #         life_time=kwargs.pop('close_time', -1),
-        #         on_enter=self.close_window_and_go if kwargs.pop('close_on_enter', True) else None,
-        #         **kwargs
-        #     )
-        #
-        # elif message == 'menu':
-        #     self.show_menu()
-        #
-        # elif message == 'update_state':
-        #     self.screen.notify_update(kwargs.get('key', None))
-        #
-        # elif message == 'close_window':
-        #     self.close_window_and_go()
-        #
-        # else:
-        #     # finally, pass event to the screen itself
-        #     self.screen.notify_event(message, **kwargs)
-
     def show_menu(self):
         """
         Display the main menu
         """
         # reset the screen, displays a black empty image
         self.set_screen()
+
+        # play nice music
+        self.engine.sound_manager.play_music('menu1')
 
         # show cursor
         self.show_cursor()
@@ -518,78 +423,6 @@ class Gui(EventObject):
 
         props.set_undecorated(not self.engine('decorated_window'))
         self.engine.win.request_properties(props)
-
-        # aspectRatio = self.engine.getAspectRatio()
-        # self.myAspect2d = self.engine.render2d.attachNewNode(PGTop('myAspect2d'))
-        # self.myAspect2d.setScale(y/x, 1.0, 1.0)
-        # self.myAspect2d.node().setMouseWatcher(self.engine.mouseWatcherNode)
-
-        # this causes GUI to render wrongly
-        # self.engine.cam2d.node().getLens().setAspectRatio(x / y)
-            # # setting the dimensions of the gui display region
-            # for dr in self.engine.win.get_display_regions():
-            #     print('->', dr)
-            #     cam = dr.get_camera()
-            #     e = 1 / screen_number
-            #     if cam and "cam2d" in cam.name:
-            #         print('cam2d region:', dr)
-            #         dr.set_dimensions(0, e, 0, 1)
-            #         cam.node().getLens().setAspectRatio(x / (screen_number * y))
-
-    # def set_fullsd_ccreen(self):
-    #     #     props = WindowProperties()
-    #     #     res = getscreen_resolutions()[0]
-    #     #     props.set_size(res)
-    #     #     props.setFullscreen(True)
-    #     #     self.engine.cam2d.node().getLens().setAspectRatio(float(res[1]/res[0]))
-    #     #     self.engine.win.requestProperties(props)
-    #     #
-    #     #     self.set_backgrounolor()
-
-    # def listen_to_keyboard(self):
-    #     self.currentscreen.gain_focus()
-    #
-    # def keyboard_as_shuttle_control(self):
-    #     self.request_focus()
-    #     self.reject_keyboard(False)
-    #
-    #     self.accept('arrow_up', self.engine.shuttle.boost, extraArgs=['f'])
-    #     self.accept('arrow_down', self.engine.shuttle.boost, extraArgs=['b'])
-    #     self.accept('arrow_right', self.engine.shuttle.boost, extraArgs=['r'])
-    #     self.accept('arrow_left', self.engine.shuttle.boost, extraArgs=['l'])
-    #     self.accept('+', self.engine.shuttle.boost, extraArgs=['pp'])
-    #     self.accept('-', self.engine.shuttle.boost, extraArgs=['pm'])
-    #     self.accept('space', self.engine.shuttle.stop)
-    #     self.accept('enter', lambda: print(self.engine.shuttle.frame.get_pos()))
-    #     self.accept('backspace', self.engine.reset_game, extraArgs=[True])
-    #
-    #     self.enter_func = lambda: print(self.engine.shuttle.frame.get_pos())
-    #
-    #     for key in ['x', 'y', 'z']:
-    #         self.accept(key, self.engine.shuttle.align_along, extraArgs=[key])
-    #
-    # def keyboard_as_hardware(self):
-    #     self.request_focus()
-    #     self.reject_keyboard(False)
-    #
-    #     for key in self._keyboard_hardware_map:
-    #         name = self._keyboard_hardware_map[key]
-    #         if key == "enter":
-    #             self.enter_func = lambda: self.engine.update_hard_state[name]
-    #         if name.startswith('j_'):
-    #             self.accept(key, self.engine.update_hard_state,
-    #                         extraArgs=[name, 1])
-    #             self.accept('shift-' + key, self.engine.update_hard_state,
-    #                         extraArgs=[name, -1])
-    #             self.accept(key + '-up', self.engine.update_hard_state,
-    #                         extraArgs=[name, 0])
-    #         elif name.startswith('b_'):
-    #             self.accept(key, self.engine.update_hard_state,
-    #                         extraArgs=[name, True])
-    #             self.accept(key + '-up', self.engine.update_hard_state,
-    #                         extraArgs=[name, False])
-    #         else:
-    #             self.accept(key, self._switch_state, extraArgs=[name])
 
     def reject_keyboard(self, connect_alternative=True):
         pass

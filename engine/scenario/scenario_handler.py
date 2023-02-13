@@ -311,7 +311,7 @@ class Scenario(EventObject):
         self.engine.update_soft_state("collision_occurred", True)
         self.engine.sound_manager.stop_bips()
 
-        self.engine.taskMgr.doMethodLater(0.5, self.engine.sound_manager.play, 'fi3',
+        self.engine.taskMgr.doMethodLater(0.5, self.engine.sound_manager.play_sfx, 'fi3',
                                           extraArgs=['gaz_leak', True, 0.5])
         self.engine.sound_manager.stop("start_music")
 
@@ -352,7 +352,7 @@ class Scenario(EventObject):
         self.engine.update_soft_state("collision_occurred", True)
         self.engine.sound_manager.stop_bips()
 
-        self.engine.taskMgr.doMethodLater(0.5, self.engine.sound_manager.play, 'fi3',
+        self.engine.taskMgr.doMethodLater(0.5, self.engine.sound_manager.play_sfx, 'fi3',
                                           extraArgs=['gaz_leak', True, 0.5])
         self.engine.sound_manager.stop("start_music")
 
@@ -399,11 +399,11 @@ class Scenario(EventObject):
         send_event("set_gauge_goto_time", gauge="main_O2", time=800)
         self.engine.update_soft_state("main_O2", 0.0)
         self.do_method_later(180,
-                             self.engine.sound_manager.play,
+                             self.engine.sound_manager.play_sfx,
                              name='sound_o2_1',
                              extraArgs=['voice_alert_O2_5_33'])
         self.do_method_later(330,
-                             self.engine.sound_manager.play,
+                             self.engine.sound_manager.play_sfx,
                              name='sound_o2_2',
                              extraArgs=['voice_alert_O2_3_17'])
 
@@ -460,7 +460,7 @@ class Scenario(EventObject):
 
     @event('play_sound')
     def on_play_sound(self, name=None, volume=None, loop=False):
-        self.engine.sound_manager.play(name, volume=volume, loop=loop)
+        self.engine.sound_manager.play_sfx(name, volume=volume, loop=loop)
 
     @event('stop_sound')
     def on_stop_sound(self, name=None):
@@ -472,7 +472,7 @@ class Scenario(EventObject):
 
     @event('reset_leds')
     def on_reset_leds(self):
-        self.engine.sound_manager.play("engine_starts")
+        self.engine.sound_manager.play_sfx("engine_starts")
         self.engine.hardware.hello_world()
         self.engine.hardware.init_states()
 

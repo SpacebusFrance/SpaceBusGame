@@ -4,71 +4,71 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Action list &mdash; SpaceBusGame 2.0.0 documentation</title>
-  
 
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Action list &mdash; SpaceBusGame 2.0.0 documentation</title>
+
+
+
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
 
-  
-  
-    <link rel="shortcut icon" href="_static/logo.ico"/>
-  
-  
-  
 
-  
+
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+
+
+
+
+
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
+
+
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-    
+
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
-    
+
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Screens" href="screens.html" />
-    <link rel="prev" title="Multi language support" href="multilang.html" /> 
+    <link rel="prev" title="Multi language support" href="multilang.html" />
 </head>
 
 <body class="wy-body-for-nav">
 
-   
+
   <div class="wy-grid-for-nav">
-    
+
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
-          
+
+
             <a href="index.html" class="icon icon-home" alt="Documentation Home"> SpaceBusGame
-          
 
-          
-            
+
+
+
             <img src="_static/logo.png" class="logo" alt="Logo"/>
-          
+
           </a>
 
-          
-            
-            
-          
 
-          
+
+
+
+
+
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -77,17 +77,17 @@
   </form>
 </div>
 
-          
+
         </div>
 
-        
+
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+
+
+
+
+
+
               <p class="caption"><span class="caption-text">Creating a scenario</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="scenario.html">Scenario structure</a><ul>
@@ -123,7 +123,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#sound-actions">Sound actions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#play-sound">play_sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#play_sfx-sound">play_sound</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#stop-sound">stop_sound</a></li>
 </ul>
 </li>
@@ -197,29 +197,29 @@
 <li class="toctree-l1"><a class="reference internal" href="scenario_list.html#test">test</a></li>
 </ul>
 
-            
-          
+
+
         </div>
-        
+
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
-      
+
       <nav class="wy-nav-top" aria-label="top navigation">
-        
+
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">SpaceBusGame</a>
-        
+
       </nav>
 
 
       <div class="wy-nav-content">
-        
+
         <div class="rst-content style-external-links">
-        
-          
+
+
 
 
 
@@ -238,28 +238,28 @@
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
-    
+
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
+
       <li>Action list</li>
-    
-    
+
+
       <li class="wy-breadcrumbs-aside">
-        
-            
+
+
             <a href="_sources/actions.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+
+
       </li>
-    
+
   </ul>
 
-  
+
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+
   <div class="section" id="action-list">
 <span id="actions"></span><h1>Action list<a class="headerlink" href="#action-list" title="Permalink to this headline">¶</a></h1>
 <p>We list below all possible <code class="docutils literal notranslate"><span class="pre">action</span></code> values together with their mandatory and optional arguments</p>
@@ -320,7 +320,7 @@
 <p>Stop current step and go to the designated step</p>
 <p><em>Arguments</em></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">goto_id</span></code> (str): the <code class="docutils literal notranslate"><span class="pre">id</span></code> of the step to play</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">goto_id</span></code> (str): the <code class="docutils literal notranslate"><span class="pre">id</span></code> of the step to play_sfx</p></li>
 </ul>
 <p><strong>Note</strong></p>
 <p>This remove current step if it is still playing, however, this does not remove <code class="docutils literal notranslate"><span class="pre">event</span></code>. This is very useful to reach
@@ -330,12 +330,12 @@ a part of the scenario after a certain amount of time using an <code class="docu
 <div class="section" id="sound-actions">
 <h2>Sound actions<a class="headerlink" href="#sound-actions" title="Permalink to this headline">¶</a></h2>
 <p>These actions allow to control sounds in the game</p>
-<div class="section" id="play-sound">
-<h3>play_sound<a class="headerlink" href="#play-sound" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="play_sfx-sound">
+<h3>play_sound<a class="headerlink" href="#play_sfx-sound" title="Permalink to this headline">¶</a></h3>
 <p>Plays a specified sound.</p>
 <p><em>Arguments</em></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): the name of the sound file to play</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): the name of the sound file to play_sfx</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">volume</span></code> (float, optional): the volume of the sound</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">loop</span></code> (bool, optional): specifies if the sound should be played in loop or not</p></li>
 </ul>
@@ -541,37 +541,37 @@ events.</p>
 
 
            </div>
-           
+
           </div>
           <footer>
-  
+
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
+
         <a href="screens.html" class="btn btn-neutral float-right" title="Screens" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
+
+
         <a href="multilang.html" class="btn btn-neutral float-left" title="Multi language support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+
     </div>
-  
+
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
+
         &copy; Copyright 2020, Paul de Fromont
 
     </p>
   </div>
-    
-    
-    
+
+
+
     Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
+
     <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
 </footer>
 
@@ -581,7 +581,7 @@ events.</p>
     </section>
 
   </div>
-  
+
 
   <script type="text/javascript">
       jQuery(function () {
@@ -589,10 +589,10 @@ events.</p>
       });
   </script>
 
-  
-  
-    
-   
+
+
+
+
 
 </body>
 </html>

@@ -4,70 +4,70 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>demo &mdash; SpaceBusGame 2.0.0 documentation</title>
-  
 
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>demo &mdash; SpaceBusGame 2.0.0 documentation</title>
+
+
+
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
 
-  
-  
-    <link rel="shortcut icon" href="_static/logo.ico"/>
-  
-  
-  
 
-  
+
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+
+
+
+
+
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
+
+
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-    
+
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
-    
+
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="States" href="states.html" /> 
+    <link rel="prev" title="States" href="states.html" />
 </head>
 
 <body class="wy-body-for-nav">
 
-   
+
   <div class="wy-grid-for-nav">
-    
+
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
-          
+
+
             <a href="index.html" class="icon icon-home" alt="Documentation Home"> SpaceBusGame
-          
 
-          
-            
+
+
+
             <img src="_static/logo.png" class="logo" alt="Logo"/>
-          
+
           </a>
 
-          
-            
-            
-          
 
-          
+
+
+
+
+
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -76,17 +76,17 @@
   </form>
 </div>
 
-          
+
         </div>
 
-        
+
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+
+
+
+
+
+
               <p class="caption"><span class="caption-text">Creating a scenario</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="scenario.html">Scenario structure</a><ul>
@@ -122,7 +122,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="actions.html#sound-actions">Sound actions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="actions.html#play-sound">play_sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions.html#play_sfx-sound">play_sound</a></li>
 <li class="toctree-l3"><a class="reference internal" href="actions.html#stop-sound">stop_sound</a></li>
 </ul>
 </li>
@@ -196,29 +196,29 @@
 <li class="toctree-l1"><a class="reference internal" href="#test">test</a></li>
 </ul>
 
-            
-          
+
+
         </div>
-        
+
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
-      
+
       <nav class="wy-nav-top" aria-label="top navigation">
-        
+
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">SpaceBusGame</a>
-        
+
       </nav>
 
 
       <div class="wy-nav-content">
-        
+
         <div class="rst-content style-external-links">
-        
-          
+
+
 
 
 
@@ -237,28 +237,28 @@
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
-    
+
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
+
       <li>demo</li>
-    
-    
+
+
       <li class="wy-breadcrumbs-aside">
-        
-            
+
+
             <a href="_sources/scenario_list.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+
+
       </li>
-    
+
   </ul>
 
-  
+
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+
   <div class="section" id="demo">
 <h1>demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
@@ -535,7 +535,7 @@
     <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;debut de jeux&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;set_screen&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0.0&quot;</span> <span class="na">name=</span><span class="s">&quot;shuttle_state&quot;</span><span class="nt">/&gt;</span>
 
-        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;&quot;</span> <span class="na">text=</span><span class="s">&quot;\1golden\1Thank you to play with us !\2&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span> <span class="na">icon=</span><span class="s">&quot;None&quot;</span> <span class="na">size_x=</span><span class="s">&quot;2.0&quot;</span> <span class="na">size_y=</span><span class="s">&quot;1.5&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;info&quot;</span> <span class="na">title=</span><span class="s">&quot;&quot;</span> <span class="na">text=</span><span class="s">&quot;\1golden\1Thank you to play_sfx with us !\2&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span> <span class="na">icon=</span><span class="s">&quot;None&quot;</span> <span class="na">size_x=</span><span class="s">&quot;2.0&quot;</span> <span class="na">size_y=</span><span class="s">&quot;1.5&quot;</span><span class="nt">/&gt;</span>
         <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;end_game&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span> <span class="na">save_score=</span><span class="s">&quot;False&quot;</span><span class="nt">/&gt;</span>
         <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;5&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/group&gt;</span>
@@ -546,35 +546,35 @@
 
 
            </div>
-           
+
           </div>
           <footer>
-  
+
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
+
+
         <a href="states.html" class="btn btn-neutral float-left" title="States" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+
     </div>
-  
+
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
+
         &copy; Copyright 2020, Paul de Fromont
 
     </p>
   </div>
-    
-    
-    
+
+
+
     Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
+
     <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
 </footer>
 
@@ -584,7 +584,7 @@
     </section>
 
   </div>
-  
+
 
   <script type="text/javascript">
       jQuery(function () {
@@ -592,10 +592,10 @@
       });
   </script>
 
-  
-  
-    
-   
+
+
+
+
 
 </body>
 </html>

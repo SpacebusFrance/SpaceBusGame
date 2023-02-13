@@ -130,10 +130,10 @@ own mandatory arguments (see :ref:`actions`)
 - ``time_max`` : the life time of this step in seconds
 - ``hint_time`` : if specified, defines the time in seconds from the beginning of the step when a ``hint_sound`` should
   be played to help players
-- ``hint_sound`` : the name of the sound file to play if ``hint_time`` is provided
+- ``hint_sound`` : the name of the sound file to play_sfx if ``hint_time`` is provided
 - ``id`` : the identifier for the step. If not provided, ``id`` is set to ``step_{n}`` where ``{n}`` is its number (from 0)
-- ``loose_sound`` : the sound to play if the task is lost (reach its life-time)
-- ``win_sound`` : the sound to play if the task is win (fulfilled its ending conditions)
+- ``loose_sound`` : the sound to play_sfx if the task is lost (reach its life-time)
+- ``win_sound`` : the sound to play_sfx if the task is win (fulfilled its ending conditions)
 
 .. warning:: steps should have a unique ``id`` !
 
@@ -141,7 +141,7 @@ own mandatory arguments (see :ref:`actions`)
 
     The following code produces a default step with a life time of 20 seconds, playing a hint sound ``hint`` at 10
     seconds and waiting for button ``b_admin``  to be pushed. If the button is pressed, the task status is ``win`` and
-    we play a sound ``victory``. No sound is played if the task is lost, i.e. if the button is not pressed before 20
+    we play_sfx a sound ``victory``. No sound is played if the task is lost, i.e. if the button is not pressed before 20
     seconds.
 
     .. note:: if the step is fulfilled before the hint, the hint sound is not played, obviously

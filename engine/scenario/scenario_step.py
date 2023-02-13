@@ -98,7 +98,7 @@ class Step:
                 # self.scenario.event(self._event_name, self._event_kwargs)
         if self._hint_sound is not None and self._hint_time is not None:
             self._hint_task = self.scenario.doMethodLater(self.t_start + self._hint_time,
-                                                          self.engine.sound_manager.play,
+                                                          self.engine.sound_manager.play_sfx,
                                                           extraArgs=[self._hint_sound], name=self.name + "_hint")
 
     def force_fulfill(self):
@@ -167,11 +167,11 @@ class Step:
         if win:
             Logger.print('\t-> task complete', color='green')
             if self._win_sound is not None:
-                self.sound_player.play(self._win_sound)
+                self.sound_player.play_sfx(self._win_sound)
         else:
             Logger.print('\t-> task lost', color='red')
             if self._loose_sound is not None:
-                self.sound_player.play(self._loose_sound)
+                self.sound_player.play_sfx(self._loose_sound)
             if self._fulfill_if_lost:
                 self.force_fulfill()
 

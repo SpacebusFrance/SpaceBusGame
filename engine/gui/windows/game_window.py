@@ -103,8 +103,9 @@ class GameWindow(Window):
                             fg=(1.0, 1.0, 1.0, 1.0),
                             text='')
         text.setTransparency(1)
-        # stop music
-        self._gui_engine.engine.sound_manager.stop('star_game_music')
+        # play music
+
+        self._gui_engine.engine.sound_manager.play_sfx('star_game_music', loop=True)
 
         if self._status == 0:
             def start():
@@ -148,11 +149,12 @@ class GameWindow(Window):
                 Func(start),
             )
             self._interval.start()
-            # play music
-            self._gui_engine.engine.sound_manager.play('star_game_music', loop=True)
 
         elif self._status == 1:
             # win
+            # stop music
+            self._gui_engine.engine.sound_manager.stop('star_game_music')
+
             text.setText(self._gui_engine.process_text('$la_game_win$'))
             self._interval = Sequence(
                 Parallel(
@@ -186,7 +188,7 @@ class GameWindow(Window):
                 # self._spawn_rock()
             elif rock.collides(new_pos, 0.1):
                 # lost sound
-                self._gui_engine.engine.sound_manager.play('star_game_loose', avoid_playing_twice=False)
+                self._gui_engine.engine.sound_manager.play_sfx('star_game_loose', avoid_playing_twice=False)
                 # lost, status on 0
                 self._status = 0
                 return task.done
@@ -199,7 +201,7 @@ class GameWindow(Window):
                 # self._spawn_rock()
             elif star.collides(new_pos, 0.1):
                 # play sound
-                self._gui_engine.engine.sound_manager.play('collect_star', avoid_playing_twice=False)
+                self._gui_engine.engine.sound_manager.play_sfx('collect_star', avoid_playing_twice=False)
                 # remove star and add to score
                 self._score += 1
                 self._stars.remove(star)
@@ -219,7 +221,7 @@ class GameWindow(Window):
         # check for win
         if self._score >= self._max_stars:
             # play music
-            self._gui_engine.engine.sound_manager.play('star_game_win')
+            self._gui_engine.engine.sound_manager.play_sfx('star_game_win')
             self._status = 1
             return task.done
         return task.cont

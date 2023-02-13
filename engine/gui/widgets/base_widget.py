@@ -19,7 +19,7 @@ class BaseWidget:
         """
         Plays a sound file
         """
-        self._gui_engine.engine.sound_manager.play(sound_name, avoid_playing_twice=False)
+        self._gui_engine.engine.sound_manager.play_sfx(sound_name, avoid_playing_twice=False)
 
     def color(self, color_name):
         """
