@@ -340,8 +340,8 @@ a part of the scenario after a certain amount of time using an <code class="docu
 <li><p><code class="docutils literal notranslate"><span class="pre">loop</span></code> (bool, optional): specifies if the sound should be played in loop or not</p></li>
 </ul>
 <p><strong>Note</strong></p>
-<p>If no <code class="docutils literal notranslate"><span class="pre">time_max</span></code> is provided, the step is ended when the sound itself is ended. In other words, <code class="docutils literal notranslate"><span class="pre">time_max</span></code> is set
-to <em>sound_lenght + 1</em> seconds if no <code class="docutils literal notranslate"><span class="pre">time_max</span></code> is provided</p>
+<p>If no <code class="docutils literal notranslate"><span class="pre">duration</span></code> is provided, the step is ended when the sound itself is ended. In other words, <code class="docutils literal notranslate"><span class="pre">duration</span></code> is set
+to <em>sound_lenght + 1</em> seconds if no <code class="docutils literal notranslate"><span class="pre">duration</span></code> is provided</p>
 </div>
 <div class="section" id="stop-sound">
 <h3>stop_sound<a class="headerlink" href="#stop-sound" title="Permalink to this headline">¶</a></h3>
@@ -419,7 +419,7 @@ events.</p>
 <h3>close_window<a class="headerlink" href="#close-window" title="Permalink to this headline">¶</a></h3>
 <p>Close the window actually displayed on screen</p>
 <p><strong>Note</strong></p>
-<p>This step passes immediately to the next one and ignore <code class="docutils literal notranslate"><span class="pre">time_max</span></code> argument.</p>
+<p>This step passes immediately to the next one and ignore <code class="docutils literal notranslate"><span class="pre">duration</span></code> argument.</p>
 </div>
 </div>
 <div class="section" id="special-events">

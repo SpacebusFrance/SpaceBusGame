@@ -347,12 +347,18 @@ class Game(ShowBase):
                     and self.soft_states[state_key] != value:
 
                 # first, there may be some conditions
-                if state_key in ["correction_roulis", "correction_direction", "correction_stabilisation"] and value and not self.soft_states["pilote_automatique"]:
+                if state_key in ["correction_roulis", "correction_direction", "correction_stabilisation"] \
+                        and value \
+                        and not self.soft_states["pilote_automatique"]:
                     return True
-                if state_key.startswith("batterie") and not state_key.endswith('s') and not self.soft_states["batteries"]:
+                if state_key.startswith("batterie") \
+                        and not state_key.endswith('s') \
+                        and not self.soft_states["batteries"]:
                     self.sound_manager.play_sfx("batterie_wrong")
                     return True
-                if state_key.startswith("moteur") and value and self.get_soft_state("collision_occurred"):
+                if state_key.startswith("moteur") \
+                        and value \
+                        and self.get_soft_state("collision_occurred"):
                     self.sound_manager.play_sfx("engine_fails")
                     return True
 
@@ -444,14 +450,14 @@ class Game(ShowBase):
            silent (bool): specifies if any sound should be played
         """
         if state_key == "b_admin":
-            self.hard_states[state_key] = value
+            self.hard_states["b_admin"] = value
             # always listen to it
             self.scenario.update_scenario()
 
         # only do it if the key exists and if we listen to hardware and if the value is different from the previous one
         # (to avoid spam of joysticks_axis = 0.0)
         elif state_key in self.hard_states and self.get_soft_state("listen_to_hardware") and value != self.hard_states[state_key]:
-            Logger.print("(hard state update) : {0} -> {1}".format(state_key, value), color='bold')
+            Logger.print(f"(hard state update) : {state_key} -> {value}", color='bold')
             self.hard_states[state_key] = value
 
             # check if it is associated to one led

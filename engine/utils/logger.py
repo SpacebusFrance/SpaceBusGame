@@ -1,5 +1,5 @@
 
-class Logger(object):
+class Logger:
     colors = {'purple': '\033[95m',
               'blue': '\033[94m',
               'green': '\033[92m',

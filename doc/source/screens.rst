@@ -13,7 +13,7 @@ Game screen must be declared at top of the xml scenario file
 
 .. code-block:: xml
 
-    <step action="set_screen" time_max="0.0" name="go_to_mars"/>
+    <step action="set_screen" duration="0.0" name="go_to_mars"/>
 
 This command will set the screen corresponding to ``go_to_mars`` scenario.
 
@@ -39,8 +39,8 @@ code
 
 .. code-block:: xml
 
-    <event action="goto_step" goto_id="wrong_end" start_time="60"/>
-    <step action="start-chrono" time="60" time_max="0"/>
+    <event action="goto_step" goto_id="wrong_end" delay="60"/>
+    <step action="start-chrono" time="60" duration="0"/>
 
 start-chrono
 ------------

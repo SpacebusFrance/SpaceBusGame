@@ -267,7 +267,7 @@
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="nt">&lt;scenario&gt;</span>
    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;phase 1&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;ok&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;ok&quot;</span> <span class="na">duration=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
      ...
    <span class="nt">&lt;/group&gt;</span>
 <span class="nt">&lt;/scenario&gt;</span>
@@ -287,7 +287,7 @@
 <p>The first type of action is called a <code class="docutils literal notranslate"><span class="pre">step</span></code>. They have the particularity to be <strong>blocking</strong>, i.e. the scenario moves
 to the next step only if current step is <em>fulfilled</em>.</p>
 <p>A step can be declared with the <code class="docutils literal notranslate"><span class="pre">step</span></code> keyword</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;ok&quot;</span> <span class="na">time_max=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;play_sound&quot;</span> <span class="na">name=</span><span class="s">&quot;ok&quot;</span> <span class="na">duration=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 <p>A step is considered <em>fulfilled</em> if</p>
@@ -343,9 +343,9 @@ and next step will start.</p>
 </div>
 <div class="section" id="step-life-time">
 <h3>Step life-time<a class="headerlink" href="#step-life-time" title="Permalink to this headline">¶</a></h3>
-<p>The other possibility to fulfill a step is to define its <strong>life time</strong>. It is provided by the <code class="docutils literal notranslate"><span class="pre">time_max</span></code> argument and
+<p>The other possibility to fulfill a step is to define its <strong>life time</strong>. It is provided by the <code class="docutils literal notranslate"><span class="pre">duration</span></code> argument and
 should be given in seconds.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;3.1&quot;</span><span class="nt">/&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">duration=</span><span class="s">&quot;3.1&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 <p>This code produces a blocking step with no particular action (<code class="docutils literal notranslate"><span class="pre">action</span></code> set to <code class="docutils literal notranslate"><span class="pre">&quot;wait&quot;</span></code>) which will block the game
@@ -372,7 +372,7 @@ Be careful to not block the game !</p>
 own mandatory arguments (see <a class="reference internal" href="actions.html#actions"><span class="std std-ref">Action list</span></a>)</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">action</span></code> : the name of the action to perform (see <a class="reference internal" href="actions.html#actions"><span class="std std-ref">Action list</span></a> for the list of them)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">time_max</span></code> : the life time of this step in seconds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">duration</span></code> : the life time of this step in seconds</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">hint_time</span></code> : if specified, defines the time in seconds from the beginning of the step when a <code class="docutils literal notranslate"><span class="pre">hint_sound</span></code> should
 be played to help players</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">hint_sound</span></code> : the name of the sound file to play_sfx if <code class="docutils literal notranslate"><span class="pre">hint_time</span></code> is provided</p></li>
@@ -394,7 +394,7 @@ seconds.</p>
 <p class="admonition-title">Note</p>
 <p>if the step is fulfilled before the hint, the hint sound is not played, obviously</p>
 </div>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">time_max=</span><span class="s">&quot;20&quot;</span> <span class="na">hint_time=</span><span class="s">&quot;10&quot;</span> <span class="na">hint_sound=</span><span class="s">&quot;hint&quot;</span> <span class="na">win_sound=</span><span class="s">&quot;victory&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;step</span> <span class="na">action=</span><span class="s">&quot;wait&quot;</span> <span class="na">duration=</span><span class="s">&quot;20&quot;</span> <span class="na">hint_time=</span><span class="s">&quot;10&quot;</span> <span class="na">hint_sound=</span><span class="s">&quot;hint&quot;</span> <span class="na">win_sound=</span><span class="s">&quot;victory&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;condition</span> <span class="na">key=</span><span class="s">&quot;b_admin&quot;</span> <span class="na">value=</span><span class="s">&quot;True&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/step&gt;</span>
 </pre></div>
@@ -419,11 +419,11 @@ current player’s step.</p>
 <p><code class="docutils literal notranslate"><span class="pre">actions</span></code> and their parameters are described in the <a class="reference internal" href="actions.html#actions"><span class="std std-ref">Action list</span></a> section.</p>
 <div class="section" id="event-arguments">
 <h3>Event arguments<a class="headerlink" href="#event-arguments" title="Permalink to this headline">¶</a></h3>
-<p>There are two mandatory argument for each event, its <code class="docutils literal notranslate"><span class="pre">action</span></code> and its <code class="docutils literal notranslate"><span class="pre">start_time</span></code></p>
+<p>There are two mandatory argument for each event, its <code class="docutils literal notranslate"><span class="pre">action</span></code> and its <code class="docutils literal notranslate"><span class="pre">delay</span></code></p>
 <p>Below is the list of possible arguments that can be included in <strong>any</strong> event.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">action</span></code> : the name of the action to perform (see XXX for the list of them)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span></code> : the time between the start of the game and this event in seconds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay</span></code> : the time between the start of the game and this event in seconds.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> : the identifier for the step. If not provided, <code class="docutils literal notranslate"><span class="pre">id</span></code> is set to <code class="docutils literal notranslate"><span class="pre">event_{n}</span></code> where <code class="docutils literal notranslate"><span class="pre">{n}</span></code> is its number (from 0)</p></li>
 </ul>
 </div>

@@ -14,7 +14,7 @@ A scenario file is structured as follow
    <?xml version="1.0" encoding="UTF-8"?>
    <scenario>
       <group name="phase 1">
-         <step action="play_sound" name="ok" time_max="0"/>
+         <step action="play_sound" name="ok" duration="0"/>
         ...
       </group>
    </scenario>
@@ -36,7 +36,7 @@ A step can be declared with the ``step`` keyword
 
 .. code-block:: xml
 
-    <step action="play_sound" name="ok" time_max="0"/>
+    <step action="play_sound" name="ok" duration="0"/>
 
 A step is considered *fulfilled* if
 
@@ -95,12 +95,12 @@ In that case, the condition is fulfilled if the value lies within this range.
 Step life-time
 ..............
 
-The other possibility to fulfill a step is to define its **life time**. It is provided by the ``time_max`` argument and
+The other possibility to fulfill a step is to define its **life time**. It is provided by the ``duration`` argument and
 should be given in seconds.
 
 .. code-block:: xml
 
-    <step action="wait" time_max="3.1"/>
+    <step action="wait" duration="3.1"/>
 
 This code produces a blocking step with no particular action (``action`` set to ``"wait"``) which will block the game
 for 3.1 seconds. At the end of this time, next step is played.
@@ -127,7 +127,7 @@ Below is the list of possible arguments that can be included in **any** step. No
 own mandatory arguments (see :ref:`actions`)
 
 - ``action`` : the name of the action to perform (see :ref:`actions` for the list of them)
-- ``time_max`` : the life time of this step in seconds
+- ``duration`` : the life time of this step in seconds
 - ``hint_time`` : if specified, defines the time in seconds from the beginning of the step when a ``hint_sound`` should
   be played to help players
 - ``hint_sound`` : the name of the sound file to play_sfx if ``hint_time`` is provided
@@ -148,7 +148,7 @@ own mandatory arguments (see :ref:`actions`)
 
     .. code-block:: xml
 
-        <step action="wait" time_max="20" hint_time="10" hint_sound="hint" win_sound="victory">
+        <step action="wait" duration="20" hint_time="10" hint_sound="hint" win_sound="victory">
             <condition key="b_admin" value="True"/>
         </step>
 
@@ -174,12 +174,12 @@ An event is created using ``event`` command as
 Event arguments
 ...............
 
-There are two mandatory argument for each event, its ``action`` and its ``start_time``
+There are two mandatory argument for each event, its ``action`` and its ``delay``
 
 Below is the list of possible arguments that can be included in **any** event.
 
 - ``action`` : the name of the action to perform (see XXX for the list of them)
-- ``start_time`` : the time between the start of the game and this event in seconds.
+- ``delay`` : the time between the start of the game and this event in seconds.
 - ``id`` : the identifier for the step. If not provided, ``id`` is set to ``event_{n}`` where ``{n}`` is its number (from 0)
 
 

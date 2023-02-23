@@ -10,12 +10,13 @@ class Event:
 
     def __init__(self, engine, id,
                  action="",
-                 args_dict=None,):
+                 args_dict=None,
+                 ):
         """
         Instantiate a :class:`Step`
 
         Args:
-            engine (class:`GameEngine`): the main _engine
+            engine (class:`GameEngine`): the main engine
             action (str): the name of the event to call in :func:`Scenario.event`
         """
         self.shuttle = engine.shuttle
@@ -26,10 +27,10 @@ class Event:
         assert id.startswith('event'), f'"event" names should start as "event...", not {id}'
         self.id = id
 
-        self._event_kwargs = args_dict if args_dict is not None else {}
+        self._event_kwargs = args_dict if args_dict is not None else dict()
         self._event_name = action
 
-    def start(self, task=None):
+    def start(self, _=None):
         """
         Start this step
         """
@@ -38,4 +39,3 @@ class Event:
 
         if self._event_name is not None:
             send_event(self._event_name, **self._event_kwargs)
-            # self.scenario.event(self._event_name, self._event_kwargs)

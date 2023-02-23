@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenario>
     <group name="debut de jeux">
-        <step action="set_screen" time_max="0.0" name="go_to_mars"/>
+        <step action="set_screen" duration="0.0" name="go_to_mars"/>
 
         <!-- set chronometer and time limit -->
-        <event action="goto_step" goto_id="end" start_time="10"/>
-        <step action="start-chrono" time="10" time_max="0"/>
+        <event action="goto_step" goto_id="end" delay="10"/>
+        <step action="start-chrono" time="10" duration="0"/>
 
         <!-- wait 5 seconds -->
-        <step action="wait" time_max="5"/>
+        <step action="wait" duration="5"/>
 
         <!-- info panel -->
-        <step action="info" title="info" text="an information panel" time_max="20"/>
+        <step action="info" title="info" text="an information panel" duration="20"/>
 
         <!-- infinite wait -->
         <step action="wait"/>
@@ -19,7 +19,7 @@
 
     <group id="end">
         <step action="info" title="end of game !" text="this should be the end of game ..."
-              time_max="5"/>
+              duration="5"/>
 
         <step action="end_game">
             <end_conditions>
@@ -27,7 +27,7 @@
             </end_conditions>
         </step>
 
-        <step action="info" title="end" text="restarting game ..." time_max="5"/>
+        <step action="info" title="end" text="restarting game ..." duration="5"/>
 
         <!-- RESTART GAME -->
         <step action="restart"/>

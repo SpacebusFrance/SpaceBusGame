@@ -100,8 +100,8 @@ Plays a specified sound.
 
 **Note**
 
-If no ``time_max`` is provided, the step is ended when the sound itself is ended. In other words, ``time_max`` is set
-to *sound_lenght + 1* seconds if no ``time_max`` is provided
+If no ``duration`` is provided, the step is ended when the sound itself is ended. In other words, ``duration`` is set
+to *sound_lenght + 1* seconds if no ``duration`` is provided
 
 stop_sound
 ----------
@@ -187,7 +187,7 @@ Close the window actually displayed on screen
 
 **Note**
 
-This step passes immediately to the next one and ignore ``time_max`` argument.
+This step passes immediately to the next one and ignore ``duration`` argument.
 
 
 Special events

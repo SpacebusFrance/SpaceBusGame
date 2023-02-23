@@ -13,7 +13,7 @@ class Step:
                  end_conditions=None,
                  action="",
                  max_time=None,
-                 start_time=None,
+                 delay=None,
                  args_dict=None,
                  win_sound=None,
                  loose_sound=None,
@@ -32,7 +32,7 @@ class Step:
             action (str): the name of the event to call in :func:`Scenario.event`
             max_time (:obj:`float`, optional): if not :code:`None`, specifies the time in seconds from the starting of
                 the step when the task will be *lost*
-            start_time (:obj:`float`, optional): if specified, define the time between the call of this step and its
+            delay (:obj:`float`, optional): if specified, define the time between the call of this step and its
                 effective start (in seconds)
             args_dict (:obj:`dict`, optional): optional arguments to send to the :func:`Scenario.event` call
             win_sound (:obj:`str`, optional): the name of the sound to play when the task is won
@@ -56,12 +56,12 @@ class Step:
         self._hint_time = hint_time
         self.t_max = max_time
         self._to_do_task = None
-        self.t_start = start_time if start_time is not None else 0.0
+        self.t_start = delay if delay is not None else 0.0
 
         self.constraints = end_conditions
 
         self._event_kwargs = args_dict if args_dict is not None else {}
-        self._event_kwargs.update({'time_max': self.t_max})
+        self._event_kwargs.update({'duration': self.t_max})
         self._event_name = action
         self._loose_task = None
         self._loose_sound = loose_sound
@@ -108,10 +108,9 @@ class Step:
         Logger.warning('fulfilling step', self.name)
 
         if self.constraints is not None:
-            print(self.constraints)
             for value, key in self.constraints.items():
                 if isinstance(value, list):
-                    value = 0.5*(value[1] + value[0])
+                    value = 0.5 * (value[1] + value[0])
                 if not self.engine.update_hard_state(key, value):
                     self.engine.update_soft_state(key, value)
         else:

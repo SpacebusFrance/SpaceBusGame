@@ -26,61 +26,64 @@ class Scenario(EventObject):
         self.pending_steps = dict()
         self.current_step = 0
         Step.step_counter = 0
-        self.start_time = None
+        self.game_time = None
         self.last_score = None
 
         self._paused_tasks = []
 
-    def _new_step(self, id, end_conditions=None, action=None, time_max=None, start_time=None, args_dict=None,
+    def _new_step(self, id, end_conditions=None, action=None, duration=None, delay=None, args_dict=None,
                   win_sound=None, loose_sound=None, fulfill_if_lost=False, hint_sound=None, hint_time=None):
+
         if action is not None and len(action) > 0:
             # check some common end conditions
-            if end_conditions is None and time_max is None:
-                if action == "control_screen_event":
-                    if args_dict.get("name", None) == "crew_lock_screen":
-                        end_conditions = {"crew_screen_unlocked": True}
-                    elif args_dict.get("name", None) == "target_screen":
-                        end_conditions = {"target_screen_unlocked": True}
-                elif action == "info_text":
-                    end_conditions = {"info_text": False}
-                elif action == "collision":
+            if end_conditions is None and duration is None:
+                if action == "collision":
                     end_conditions = {"alert_screen_unlocked": True}
+
                 elif action in ["shuttle_goto", "shuttle_goto_station", "shuttle_look_at"]:
+                    # stop step when shuttle reaches destination
                     end_conditions = {"is_moving": False}
+
                 elif action == "play_sound":
-                    time_max = self.engine.sound_manager.get_sound_length(args_dict.get("name", None)) + 1.0
+                    # default duration o sound length + 1 second
+                    duration = self.engine.sound_manager.get_sound_length(args_dict.get("name", None)) + 1.0
+
                 elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score",
-                                "stop_sound", "sound_volume"]:
-                    time_max = 0.0
-                # elif action == 'end_game':
+                                "stop_sound", "sound_volume", "update_software_state"]:
+                    # these actions have a default duration to 0.0
+                    duration = 0.0
 
-            if action == "info_text":
-                if args_dict is None:
-                    args_dict = {}
-                if "close_time" not in args_dict:
-                    args_dict["close_time"] = time_max
+            # if action == "info_text":
+            #     if args_dict is None:
+            #         args_dict = {}
+            #     if "close_time" not in args_dict:
+            #         args_dict["close_time"] = duration
 
-            if start_time is not None and start_time > 0.0:
-                if start_time in self.pending_steps:
-                    Logger.error('there is already a step for delay :', start_time)
-                self.pending_steps[start_time] = Event(self.engine,
-                                                       id=id,
-                                                       action=action,
-                                                       args_dict=args_dict,
-                                                       )
+            if delay is not None and delay > 0.0:
+                if delay in self.pending_steps:
+                    Logger.error('there is already a step for delay :', delay)
+                # add an Event in delay seconds
+                self.pending_steps[delay] = Event(
+                    self.engine,
+                    id=id,
+                    action=action,
+                    args_dict=args_dict,
+                )
             else:
-                self.steps.append(Step(self.engine,
-                                       end_conditions=end_conditions,
-                                       action=action,
-                                       max_time=time_max,
-                                       id=id,
-                                       args_dict=args_dict,
-                                       loose_sound=loose_sound,
-                                       win_sound=win_sound,
-                                       fulfill_if_lost=fulfill_if_lost,
-                                       hint_sound=hint_sound,
-                                       hint_time=hint_time
-                                       ))
+                # it is a standard blocking step
+                self.steps.append(Step(
+                    self.engine,
+                    end_conditions=end_conditions,
+                    action=action,
+                    max_time=duration,
+                    id=id,
+                    args_dict=args_dict,
+                    loose_sound=loose_sound,
+                    win_sound=win_sound,
+                    fulfill_if_lost=fulfill_if_lost,
+                    hint_sound=hint_sound,
+                    hint_time=hint_time
+                ))
 
     def reset(self):
         """
@@ -102,7 +105,7 @@ class Scenario(EventObject):
 
         self.current_step = 0
         Step.step_counter = 0
-        self.start_time = None
+        self.game_time = None
         self.last_score = None
 
     def load_scenario(self, name: str) -> None:
@@ -122,7 +125,7 @@ class Scenario(EventObject):
             event_counter = 0
 
             # custom xml file parsing
-            def_args = {"action": None, "time_max": None, "start_time": None, "end_conditions": None, "args_dict": None,
+            def_args = {"action": None, "duration": None, "delay": None, "end_conditions": None, "args_dict": None,
                         "loose_sound": None, "win_sound": None, "fulfill_if_lost": False, "hint_sound": None,
                         "hint_time": None}
             current = def_args.copy()
@@ -137,23 +140,25 @@ class Scenario(EventObject):
                         else None
 
                     # all lines should start with "<" and end with ">", no multi-line supported
-                    assert line.startswith('<') and line.endswith('>'), f'Parsing error on line : "{line}"'
+                    assert line.startswith('<') and line.endswith('>'), f'Multi-line detected on line : "{line}"'
 
                     # check if step or action
                     if kind == 'step' and "action=" in line:
-                        # read arguments
+                        # it has an action defined
+                        # parse arguments
                         args = read_xml_args(line)
                         current["action"] = args.pop("action")
                         current["id"] = args.pop("id", f'step_{len(self.steps)}')
-                        current["time_max"] = args.pop("time_max", None)
+                        current["duration"] = args.pop("duration", None)
                         current["loose_sound"] = args.pop("loose_sound", None)
                         current["win_sound"] = args.pop("win_sound", None)
                         current["fulfill_if_lost"] = args.pop("fulfill_if_lost", False)
                         current["hint_sound"] = args.pop("hint_sound", None)
                         current["hint_time"] = args.pop("hint_time", None)
-                        if 'start_time' in args:
-                            # no start_time for steps
-                            Logger.warning('start_time argument is ignored for steps !')
+
+                        if 'delay' in args:
+                            # no delay for steps
+                            Logger.warning('delay argument is ignored for steps ! Use a wait step rather.')
                         if len(args) > 0:
                             # store remaining arguments in args_dict argument
                             current["args_dict"] = args.copy()  # noqa
@@ -162,35 +167,40 @@ class Scenario(EventObject):
                             self._new_step(**current)
                             # and reset current arguments
                             current = def_args.copy()
+
                     if kind == 'group':
                         # it is a group, we add it as an empty step
                         args = read_xml_args(line)
                         current["action"] = "group" # noqa
-                        current["id"] = args.pop("id", 'step_{}'.format(len(self.steps)))
-                        current["time_max"] = 0.0   # noqa
+                        current["id"] = args.pop("id", f'step_{len(self.steps)}')
+                        current["duration"] = 0.0   # noqa
                         # idem, add a new step
                         self._new_step(**current)
                         # and reset arguments
                         current = def_args.copy()
+
                     if "</step>" in line:
                         # enf od step, store a new one
                         self._new_step(**current)
                         # and reset current arguments
                         current = def_args.copy()
+
                     if kind == 'event' and 'action=' in line:
                         # it is an event
                         args = read_xml_args(line)
                         # simply add a new step
-                        self._new_step(action=args.pop("action"), start_time=args.pop('start_time', 0.0),
+                        self._new_step(action=args.pop("action"), delay=args.pop('delay', 0.0),
                                        args_dict=args, id=args.pop("id", f'event_{event_counter}'))
                         # increment event counter
                         event_counter += 1
+
                     elif "<condition" in line and "key" in line and "value" in line:
                         # a step condition with form <condition key="xxx" value="yyy"/>
                         args = read_xml_args(line)
                         if current['end_conditions'] is None:
-                            current["end_conditions"] = dict()
+                            current["end_conditions"] = dict()  # noqa
                         current["end_conditions"][args.get("key", None)] = args.get("value", None)
+
         except FileNotFoundError:
             Logger.error('Error while loading file {}. It does not exists !'.format(name))
 
@@ -211,8 +221,8 @@ class Scenario(EventObject):
             save_score (bool):
             show_end_screen (bool): if ``True``, the end screen is displayed.
         """
-        if self.start_time is not None:
-            self.last_score = self.engine.get_time() - self.start_time
+        if self.game_time is not None:
+            self.last_score = self.engine.get_time() - self.game_time
         else:
             self.last_score = self.engine.get_time()
 
@@ -243,7 +253,7 @@ class Scenario(EventObject):
         """
         Logger.title('Starting new scenario')
         self.current_step = 0
-        self.start_time = self.engine.get_time()
+        self.game_time = self.engine.get_time()
         self.shuttle.stop(play_sound=False)
 
         # start all pending steps
@@ -494,7 +504,7 @@ class Scenario(EventObject):
 
     def remove_incoming_events(self) -> None:
         """
-        Remove all incoming events
+        Remove all incoming events, ignoring steps
         """
         if hasattr(self, '_taskList'):
             # _taskList attribute is dynamically set when adding a task
