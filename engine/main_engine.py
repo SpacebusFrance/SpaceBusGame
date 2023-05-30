@@ -8,7 +8,7 @@ from panda3d.core import AntialiasAttrib, LVector3f
 from direct.gui.OnscreenImage import OnscreenImage
 
 from engine.display.camera import FreeCameraControl
-from engine.game_state import GameStateManager
+from engine.game_state import GameStateManager, GameState
 from engine.gui.gui import Gui
 from engine.hardware.hardware_handler import HardwareHandler
 from engine.scenario.scenario_handler import Scenario
@@ -110,6 +110,7 @@ class Game(ShowBase):
             self.hardware = HardwareHandler(self)
 
             # state manager
+            GameState.engine = self
             self.state_manager = GameStateManager()
 
             # power
@@ -334,9 +335,13 @@ class Game(ShowBase):
                 self.state_manager.sp_max_power.get_value() /
                 sqrt(1 + self.state_manager.offset_ps_x.get_value() ** 2
                      + self.state_manager.offset_ps_y.get_value() ** 2),
-                3)
+                3),
+            update_power=False
         )
-        self.state_manager.main_power.set_value(self.state_manager.sp_power.get_value() + power)
+        self.state_manager.main_power.set_value(
+            self.state_manager.sp_power.get_value() + power,
+            update_power=False
+        )
 
     def check_solar_panels(self) -> None:
         is_nominal = self.state_manager.offset_ps_x.get_value() == self.state_manager.offset_ps_y.get_value() == 0

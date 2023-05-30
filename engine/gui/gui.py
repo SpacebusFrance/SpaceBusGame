@@ -274,7 +274,8 @@ class Gui(EventObject):
 
     @event('update_state')
     def on_update_state(self, key=None):
-        self.screen.notify_update(key)
+        if self.screen is not None:
+            self.screen.notify_update(key)
 
     @event('close_window')
     def on_close_window(self):

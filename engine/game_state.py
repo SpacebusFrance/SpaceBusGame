@@ -20,7 +20,7 @@ class GameState(DirectObject):
     default_value: Any
     state_type: StateType
     led_id: Optional[str] = None
-    power: Optional[float] = None
+    power: Optional[float] = 0.0
     hardware_key: Optional[str] = None
     _value: Optional[Any] = None
 
@@ -41,18 +41,8 @@ class GameState(DirectObject):
         raise KeyError()
 
     def reset(self) -> None:
-        # special case if we are a switch
-        if self.state_type == StateType.SWITCH:
-            # in this case, the value set with "self.value = <xxx>"
-            # is ignored, we simply set self._value -> not self._value
-            # since we want self.default_value at the end, we need to
-            # set self._value = not self.default_value here
-            self._value = not self.default_value
-
-        # this will trigger all updates in gui
-        # together with power update, led on/off
-        # and optional sounds
-        self.set_value(self.default_value)
+        # simple setting
+        self._value = self.default_value
 
     def get_value(self) -> Any:
         return self._value
@@ -60,7 +50,7 @@ class GameState(DirectObject):
     def is_on(self) -> bool:
         return self._value in [True, 1, '1']
 
-    def set_value(self, new_value: Any) -> None:
+    def set_value(self, new_value: Any, update_power: bool = True) -> None:
         # if we are a switch, we always receive "True"
         # so we need to reverse the value
         # "new_value" itself is ignored
@@ -87,7 +77,9 @@ class GameState(DirectObject):
         send_event('update_state', key=self.name)
 
         # tell engine that state is changed
-        self.engine.on_game_state_update()
+        # except if this is power
+        if self.name != 'main_power' and update_power:
+            self.engine.on_game_state_update()
 
         # and update scenario
         self.engine.scenario.update_scenario()
