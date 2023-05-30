@@ -25,7 +25,7 @@ class Window(BaseWidget):
                  pos=None,
                  on_enter=None,
                  text_color='light',
-                 text_size=0.07,
+                 text_size=0.05,
                  text_align=TextNode.ALeft,
                  password=None,
                  on_password_find=None,
@@ -67,7 +67,7 @@ class Window(BaseWidget):
         self.setTransparency(TransparencyAttrib.MAlpha)
         self._widget.initialiseoptions(DirectFrame)
 
-        self._widget_pad = 0.05
+        self._widget_pad = 0.03
         self._text_scale = text_size
 
         if title is not None:
@@ -141,7 +141,7 @@ class Window(BaseWidget):
             if icon == 'load_spinner':
                 im.hprInterval(2.0, Vec3(0, 0, 360)).loop()
 
-        if life_time > 0.0:
+        if life_time is not None and life_time > 0.0:
             self._widget.doMethodLater(life_time, lambda *args: self.destroy(), 'remove_window')
         if shadow:
             self.set_shadow()

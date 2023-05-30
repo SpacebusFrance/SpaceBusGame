@@ -37,7 +37,7 @@ class _EventHandler:
 
     def _on_event(self, name, kwargs):
         if name in self._methods:
-            Logger.info(f'-> catching event "{name}"')
+            Logger.info(f'-> catching event "{name}" with kwargs: {kwargs}')
             for func, args in self._methods[name]:
                 func(*args, kwargs)
 

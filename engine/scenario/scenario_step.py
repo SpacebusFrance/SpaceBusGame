@@ -108,13 +108,15 @@ class Step:
         Logger.warning('fulfilling step', self.name)
 
         if self.constraints is not None:
-            for value, key in self.constraints.items():
+            for key, value in self.constraints.items():
+                Logger.warning(f'- forcing {key}={value}')
                 if isinstance(value, list):
                     value = 0.5 * (value[1] + value[0])
                 if not self.engine.update_hard_state(key, value):
-                    self.engine.update_soft_state(key, value)
+                    self.engine.update_soft_state(key, value, force_power=True)
         else:
             self.end(False)
+        Logger.warning('- step forced')
 
     def is_fulfilled(self, wait_end_if_fulfilled=True):
         """

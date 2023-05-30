@@ -15,7 +15,7 @@ class VideoWindow(Window):
                  start=True,
                  title=None,
                  text=None,
-                 file_format='avi',
+                 file_format='avi',                                     
                  **kwargs):
         super(VideoWindow, self).__init__(gui_engine, size_x=size_x, size_y=size_y, title=title, text=text, **kwargs)
 

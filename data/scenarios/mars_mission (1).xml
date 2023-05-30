@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenario>
     <group name="debut de jeux">
+
+        <!-- wait for key button pressed -->
+        <step action="keyboard" key="control-enter"/>    
         <step action="play_sound" name="ok" duration="0"/>
         <step action="set_screen" duration="0.0" name="go_to_mars"/>
 
@@ -59,6 +62,8 @@
         <!-- fréquence urgence-->
         <step action="play_sound" name="voice_emergency_freq" duration="10"/>
 
+        <step action="enable_hardware"/>
+
         <step action="info" close_time="20" title="$title_procedure$" text="$text_procedure_pu2$">
             <condition key="freq_comm" value="310"/>
         </step>
@@ -68,6 +73,7 @@
 
         <step action="play_sound" name="bips" duration="0"/>
         <step action="led_on" id="l_antenne_com" duration="0"/>
+
         <!-- this time can be adapted -->
         <step action="play_sound" name="human_3" duration="7"/>
         <step action="play_sound" name="human_pu4" duration="18"/>
@@ -120,6 +126,8 @@
         <step action="info" close_time="20" title="$title_procedure$" text="$text_procedure_pa2$">
             <condition key="pilote_automatique2" value="True"/>
         </step>
+        <step action="disable_hardware"/>
+
     </group>
 
     <group name="good end">

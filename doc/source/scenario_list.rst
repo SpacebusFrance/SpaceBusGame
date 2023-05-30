@@ -6,28 +6,16 @@ demo
 .. literalinclude:: ../../data/scenarios/demo.xml
 	:language: xml
 
-demo static
-###########
+mars mission (1)
+################
 
-.. literalinclude:: ../../data/scenarios/demo_static.xml
+.. literalinclude:: ../../data/scenarios/mars_mission (1).xml
 	:language: xml
 
-go to mars
-##########
+mars sample (2)
+###############
 
-.. literalinclude:: ../../data/scenarios/go_to_mars.xml
-	:language: xml
-
-lost astronaut
-##############
-
-.. literalinclude:: ../../data/scenarios/lost_astronaut.xml
-	:language: xml
-
-scenario test
-#############
-
-.. literalinclude:: ../../data/scenarios/scenario_test.xml
+.. literalinclude:: ../../data/scenarios/mars_sample (2).xml
 	:language: xml
 
 test

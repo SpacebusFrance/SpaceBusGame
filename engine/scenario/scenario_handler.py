@@ -48,8 +48,8 @@ class Scenario(EventObject):
                     # default duration o sound length + 1 second
                     duration = self.engine.sound_manager.get_sound_length(args_dict.get("name", None)) + 1.0
 
-                elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score",
-                                "stop_sound", "sound_volume", "update_software_state"]:
+                elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score", "set_screen",
+                                "stop_sound", "sound_volume", "update_software_state", "enable_hardware", "disable_hardware"]:
                     # these actions have a default duration to 0.0
                     duration = 0.0
 
@@ -63,6 +63,7 @@ class Scenario(EventObject):
                 if delay in self.pending_steps:
                     Logger.error('there is already a step for delay :', delay)
                 # add an Event in delay seconds
+                Logger.info(f'adding a delayed event {action} in {delay} seconds.')
                 self.pending_steps[delay] = Event(
                     self.engine,
                     id=id,
@@ -71,6 +72,7 @@ class Scenario(EventObject):
                 )
             else:
                 # it is a standard blocking step
+                Logger.info(f'adding a blocking event {action}.')
                 self.steps.append(Step(
                     self.engine,
                     end_conditions=end_conditions,
@@ -456,6 +458,14 @@ class Scenario(EventObject):
 
         self.engine.shuttle.dynamic_goto(pos, power=power, t_spin=7.0, end_func=_end)
 
+    @event('keyboard')
+    def on_keyboard(self, key):
+        def on_key():
+            # self.fulfill_current_step()
+            self.start_next_step()
+
+        self.accept_once(key, on_key)
+
     @event('wait')
     def on_wait(self):
         pass
@@ -571,6 +581,10 @@ class Scenario(EventObject):
                 and next step is started
         """
         if len(self.steps) > self.current_step >= 0:
+            Logger.info('updating scenario ...')
             step = self.steps[self.current_step]
             if step.is_fulfilled(wait_end_if_fulfilled=wait_end_if_fulfilled):
                 step.end(True)
+            else:
+                Logger.info('current step is not fullfiled yet. Continuing')
+

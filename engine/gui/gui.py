@@ -52,7 +52,7 @@ class Gui(EventObject):
         self.image_path = self.engine("control_screen_image_path")
 
         # read text correspondence
-        self._text_file = pd.read_csv(self.engine('text_file'), sep=',', index_col='key').fillna('NaN')
+        self._text_file = pd.read_csv(self.engine('text_file'), sep=';', index_col='key').fillna('NaN')
         self.screen = None
 
     def admin_screen(self):
@@ -100,14 +100,12 @@ class Gui(EventObject):
 
     def hide_cursor(self):
         # hide cursor
-        Logger.error('HIDING cursor')
         props = WindowProperties()
         props.setCursorHidden(True)
         self.engine.win.requestProperties(props)
 
     def show_cursor(self):
         # show cursor
-        Logger.error('SHOWING cursor')
         props = WindowProperties()
         props.setCursorFilename(os.path.join(self.engine('image_path'), self.engine('cursor_file')))
         props.setCursorHidden(False)
@@ -203,20 +201,20 @@ class Gui(EventObject):
         self.end_screen()
 
     @event('info')
-    def on_info(self, icon='chat', title='$info_title$', text='', close_time=-1, close_on_enter=True,
+    def on_info(self, icon='chat', title='$info_title$', text='', duration=-1, close_on_enter=True,
                 color='dark-window', **kwargs):
         self.set_current_window(
             icon=icon,
             title=self.process_text(title),
             text=self.process_text(text),
-            life_time=close_time,
+            life_time=duration,
             on_enter=self.close_window_and_go if close_on_enter else None,
             color=color,
             **kwargs
         )
 
     @event('password')
-    def on_password(self, icon='caution', title='$password_title$', text='', close_time=-1, password='', format=None,
+    def on_password(self, icon='caution', title='$password_title$', text='', duration=-1, password='', format=None,
                     on_password_find=None, color='dark-window', **kwargs):
         def format_target(x):
             x = x.replace('-', '')[:6]
@@ -233,7 +231,7 @@ class Gui(EventObject):
             icon=icon,
             title=self.process_text(title),
             text=self.process_text(text),
-            life_time=close_time,
+            life_time=duration,
             password=password,
             on_password_find=self.close_window_and_go if on_password_find is None else on_password_find,
             color=color,
@@ -241,7 +239,7 @@ class Gui(EventObject):
         )
 
     @event('video')
-    def on_video(self, name, size_x=1.0, size_y=0.8, close_time=-1, start=True, color='dark-window',
+    def on_video(self, name, size_x=1.0, size_y=0.8, duration=-1, start=True, color='dark-window',
                  title='$video_title$', text='$video_text$', **kwargs):
         self.set_current_window(
             VideoWindow,
@@ -249,7 +247,7 @@ class Gui(EventObject):
             video_path=name,
             size_x=size_x,
             size_y=size_y,
-            life_time=close_time,
+            life_time=duration,
             start=start,
             title=self.process_text(title),
             text=self.process_text(text),
@@ -258,14 +256,14 @@ class Gui(EventObject):
         )
 
     @event('warning')
-    def on_warning(self, icon='caution', close_time=-1, color='dark-window', title='$warning_title$', text='',
+    def on_warning(self, icon='caution', duration=-1, color='dark-window', title='$warning_title$', text='',
                    close_on_enter=True, **kwargs):
         self.set_current_window(
             color=color,
             icon=icon,
             title=self.process_text(title),
             text=self.process_text(text),
-            life_time=close_time,
+            life_time=duration,
             on_enter=self.close_window_and_go if close_on_enter else None,
             **kwargs
         )

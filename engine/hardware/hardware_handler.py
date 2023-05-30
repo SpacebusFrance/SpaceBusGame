@@ -1,5 +1,5 @@
 import pygame
-from direct.showbase import DirectObject
+from engine.utils.event_handler import EventObject, event, send_event
 from direct.showbase.MessengerGlobal import messenger
 from direct.showbase.ShowBase import ShowBase
 
@@ -7,9 +7,9 @@ from engine.hardware.arduino import WriteOnlyArduino
 from engine.utils.logger import Logger
 
 
-class HardwareHandler(DirectObject.DirectObject):
+class HardwareHandler(EventObject):
     def __init__(self, engine):
-        DirectObject.DirectObject.__init__(self)
+        super().__init__()
         pygame.init()
 
         self.engine = engine
@@ -36,10 +36,6 @@ class HardwareHandler(DirectObject.DirectObject):
                 self._joysticks.append(pygame.joystick.Joystick(i))
                 self._joysticks[-1].init()
 
-        # add the task only if it makes sense
-        if len(self._joysticks) > 0:
-            self.engine.taskMgr.add(self._event_polling, 'Hardware_Polling')
-
         # ghost firewall
         self.times = dict()
         self.tasks = dict()
@@ -50,12 +46,29 @@ class HardwareHandler(DirectObject.DirectObject):
                 self.times[f'joystick{j}-button{b}'] = self.engine.get_time(round_result=False)
                 self.tasks[f'joystick{j}-button{b}'] = None
 
-        self.reset()
+    def myFunc(self, keyname):
+            print('key down:', keyname)
 
     def _hardware_state(self, key):
         if key is None:
             return self.engine.hard_states
         return self.engine.get_hard_state(key)
+
+    @event('enable_hardware')
+    def enable_inputs(self) -> None:
+        """
+        Enable hardware inputs
+        """
+        self.engine.taskMgr.add(self._event_polling, 'Hardware_Polling')
+        self.engine.update_soft_state("listen_to_hardware", True)
+
+    @event('disable_hardware')
+    def disable_inputs(self) -> None:
+        """
+        Disable hardware inputs
+        """
+        self.engine.taskMgr.remove('Hardware_Polling')
+        self.engine.update_soft_state("listen_to_hardware", False)
 
     def reset(self):
         """
@@ -184,13 +197,21 @@ class HardwareHandler(DirectObject.DirectObject):
                 self.times[event_name] = t0
 
                 if dt > self.firewall_time:
+                    # for TEST
+                    self.tasks[event_name] = self.engine.task_mgr.do_method_later(
+                        1.1 * self.firewall_time,
+                        lambda *_: messenger.send(event_name, sentArgs=[value]),
+                        name=event_name
+                    )
+
                     # if it is a switch, we just reverse its value
                     if in_game_name.startswith("s_"):
                         value = not self._hardware_state(in_game_name)
-                    self.tasks[event_name] = self.engine.task_mgr.do_method_later(1.1 * self.firewall_time,
-                                                                                  self._process_event,
-                                                                                  name=event_name,
-                                                                                  extraArgs=[in_game_name, value])
+                    self.tasks[event_name] = self.engine.task_mgr.do_method_later(
+                        1.1 * self.firewall_time,
+                        self._process_event,
+                        name=event_name,
+                        extraArgs=[in_game_name, value])
                 else:
                     # firewall !
                     if self.tasks[event_name] is not None:

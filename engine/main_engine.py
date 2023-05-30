@@ -5,8 +5,10 @@ from math import sqrt
 
 from direct.showbase.ShowBase import ShowBase, ClockObject
 from panda3d.core import AntialiasAttrib, LVector3f
+from direct.gui.OnscreenImage import OnscreenImage
 
 from engine.display.camera import FreeCameraControl
+from engine.game_state import GameStateManager
 from engine.gui.gui import Gui
 from engine.hardware.hardware_handler import HardwareHandler
 from engine.scenario.scenario_handler import Scenario
@@ -25,11 +27,25 @@ from engine.meshes.sky_dome import SkyDome
 from engine.utils.event_handler import send_event
 from engine.utils.ini_parser import ParamUtils
 from engine.utils.logger import Logger
+from direct.gui.OnscreenText import WindowProperties
 
 
 class Game(ShowBase):
     def __init__(self, param_file, default_param_file):
         ShowBase.__init__(self)
+
+        # splashscreen
+        props = WindowProperties()
+        props.set_undecorated(True)
+        props.set_size(800, 600)
+        self.win.request_properties(props)
+        OnscreenImage(image='data/gui/images/splashscreen.png', parent=self.render2d)
+        # render three (?) frames to actually see
+        self.graphicsEngine.renderFrame()
+        self.graphicsEngine.renderFrame()
+        self.graphicsEngine.renderFrame()
+
+        # loading start
 
         self.hard_states = dict()
         self.soft_states = dict()
@@ -92,6 +108,9 @@ class Game(ShowBase):
         else:
             # hardware
             self.hardware = HardwareHandler(self)
+
+            # state manager
+            self.state_manager = GameStateManager()
 
             # power
             self.power = PowerHandler(self)
@@ -251,21 +270,29 @@ class Game(ShowBase):
         """
         # remove admin key trigger
         self.ignore(self('admin_key'))
+        # ignore step fulfill
+        self.ignore(self('force_step_key'))
 
         self.clock.reset()
         self.sound_manager.reset()
 
         self.load_config()
 
+        # reset hardware
+        self.state_manager.reset()
         self.power.reset()
         self.hardware.all_leds_off()
+        self.hardware.disable_inputs()
 
+        # reset scenario
         self.scenario.reset()
         if isinstance(scenario, str):
             # load a new scenario
             self.scenario.load_scenario(scenario)
 
+        # reset shuttle
         self.shuttle.reset()
+        # reset ui
         self.gui.reset(show_menu=not start)
 
         if start:
@@ -282,11 +309,42 @@ class Game(ShowBase):
         """
         Starts the current scenario
         """
+        # always listen to admin key
         self.accept(self('admin_key'), self.gui.admin_screen)
+        self.accept(self('force_step_key'), self.scenario.fulfill_current_step)
+
         self.gui.hide_cursor()
         self.sound_manager.stop_music()
         self.sound_manager.play_ambient_sound()
         self.scenario.start_game()
+
+    ## new state manager
+    def on_game_state_update(self) -> None:
+        self.update_power()
+        self.check_solar_panels()
+
+    def update_power(self) -> None:
+        power = 0
+        for item in self.state_manager.states().values():
+            if item.is_on():
+                power += item.power
+
+        self.state_manager.sp_power.set_value(
+            round(
+                self.state_manager.sp_max_power.get_value() /
+                sqrt(1 + self.state_manager.offset_ps_x.get_value() ** 2
+                     + self.state_manager.offset_ps_y.get_value() ** 2),
+                3)
+        )
+        self.state_manager.main_power.set_value(self.state_manager.sp_power.get_value() + power)
+
+    def check_solar_panels(self) -> None:
+        is_nominal = self.state_manager.offset_ps_x.get_value() == self.state_manager.offset_ps_y.get_value() == 0
+        if is_nominal:
+            self.sound_manager.play_sfx("sp_nominal")
+            self.hardware.set_led_on("l_ps_nominal")
+        else:
+            self.hardware.set_led_off("l_ps_nominal")
 
     def get_soft_state(self, state_key):
         """
@@ -342,6 +400,7 @@ class Game(ShowBase):
             silent (bool): specifies if any sound should be played
         """
         if state_key in self.soft_states:
+            Logger.info(f'setting SOFT state {state_key}={value}')
             if (not self("use_power") or force_power or not value
                 or (value and self("use_power") and self.power.can_be_switched_on(state_key))) \
                     and self.soft_states[state_key] != value:
@@ -438,6 +497,8 @@ class Game(ShowBase):
                         self.soft_states["pilote_automatique_failed"] = False
                         Logger.print("(soft state update) : {0} -> {1}".format(state_key, False), color='bold')
             return True
+
+        Logger.warning(f'unknown SOFT state {state_key}')
         return False
 
     def update_hard_state(self, state_key, value, silent=False):
@@ -456,7 +517,13 @@ class Game(ShowBase):
 
         # only do it if the key exists and if we listen to hardware and if the value is different from the previous one
         # (to avoid spam of joysticks_axis = 0.0)
-        elif state_key in self.hard_states and self.get_soft_state("listen_to_hardware") and value != self.hard_states[state_key]:
+        # elif state_key in self.hard_states:
+        elif not self.get_soft_state('listen_to_hardware'):
+            Logger.warning(f'listen_to_hardware is set to FALSE, cannot update HARD state {state_key}')
+            return False
+        # elif value == self.hard_states[state_key]:
+        #     Logger.warning(f'trying to set HARD state {state_key}={value} but value already set')
+        else:
             Logger.print(f"(hard state update) : {state_key} -> {value}", color='bold')
             self.hard_states[state_key] = value
 
@@ -500,9 +567,8 @@ class Game(ShowBase):
             self.update_soft_state(state_key.split('_', 1)[1], value)
 
             return True
-        elif not self.get_soft_state("listen_to_hardware"):
-            Logger.warning(f'Ignoring hardware: soft state "listen_to_hardware" set to False while trying to set '
-                           f'"{value}" to "{state_key}"')
+        # else:
+        #     Logger.warning(f'unknown HARD state {state_key}')
         return False
 
     def reset_hardware(self):

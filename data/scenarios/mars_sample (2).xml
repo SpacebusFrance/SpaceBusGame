@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario>
+    <group name="debut de jeux">
+        <!-- wait for key button pressed -->
+        <step action="keyboard" key="control-enter"/>      
+        <step action="play_sound" name="ok" duration="0"/>
+        <!-- set the screen "lost_astronaut" (nevermind the name) -->
+        <step action="set_screen" name="lost_astronaut"/>
+
+        <!-- lock password -->
+        <step action="password" password="XXX" title="$la_lock_tile$" text="$la_lock_text$" icon="locked"/>
+        <!-- <step action="play_sound" name="ok" duration="0"/> -->
+
+        <!-- setup timer -->
+        <event action="start_chrono" time="900" delay="15"/>
+        <event action="goto_step" goto_id="end" delay="915"/>
+
+        <!-- game instructions -->
+        <step action="info" title="$la_game_info_title$" text="$la_instructions$" duration="30" icon="compose" close_on_enter="False"/>
+
+        <step action="enable_hardware"/>
+<!--        &lt;!&ndash; game unlock condition &ndash;&gt;-->
+        <step action="wait">
+            <condition key="pilote_automatique1" value="True"/>
+            <condition key="pilote_automatique2" value="True"/>
+            <condition key="correction_roulis" value="True"/>
+            <condition key="correction_stabilisation" value="True"/>
+            <condition key="correction_direction" value="True"/>
+        </step>
+        <step action="disable_hardware"/>
+
+        <step action="info" title="$la_game_info_title$" text="$la_game_info_text$" duration="15" icon="gamecontroller"/>
+        <!-- start game -->
+        <step action="2d_game_start" goal="30"/>
+        <!-- display code -->
+        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" duration="5"/>
+
+        <!-- wait for end -->
+        <step action="wait"/>
+    </group>
+    <group id="end">
+        <step action="info" title="$la_chrono_end_title$" text="$la_chrono_end_text$" duration="10" icon="caution"/>
+    </group>
+</scenario>
