@@ -82,8 +82,6 @@ class MainScreen(EventObject):
             else:
                 # it is a gauge, set the value between 0 and 1
                 self._texts[key].set_value(self._get_value(key) / 100)
-        else:
-            Logger.warning(f'key "{key}" to update is not in the screen !')
 
     def _format(self, name, value=False):
         """
@@ -110,7 +108,7 @@ class MainScreen(EventObject):
         Returns:
             its value
         """
-        return self.engine.get_soft_state(key)
+        return self.engine.state_manager.get_state(key).get_value() # get_soft_state(key)
 
     def make(self):
         """

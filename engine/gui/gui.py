@@ -437,8 +437,8 @@ class Gui(EventObject):
         #     elif self.engine("keyboard_controls_shuttle"):
         #         self.keyboard_as_shuttle_control()
 
-    def _switch_state(self, key):
-        if self.engine.get_hard_state(key):
-            self.engine.update_hard_state(key, False)
-        else:
-            self.engine.update_hard_state(key, True)
+    # def _switch_state(self, key):
+    #     if self.engine.get_hard_state(key):
+    #         self.engine.update_hard_state(key, False)
+    #     else:
+    #         self.engine.update_hard_state(key, True)

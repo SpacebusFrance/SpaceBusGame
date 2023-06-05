@@ -16,7 +16,7 @@ def send_event(_event_name, *_, **kwargs) -> None:
         *_: **ignored**
         **kwargs: optional named arguments
     """
-    Logger.info(f'sending event "{_event_name}" with params, {kwargs}')
+    # Logger.info(f'sending event "{_event_name}" with params, {kwargs}')
     # check if this event is recorded somewhere
     if f'event_{_event_name}' not in event_handler.events:
         Logger.error(f'-> no listener for event "{_event_name}" !')
@@ -37,7 +37,7 @@ class _EventHandler:
 
     def _on_event(self, name, kwargs):
         if name in self._methods:
-            Logger.info(f'-> catching event "{name}" with kwargs: {kwargs}')
+            # Logger.info(f'-> catching event "{name}" with kwargs: {kwargs}')
             for func, args in self._methods[name]:
                 func(*args, kwargs)
 

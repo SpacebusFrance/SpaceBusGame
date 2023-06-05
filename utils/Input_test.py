@@ -101,31 +101,31 @@ class HardwareHandler(DirectObject.DirectObject):
 
         self.all_leds_off()
 
-    def _hardware_state(self, key):
-        if key is None:
-            return self.gameEngine.hard_states
-        return self.gameEngine.get_hard_state(key)
+    # def _hardware_state(self, key):
+    #     if key is None:
+    #         return self.gameEngine.hard_states
+    #     return self.gameEngine.get_hard_state(key)
 
-    def reset_leds(self):
-        """
-        Reads the initial state of all switches and sets the corresponding leds to on/off
-        """
-        hardwares = self._hardware_state(None)
-
-        for val in hardwares:
-            if val.startswith('l_'):
-                if hardwares[val]:
-                    self.set_led_on(val)
-                else:
-                    self.set_led_off(val)
-
-        # new loop over dependant leds
-        for led_name in self.controlled_leds:
-            if led_name in hardwares:
-                if hardwares[led_name]:
-                    self.set_led_on(led_name)
-                else:
-                    self.set_led_off(led_name)
+    # def reset_leds(self):
+    #     """
+    #     Reads the initial state of all switches and sets the corresponding leds to on/off
+    #     """
+    #     hardwares = self._hardware_state(None)
+    #
+    #     for val in hardwares:
+    #         if val.startswith('l_'):
+    #             if hardwares[val]:
+    #                 self.set_led_on(val)
+    #             else:
+    #                 self.set_led_off(val)
+    #
+    #     # new loop over dependant leds
+    #     for led_name in self.controlled_leds:
+    #         if led_name in hardwares:
+    #             if hardwares[led_name]:
+    #                 self.set_led_on(led_name)
+    #             else:
+    #                 self.set_led_off(led_name)
 
     def all_leds_on(self):
         self.arduino.all_on()

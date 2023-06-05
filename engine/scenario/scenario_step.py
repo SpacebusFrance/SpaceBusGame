@@ -72,34 +72,35 @@ class Step:
         """
         Start this step
         """
-        Logger.print('\n[{0}] starting step "{1}" (id "{2}", n° {3}, starts in {4} s.)'.format(self.engine.get_time(True),
-                                                                                               self.name,
-                                                                                               self.id,
-                                                                                               self.counter,
-                                                                                               self.t_start),
+        Logger.print(f'\n[{self.engine.get_time(True)}] starting step "{self.name}" (id "{self.id}", '
+                     f'n° {self.counter}, starts in {self.t_start:.2f} seconds',
                      color='blue')
-        Logger.print('\t- time max \t\t: {} s.'.format(self.t_max if self.t_max is not None else 'infinity'),
+        Logger.print(f'\t- time max \t\t: {self.t_max if self.t_max is not None else "infinity"} seconds.',
                      color='blue')
-        Logger.print('\t- conditions\t: {}'.format(self.constraints), color='blue')
+        Logger.print(f'\t- conditions\t: {self.constraints}', color='blue')
 
         if self.constraints is None and self.t_max is None:
             Logger.warning('this step has no end conditions nor max time')
         if self.t_max is not None:
-            self._loose_task = self.scenario.doMethodLater(self.t_start + self.t_max, self.end, extraArgs=[False],
-                                                           name=self.name)
+            self._loose_task = self.scenario.doMethodLater(
+                self.t_start + self.t_max,
+                self.end,
+                extraArgs=[False],
+                name=self.name)
         if self._event_name is not None:
             if self.t_start > 0:
-                self._to_do_task = self.scenario.doMethodLater(self.t_start,
-                                                               lambda *args: send_event(self._event_name,
-                                                                                        **self._event_kwargs),
-                                                               name=self.name)
+                self._to_do_task = self.scenario.doMethodLater(
+                    self.t_start,
+                    lambda *args: send_event(self._event_name, **self._event_kwargs),
+                    name=self.name)
             else:
                 send_event(self._event_name, **self._event_kwargs)
                 # self.scenario.event(self._event_name, self._event_kwargs)
         if self._hint_sound is not None and self._hint_time is not None:
-            self._hint_task = self.scenario.doMethodLater(self.t_start + self._hint_time,
-                                                          self.engine.sound_manager.play_sfx,
-                                                          extraArgs=[self._hint_sound], name=self.name + "_hint")
+            self._hint_task = self.scenario.doMethodLater(
+                self.t_start + self._hint_time,
+                self.engine.sound_manager.play_sfx,
+                name=self.name + "_hint")
 
     def force_fulfill(self):
         """
@@ -109,11 +110,13 @@ class Step:
 
         if self.constraints is not None:
             for key, value in self.constraints.items():
-                Logger.warning(f'- forcing {key}={value}')
-                if isinstance(value, list):
-                    value = 0.5 * (value[1] + value[0])
-                if not self.engine.update_hard_state(key, value):
-                    self.engine.update_soft_state(key, value, force_power=True)
+                if self.engine.state_manager.get_state(key).get_value() != value:
+                    Logger.warning(f'- forcing {key}={value}')
+                    # if isinstance(value, list):
+                    #     value = 0.5 * (value[1] + value[0])
+                    self.engine.state_manager.get_state(key).set_value(value, update_power=False)
+                # if not self.engine.update_hard_state(key, value):
+                #     self.engine.update_soft_state(key, value, force_power=True)
         else:
             self.end(False)
         Logger.warning('- step forced')
@@ -128,10 +131,10 @@ class Step:
         if self.constraints is not None:
             for key in self.constraints:
                 value = self.constraints[key]
-                game_value = self.engine.get_soft_state(key)
+                game_value = self.engine.state_manager.get_state(key).get_value()
 
-                if game_value is None:
-                    game_value = self.engine.get_hard_state(key)
+                # if game_value is None:
+                #     game_value = self.engine.get_hard_state(key)
 
                 if isinstance(value, list):
                     if min(value) > game_value or game_value > max(value):

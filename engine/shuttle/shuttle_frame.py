@@ -96,7 +96,7 @@ class ShuttleFrame(DirectObject.DirectObject):
         self.stop()
 
         if update_is_moving:
-            self._engine.update_soft_state("is_moving", True)
+            self._engine.state_manager.is_moving.set_value(True)
         self._mvt_tasks = self.frame.hprInterval(time, hpr, self.frame.get_hpr(), blendType='easeInOut')
 
         self._mvt_tasks.start()
@@ -104,7 +104,7 @@ class ShuttleFrame(DirectObject.DirectObject):
         def end(_):
             self.stop(play_sound=False)
             if update_is_moving:
-                self._engine.update_soft_state("is_moving", False)
+                self._engine.state_manager.is_moving.set_value(False)
             if hasattr(end_func, '__call__'):
                 end_func.__call__()
 
@@ -119,7 +119,8 @@ class ShuttleFrame(DirectObject.DirectObject):
         v = LVector3f(target if target is not None else (0, 0, 0))
 
         if update_is_moving:
-            self._engine.update_soft_state("is_moving", True)
+            self._engine.state_manager.is_moving.set_value(True)
+            # self._engine.state_manager.is_moving.set_value(True)
 
         self._mvt_tasks = self.frame.hprInterval(time, get_hpr(v - self.frame.get_pos()), self.frame.get_hpr(),
                                                  blendType='easeInOut')
@@ -129,7 +130,7 @@ class ShuttleFrame(DirectObject.DirectObject):
         def end(_):
             self.stop(play_sound=False)
             if update_is_moving:
-                self._engine.update_soft_state("is_moving", False)
+                self._engine.state_manager.is_moving.set_value(False)
             if hasattr(end_func, '__call__'):
                 end_func.__call__()
 
@@ -142,7 +143,7 @@ class ShuttleFrame(DirectObject.DirectObject):
         model.reparentTo(self.frame)
 
     def dynamic_goto(self, target, power=1, t_spin=5.0, end_func=None):
-        self._engine.update_soft_state("is_moving", True)
+        self._engine.state_manager.is_moving.set_value(True)
         self.stop()
 
         v = LVector3f(target if target is not None else (0, 0, 0))
@@ -167,7 +168,7 @@ class ShuttleFrame(DirectObject.DirectObject):
 
         def end(_):
             self.stop(play_sound=False)
-            self._engine.update_soft_state("is_moving", False)
+            self._engine.state_manager.is_moving.set_value(False)
             if hasattr(end_func, '__call__'):
                 end_func.__call__()
 

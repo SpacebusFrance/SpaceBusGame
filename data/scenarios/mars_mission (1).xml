@@ -3,10 +3,12 @@
     <group name="debut de jeux">
 
         <!-- wait for key button pressed -->
-        <step action="keyboard" key="control-enter"/>    
+        <step action="keyboard" key="control-enter"/>
         <step action="play_sound" name="ok" duration="0"/>
         <step action="set_screen" duration="0.0" name="go_to_mars"/>
 
+
+        <step action="led_on" led="antenne_com" duration="0"/>
         <!-- set chronometer and time limit -->
 <!--        <event action="goto_step" goto_id="wrong_end" game_time="40"/>-->
 <!--        <step action="start-chrono" time="40" duration="0"/>-->
@@ -52,16 +54,17 @@
         <step action="shuttle_goto" x="500" y="10" z="0" power="200" duration="12.5"/>
 
          <!--collision -->
-        <step action="collision_new" duration="2"/>
+        <step action="collision" duration="2"/>
         <step action="play_sound" name="alarm" duration="0" loop="True"/>
         <step action="warning" duration="10" title="$title_collision_info$" text="$text_collision_info$"/>
         <step action="password" password="15Hu7" title="$title_collision_password$" text="$text_collision_password$"/>
         <step action="stop_sound" name="alarm"/>
     </group>
     <group name="partie joueur">
-        <!-- fréquence urgence-->
+        <!-- emergency frequency -->
         <step action="play_sound" name="voice_emergency_freq" duration="10"/>
 
+        <!-- enable hardware listening -->
         <step action="enable_hardware"/>
 
         <step action="info" close_time="20" title="$title_procedure$" text="$text_procedure_pu2$">
@@ -72,7 +75,7 @@
 <!--        <step action="oxygen_leak" duration="1"/>-->
 
         <step action="play_sound" name="bips" duration="0"/>
-        <step action="led_on" id="l_antenne_com" duration="0"/>
+        <step action="led_on" led="antenne_com" duration="0"/>
 
         <!-- this time can be adapted -->
         <step action="play_sound" name="human_3" duration="7"/>
@@ -104,7 +107,6 @@
         <step action="wait" duration="3.0"/>
         <step action="play_sound" name="human_pu7"/>
 
-
         <!-- PU7 -->
         <!-- 180 = 3 MINUTES POUR L"INDICE DES PANNEAUX-->
         <step action="info" close_time="20" title="$title_procedure$" text="$text_procedure_pu7$" hint_sound="human_hint_pu7" hint_time="180">
@@ -134,8 +136,8 @@
         <step action="wait" duration="2.0"/>
         <step action="play_sound" name="human_p_a_ok" duration="10"/>
         <step action="end_game"/>
-        <step action="led_off" id="l_alert0"/>
-        <step action="led_off" id="l_alert1"/>
+        <step action="led_off" led="l_alert0"/>
+        <step action="led_off" led="l_alert1"/>
 
         <!-- LAST MOVE -->
         <step action="play_sound" name="end_music" duration="0"/>

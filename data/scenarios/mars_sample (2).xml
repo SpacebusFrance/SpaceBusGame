@@ -2,7 +2,7 @@
 <scenario>
     <group name="debut de jeux">
         <!-- wait for key button pressed -->
-        <step action="keyboard" key="control-enter"/>      
+        <step action="keyboard" key="control-enter"/>
         <step action="play_sound" name="ok" duration="0"/>
         <!-- set the screen "lost_astronaut" (nevermind the name) -->
         <step action="set_screen" name="lost_astronaut"/>
@@ -21,11 +21,11 @@
         <step action="enable_hardware"/>
 <!--        &lt;!&ndash; game unlock condition &ndash;&gt;-->
         <step action="wait">
-            <condition key="pilote_automatique1" value="True"/>
-            <condition key="pilote_automatique2" value="True"/>
-            <condition key="correction_roulis" value="True"/>
-            <condition key="correction_stabilisation" value="True"/>
-            <condition key="correction_direction" value="True"/>
+            <condition key="pilote_automatique1" value="False"/>
+            <condition key="pilote_automatique2" value="False"/>
+            <condition key="correction_roulis" value="False"/>
+            <condition key="correction_stabilisation" value="False"/>
+            <condition key="correction_direction" value="False"/>
         </step>
         <step action="disable_hardware"/>
 

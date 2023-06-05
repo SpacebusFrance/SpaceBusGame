@@ -127,7 +127,7 @@ class Window(BaseWidget):
                                    lambda *args: on_entry_delete(self.get_entry_text()))
 
             self._widget.ignore_all()
-        elif callable(on_enter):
+        elif callable(on_enter) and life_time is not None:
             # accept on_enter at most 0.05 secs after (to avoid event conflicts)
             self._widget.do_method_later(min(0.05, 0.95 * life_time),
                                          lambda task: self._widget.accept_once('enter', on_enter, extraArgs=[self]),
@@ -162,12 +162,9 @@ class Window(BaseWidget):
         """
         if entry_text == self._password:
             self._gui_engine.engine.sound_manager.play_sfx('ok')
-            print('password OK')
             if callable(self._on_password_find):
-                print('calling on password find', self._on_password_find)
                 self._on_password_find(self)
             else:
-                print('NO CALLING', self._on_password_find)
                 self.remove_node()
         else:
             self._gui_engine.engine.sound_manager.play_sfx('wrong')

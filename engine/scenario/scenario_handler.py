@@ -316,91 +316,102 @@ class Scenario(EventObject):
         self.end_game(show_end_screen=show_end_screen,
                       save_score=save_score)
 
-    @event('collision_new')
-    def on_collision_new(self):
-        # The first impact function
-        self.engine.taskMgr.add(self.shuttle.impact, name="shake shuttle")
-        self.engine.update_soft_state("collision_occurred", True)
-        self.engine.sound_manager.stop_bips()
-
-        self.engine.taskMgr.doMethodLater(0.5, self.engine.sound_manager.play_sfx, 'fi3',
-                                          extraArgs=['gaz_leak', True, 0.5])
-        self.engine.sound_manager.stop("start_music")
-
-        # leds
-        self.engine.hardware.set_led_on("l_defficience_moteur1")
-        self.engine.hardware.set_led_on("l_defficience_moteur2")
-        self.engine.hardware.set_led_on("l_defficience_moteur3")
-        self.engine.hardware.set_led_on("l_problem0")
-        self.engine.hardware.set_led_on("l_problem1")
-        self.engine.hardware.set_led_on("l_problem2")
-        self.engine.hardware.set_led_on("l_fuite_O2")
-        self.engine.hardware.set_led_on("l_alert0")
-        self.engine.hardware.set_led_on("l_alert1")
-
-        self.engine.hardware.set_led_off("l_antenne_com")
-
-        def detection(_=None):
-            # energy problems !
-            self.engine.update_soft_state("listen_to_hardware", True)
-            self.engine.update_hard_state("s_pilote_automatique1", False, silent=True)
-            self.engine.update_hard_state("s_pilote_automatique2", False, silent=True)
-            self.engine.update_hard_state("s_correction_direction", False, silent=True)
-            self.engine.update_hard_state("s_correction_roulis", False, silent=True)
-            self.engine.update_hard_state("s_correction_stabilisation", False, silent=True)
-            self.engine.update_soft_state("listen_to_hardware", False)
-
-            self.engine.update_soft_state("moteur1", False, silent=True)
-            self.engine.update_soft_state("moteur2", False, silent=True)
-            self.engine.update_soft_state("moteur3", False, silent=True)
-            self.engine.update_soft_state("offset_ps_x", 2, silent=True)
-            self.engine.update_soft_state("offset_ps_y", 1, silent=True)
-
-        self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
-
     @event('collision')
     def on_collision(self):
+        # The first impact function
         self.engine.taskMgr.add(self.shuttle.impact, name="shake shuttle")
-        self.engine.update_soft_state("collision_occurred", True)
+        # self.engine.state_manager.collision_occurred.set_value(True)
+        self.engine.state_manager.collision_occurred.set_value(True)
         self.engine.sound_manager.stop_bips()
 
-        self.engine.taskMgr.doMethodLater(0.5, self.engine.sound_manager.play_sfx, 'fi3',
-                                          extraArgs=['gaz_leak', True, 0.5])
+        self.engine.taskMgr.doMethodLater(
+            0.5,
+            self.engine.sound_manager.play_sfx, 'fi3',
+            extraArgs=['gaz_leak', True, 0.5])
         self.engine.sound_manager.stop("start_music")
 
         # leds
-        self.engine.hardware.set_led_on("l_defficience_moteur1")
-        self.engine.hardware.set_led_on("l_defficience_moteur2")
-        self.engine.hardware.set_led_on("l_defficience_moteur3")
-        self.engine.hardware.set_led_on("l_problem0")
-        self.engine.hardware.set_led_on("l_problem1")
-        self.engine.hardware.set_led_on("l_problem2")
-        self.engine.hardware.set_led_on("l_fuite_O2")
-        self.engine.hardware.set_led_on("l_alert0")
-        self.engine.hardware.set_led_on("l_alert1")
+        self.engine.state_manager.defficience_moteur1.set_led_on()
+        self.engine.state_manager.defficience_moteur2.set_led_on()
+        self.engine.state_manager.defficience_moteur3.set_led_on()
+        self.engine.state_manager.problem0.set_led_on()
+        self.engine.state_manager.problem1.set_led_on()
+        self.engine.state_manager.problem2.set_led_on()
+        self.engine.state_manager.fuite_O2.set_led_on()
+        self.engine.state_manager.alert0.set_led_on()
+        self.engine.state_manager.alert1.set_led_on()
 
-        self.engine.hardware.set_led_off("l_antenne_com")
+        self.engine.state_manager.antenne_com.set_led_off()
 
-        def detection(e):
+        def detection(_=None):
+            kwargs = dict(
+                silent=True,
+                update_power=False,
+                update_scenario=False
+            )
+
             # energy problems !
-            self.engine.update_soft_state("listen_to_hardware", True)
-            self.engine.update_hard_state("s_pilote_automatique1", False, silent=True)
-            self.engine.update_hard_state("s_pilote_automatique2", False, silent=True)
-            self.engine.update_hard_state("s_correction_direction", False, silent=True)
-            self.engine.update_hard_state("s_correction_roulis", False, silent=True)
-            self.engine.update_hard_state("s_correction_stabilisation", False, silent=True)
-            self.engine.update_soft_state("listen_to_hardware", False)
+            self.engine.state_manager.pilote_automatique1.set_value(False, **kwargs)
+            self.engine.state_manager.pilote_automatique2.set_value(False, **kwargs)
+            self.engine.state_manager.correction_direction.set_value(False, **kwargs)
+            self.engine.state_manager.correction_roulis.set_value(False, **kwargs)
+            self.engine.state_manager.correction_stabilisation.set_value(False, **kwargs)
 
-            self.engine.update_soft_state("moteur1", False, silent=True)
-            self.engine.update_soft_state("moteur2", False, silent=True)
-            self.engine.update_soft_state("moteur3", False, silent=True)
-            self.engine.update_soft_state("offset_ps_x", 2, silent=True)
-            self.engine.update_soft_state("offset_ps_y", 1, silent=True)
+            self.engine.state_manager.moteur1.set_value(False, **kwargs)
+            self.engine.state_manager.moteur2.set_value(False, **kwargs)
+            self.engine.state_manager.moteur3.set_value(False, **kwargs)
+            self.engine.state_manager.offset_ps_x.set_value(2, **kwargs)
+            self.engine.state_manager.offset_ps_y.set_value(1, **kwargs)
 
-            # self.engine.gui.event("alert_screen")
-            # self.engine.gui.event("warning", )
+            # finally, update power
+            self.engine.update_power()
 
         self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
+
+    # @event('collision')
+    # def on_collision(self):
+    #     self.engine.taskMgr.add(self.shuttle.impact, name="shake shuttle")
+    #     self.engine.state_manager.collision_occurred.set_value(True)
+    #     self.engine.sound_manager.stop_bips()
+    #
+    #     self.engine.taskMgr.doMethodLater(
+    #         0.5, self.engine.sound_manager.play_sfx, 'fi3',
+    #                                       extraArgs=['gaz_leak', True, 0.5])
+    #     self.engine.sound_manager.stop("start_music")
+    #
+    #     # leds
+    #     self.engine.state_manager.defficience_moteur1.set_led_on()
+    #     self.engine.state_manager.defficience_moteur2.set_led_on()
+    #     self.engine.state_manager.defficience_moteur3.set_led_on()
+    #     self.engine.state_manager.problem0.set_led_on()
+    #     self.engine.state_manager.problem1.set_led_on()
+    #     self.engine.state_manager.problem2.set_led_on()
+    #     self.engine.state_manager.fuite_O2.set_led_on()
+    #     self.engine.state_manager.alert0.set_led_on()
+    #     self.engine.state_manager.alert1.set_led_on()
+    #
+    #     self.engine.state_manager.antenne_com.set_led_off()
+    #
+    #     def detection(e):
+    #         # energy problems !
+    #         # self.engine.state_manager.listen_to_hardware.set_value(True)
+    #         self.engine.state_manager.pilote_automatique1.set_value(False, silent=True)
+    #         self.engine.state_manager.pilote_automatique2.set_value(False, silent=True)
+    #         self.engine.state_manager.correction_direction.set_value(False, silent=True)
+    #         self.engine.state_manager.correction_roulis.set_value(False, silent=True)
+    #         self.engine.state_manager.correction_stabilisation.set_value(False, silent=True)
+    #         # self.engine.state_manager.listen_to_hardware.set_value(False)
+    #
+    #         self.engine.state_manager.moteur1.set_value(False, silent=True)
+    #         self.engine.state_manager.moteur2.set_value(False, silent=True)
+    #         self.engine.state_manager.moteur3.set_value(False, silent=True)
+    #         self.engine.state_manager.offset_ps_x.set_value(2, silent=True)
+    #         self.engine.state_manager.offset_ps_y.set_value(1, silent=True)
+    #
+    #         # self.engine.gui.event("alert_screen")
+    #         # self.engine.gui.event("warning", )
+    #
+    #     self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
 
     @event('asteroid')
     def on_asteroid(self):
@@ -409,7 +420,7 @@ class Scenario(EventObject):
     @event('oxygen_leak')
     def on_oxygen_leak(self):
         send_event("set_gauge_goto_time", gauge="main_O2", time=800)
-        self.engine.update_soft_state("main_O2", 0.0)
+        self.engine.state_manager.main_O2.set_value(0.0)
         self.do_method_later(180,
                              self.engine.sound_manager.play_sfx,
                              name='sound_o2_1',
@@ -422,12 +433,12 @@ class Scenario(EventObject):
     @event('oxygen')
     def on_oxygen(self, time=420., value=0.0):
         send_event("set_gauge_goto_time", gauge="main_O2", time=time)
-        self.engine.update_soft_state("main_O2", value)
+        self.engine.state_manager.main_O2.set_value(value)
 
     @event('CO2')
     def on_co2(self, time=420., value=0.0):
         send_event("set_gauge_goto_time", gauge="main_CO2", time=time)
-        self.engine.update_soft_state("main_CO2", value)
+        self.engine.state_manager.main_CO2.set_value(value)
 
     # elementary functions
     @event('shuttle_look_at')
@@ -460,11 +471,7 @@ class Scenario(EventObject):
 
     @event('keyboard')
     def on_keyboard(self, key):
-        def on_key():
-            # self.fulfill_current_step()
-            self.start_next_step()
-
-        self.accept_once(key, on_key)
+        self.accept_once(key, self.start_next_step)
 
     @event('wait')
     def on_wait(self):
@@ -494,23 +501,27 @@ class Scenario(EventObject):
     def on_reset_leds(self):
         self.engine.sound_manager.play_sfx("engine_starts")
         self.engine.hardware.hello_world()
-        self.engine.hardware.init_states()
+        # self.engine.hardware.init_states()
 
     @event('led_on')
-    def on_led_on(self, id=None):
-        self.engine.hardware.set_led_on(id)
+    def on_led_on(self, led):
+        self.engine.state_manager.get_state(led).set_led_on()
 
     @event('led_off')
-    def on_led_off(self, id=None):
-        self.engine.hardware.set_led_off(id)
+    def on_led_off(self, led):
+        self.engine.state_manager.get_state(led).set_led_off()
 
     @event('update_hardware_state')
     def on_update_hardware_state(self, name=None, value=None):
-        self.engine.update_hard_state(name, value)
+        self.engine.state_manager.get_state(name).set_value(value)
+
+    # @event('update_state')
+    # def on_update_state(self, name=None, value=None):
+    #     self.engine.state_manager.get_state(name).set_value(value)
 
     @event('update_software_state')
     def on_update_software_state(self, name=None, value=None):
-        self.engine.update_soft_state(name, value)
+        self.engine.state_manager.get_state(name).set_value(value)
 
     def remove_incoming_events(self) -> None:
         """
