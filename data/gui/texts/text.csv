@@ -77,16 +77,17 @@ score_text;\1title\1Conception et programmation\2\n\nPaul de Fromont\n\n\1title\
 chrono_title;temps avant erreur;time before crash
 
 la_instructions;A l'intention des experts.\n\n1. Ouvrez le coffre\n2. Trouver les quatres chiffres\n3. Trouver leur ordre\n4. Récupérer les échantillons.\n\n\1red\1Attention\2 destruction des échantillons \1bold\1dans 15 minutes.\2;MISSING
+la_text;Chers experts.\n\nNous venons enfin de trouver un échantillon qui pourrait bouleverser notre vision de la vie martienne, mais nos instruments de mesures ne sont pas suffisamment précis pour en apporter la preuve formelle. Nous vous les confions pour des analyses plus poussées. Néanmoins, comme le protocole l’exige, ils sont sous scellés afin qu’ils ne tombent entre de mauvaises mains. Ils se trouvent dans un coffre fermé par un cadenas à 4 chiffres. Chacun d’entre nous a choisi un chiffre et a laissé des indices inspirés de sa vie dans le coffre. Une fois ces 4 chiffres trouvés, il vous faudra encore découvrir leur ordre pour finalement accéder aux échantillons. Comme décrit dans le protocole, les échantillons seront détruits dans 15 min. Bonne chance !;EMPTY
 la_unlocked_title;Information; Information
-la_unlocked_info;Bien joué ! Si t'es arrivé jusque là c'est que tu mérites de connaître mon \1italic\1nombre secret\2 qui est le \bold\1neuf\2;Well done crew. My secret number is: \1bold\19\2
+la_unlocked_info;Bien joué ! Si t'es arrivé jusque là c'est que tu mérites de connaître mon \1italic\1nombre secret\2 qui est le \1bold\1neuf\2;Well done crew. My secret number is: \1bold\19\2
 la_game_title;Survivant de l'espace;Space survivor
 la_game_info_title;Instructions;Instructions
 la_game_info_text;Ramassez les étoiles et évitez les astéroïdes en utilisant les flèches du clavier;Collect stars and avoid asteroids using arrow keys
 la_game_lost;Perdu ...;Lost ...
 la_game_win;Bravo !;Bravo !
 la_chrono_title;Décompte;Chronometer
-la_chrono_text;Temps avant péremption de l'échantillon;Time before sample expiration
+la_chrono_text;Temps avant péremption de l'échantillon. Passé ce délais, la navette devra être évacuée;Time before sample expiration
 la_chrono_end_title;Alerte;Alert
 la_chrono_end_text;Temps consumé ! L'échantillon est périmé si vous ne l'avez pas encore récupéré.\n\n\1bold\1Sortez de la navette\2;
-la_lock_tile;Ordinateur verrrouillé;Computer locked 
+la_lock_tile;Ordinateur verrrouillé;Computer locked
 la_lock_text;Mot de passe du \1italic\1commandant\2;Enter \1red\1Commandant\2 password

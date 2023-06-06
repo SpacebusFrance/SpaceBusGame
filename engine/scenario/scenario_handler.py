@@ -49,7 +49,8 @@ class Scenario(EventObject):
                     duration = self.engine.sound_manager.get_sound_length(args_dict.get("name", None)) + 1.0
 
                 elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score", "set_screen",
-                                "stop_sound", "sound_volume", "update_software_state", "enable_hardware", "disable_hardware"]:
+                                "stop_sound", "sound_volume", "update_software_state", "enable_hardware",
+                                "disable_hardware"]:
                     # these actions have a default duration to 0.0
                     duration = 0.0
 
@@ -368,51 +369,6 @@ class Scenario(EventObject):
 
         self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
 
-    # @event('collision')
-    # def on_collision(self):
-    #     self.engine.taskMgr.add(self.shuttle.impact, name="shake shuttle")
-    #     self.engine.state_manager.collision_occurred.set_value(True)
-    #     self.engine.sound_manager.stop_bips()
-    #
-    #     self.engine.taskMgr.doMethodLater(
-    #         0.5, self.engine.sound_manager.play_sfx, 'fi3',
-    #                                       extraArgs=['gaz_leak', True, 0.5])
-    #     self.engine.sound_manager.stop("start_music")
-    #
-    #     # leds
-    #     self.engine.state_manager.defficience_moteur1.set_led_on()
-    #     self.engine.state_manager.defficience_moteur2.set_led_on()
-    #     self.engine.state_manager.defficience_moteur3.set_led_on()
-    #     self.engine.state_manager.problem0.set_led_on()
-    #     self.engine.state_manager.problem1.set_led_on()
-    #     self.engine.state_manager.problem2.set_led_on()
-    #     self.engine.state_manager.fuite_O2.set_led_on()
-    #     self.engine.state_manager.alert0.set_led_on()
-    #     self.engine.state_manager.alert1.set_led_on()
-    #
-    #     self.engine.state_manager.antenne_com.set_led_off()
-    #
-    #     def detection(e):
-    #         # energy problems !
-    #         # self.engine.state_manager.listen_to_hardware.set_value(True)
-    #         self.engine.state_manager.pilote_automatique1.set_value(False, silent=True)
-    #         self.engine.state_manager.pilote_automatique2.set_value(False, silent=True)
-    #         self.engine.state_manager.correction_direction.set_value(False, silent=True)
-    #         self.engine.state_manager.correction_roulis.set_value(False, silent=True)
-    #         self.engine.state_manager.correction_stabilisation.set_value(False, silent=True)
-    #         # self.engine.state_manager.listen_to_hardware.set_value(False)
-    #
-    #         self.engine.state_manager.moteur1.set_value(False, silent=True)
-    #         self.engine.state_manager.moteur2.set_value(False, silent=True)
-    #         self.engine.state_manager.moteur3.set_value(False, silent=True)
-    #         self.engine.state_manager.offset_ps_x.set_value(2, silent=True)
-    #         self.engine.state_manager.offset_ps_y.set_value(1, silent=True)
-    #
-    #         # self.engine.gui.event("alert_screen")
-    #         # self.engine.gui.event("warning", )
-    #
-    #     self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
-
     @event('asteroid')
     def on_asteroid(self):
         self.engine.asteroid.spawn()
@@ -485,6 +441,14 @@ class Scenario(EventObject):
     def on_boost(self, direction=None, power=1.0):
         self.engine.shuttle.boost(direction, power)
 
+    @event('play_music')
+    def on_play_music(self, name, volume=None, loop=True):
+        self.engine.sound_manager.play_music(name, loop=loop, volume=volume)
+
+    @event('stop_music')
+    def on_stop_music(self):
+        self.engine.sound_manager.stop_music()
+
     @event('play_sound')
     def on_play_sound(self, name=None, volume=None, loop=False):
         self.engine.sound_manager.play_sfx(name, volume=volume, loop=loop)
@@ -510,18 +474,6 @@ class Scenario(EventObject):
     @event('led_off')
     def on_led_off(self, led):
         self.engine.state_manager.get_state(led).set_led_off()
-
-    @event('update_hardware_state')
-    def on_update_hardware_state(self, name=None, value=None):
-        self.engine.state_manager.get_state(name).set_value(value)
-
-    # @event('update_state')
-    # def on_update_state(self, name=None, value=None):
-    #     self.engine.state_manager.get_state(name).set_value(value)
-
-    @event('update_software_state')
-    def on_update_software_state(self, name=None, value=None):
-        self.engine.state_manager.get_state(name).set_value(value)
 
     def remove_incoming_events(self) -> None:
         """

@@ -1,3 +1,5 @@
+from direct.gui.DirectFrame import DirectFrame
+from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText
 from direct.showbase import DirectObject
 from panda3d.core import CardMaker
@@ -10,7 +12,7 @@ class MainScreen(EventObject):
     """
     Base class for main game screen
     """
-    def __init__(self, gui_engine, force_fulfill_key='f1'):
+    def __init__(self, gui_engine, image: str = 'back.png', background_color=None):
         super().__init__()
 
         self.gui = gui_engine
@@ -28,17 +30,25 @@ class MainScreen(EventObject):
         self._icon_size = 0.05
 
         ar = self.engine('screen_resolution')[0] / self.engine('screen_resolution')[1]
-        cm = CardMaker('back')
-        cm.set_color(self.gui.colors['background'])
-        cm.set_frame(-ar, ar, -1., 1.0)
+        # cm = CardMaker('back')
+        # cm.set_color(self.gui.colors['background'])
+        # cm.set_frame(-ar, ar, -1., 1.0)
         # cm.set_frame(-1, 1, -1., 1.0)
         # cm.set_frame(0, 1, -1., 1.0)
-        self._background = self.engine.aspect2d.attachNewNode(cm.generate())
+        # self._background = self.engine.aspect2d.attachNewNode(cm.generate())
+        self._background = DirectFrame(
+            image=(self.engine('image_path') + image) if image is not None else None,
+            parent=self.engine.aspect2d,
+            image_scale=(ar, 1, 1),
+            frameColor=background_color if background_color is not None else (0, 0, 0, 0),
+            frameSize=(-ar, ar, -1, 1)
+        )
+        # self._background.set_texture(self.engine('image_path') + 'back.png')
         # self._background.set_sx(5.2)
         # self._background = self.engine.render2d.attachNewNode(cm.generate())
 
-        if force_fulfill_key is not None:
-            self.accept(force_fulfill_key, self.engine.scenario.fulfill_current_step)
+        # if force_fulfill_key is not None:
+        #     self.accept(force_fulfill_key, self.engine.scenario.fulfill_current_step)
 
     def destroy(self):
         self._background.remove_node()

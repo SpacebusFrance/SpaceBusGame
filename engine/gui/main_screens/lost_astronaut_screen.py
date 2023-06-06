@@ -9,6 +9,7 @@ class LostAstronautScreen(MainScreen):
     Main screen for new scenario
     """
     def __init__(self, gui_engine, *args, **kwargs):
+        kwargs['image'] = 'back_scenar2.png'
         super().__init__(gui_engine, *args, **kwargs)
         self._terminal = None
         self._chrono = None

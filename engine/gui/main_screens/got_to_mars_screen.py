@@ -13,6 +13,7 @@ class GoToMarsScreen(MainScreen):
     Main screen for Mars Scenario (default game)
     """
     def __init__(self, gui_engine, *args, **kwargs):
+        kwargs['image'] = 'back_scenar1.png'
         super(GoToMarsScreen, self).__init__(gui_engine, *args, **kwargs)
 
         self._left_panel = ['batterie1',
@@ -77,7 +78,7 @@ class GoToMarsScreen(MainScreen):
         self._build_solar_panel()
         self._build_chrono()
 
-    def _build_shuttle_frame(self, size_x=0.9, size_y=1.8):
+    def _build_shuttle_frame(self, size_x=0.9, size_y=1.5):
         w = Window(self.gui,
                    title=self.gui.process_text('$shuttle_title$'),
                    text='',
@@ -85,7 +86,7 @@ class GoToMarsScreen(MainScreen):
                    size_x=size_x,
                    icon_size=self._icon_size,
                    icon=None,
-                   pos=(-1.2, 0.0))
+                   pos=(-1.2, -0.1))
 
         for i, e in enumerate(self._left_panel):
             # text, should not move

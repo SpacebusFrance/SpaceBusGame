@@ -104,7 +104,7 @@ class GameWindow(Window):
                             text='')
         text.setTransparency(1)
         # play music
-
+        self._gui_engine.engine.sound_manager.stop_music()
         self._gui_engine.engine.sound_manager.play_sfx('star_game_music', loop=True)
 
         if self._status == 0:
@@ -154,6 +154,7 @@ class GameWindow(Window):
             # win
             # stop music
             self._gui_engine.engine.sound_manager.stop('star_game_music')
+            self._gui_engine.engine.sound_manager.resume_music()
 
             text.setText(self._gui_engine.process_text('$la_game_win$'))
             self._interval = Sequence(

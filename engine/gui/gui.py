@@ -2,6 +2,7 @@ import math
 import os
 import re
 import pandas as pd
+from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import WindowProperties
 from panda3d.core import PGTop
 
@@ -201,7 +202,7 @@ class Gui(EventObject):
         self.end_screen()
 
     @event('info')
-    def on_info(self, icon='chat', title='$info_title$', text='', duration=-1, close_on_enter=True,
+    def on_info(self, icon='chat', title='$info_title$', text='', duration=-1, close_on_enter=True, text_size=0.05,
                 color='dark-window', **kwargs):
         self.set_current_window(
             icon=icon,
@@ -210,11 +211,12 @@ class Gui(EventObject):
             life_time=duration,
             on_enter=self.close_window_and_go if close_on_enter else None,
             color=color,
+            text_size=text_size,
             **kwargs
         )
 
     @event('password')
-    def on_password(self, icon='caution', title='$password_title$', text='', duration=-1, password='', format=None,
+    def on_password(self, icon='caution', title='$password_title$', text='', text_size=0.05, duration=-1, password='', format=None,
                     on_password_find=None, color='dark-window', **kwargs):
         def format_target(x):
             x = x.replace('-', '')[:6]
@@ -235,6 +237,7 @@ class Gui(EventObject):
             password=password,
             on_password_find=self.close_window_and_go if on_password_find is None else on_password_find,
             color=color,
+            text_size=text_size,
             **kwargs
         )
 
@@ -422,23 +425,3 @@ class Gui(EventObject):
 
         props.set_undecorated(not self.engine('decorated_window'))
         self.engine.win.request_properties(props)
-
-    def reject_keyboard(self, connect_alternative=True):
-        pass
-        # if self.currentscreen is not None:
-        #     self.currentscreen.loose_focus()
-        #
-        # if self.engine("fulfill_current_step_key_with_F1"):
-        #     self.accept('f1', self.engine.scenario.fulfill_current_step)
-        #
-        # if connect_alternative:
-        #     if self.engine("keyboard_simulates_hardware"):
-        #         self.keyboard_as_hardware()
-        #     elif self.engine("keyboard_controls_shuttle"):
-        #         self.keyboard_as_shuttle_control()
-
-    # def _switch_state(self, key):
-    #     if self.engine.get_hard_state(key):
-    #         self.engine.update_hard_state(key, False)
-    #     else:
-    #         self.engine.update_hard_state(key, True)

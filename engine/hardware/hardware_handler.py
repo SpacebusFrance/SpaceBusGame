@@ -1,7 +1,7 @@
 from typing import Union
 
 import pygame
-from engine.utils.event_handler import EventObject, event, send_event
+from engine.utils.event_handler import EventObject, event
 from direct.showbase.MessengerGlobal import messenger
 from direct.showbase.ShowBase import ShowBase
 
@@ -15,18 +15,6 @@ class HardwareHandler(EventObject):
         pygame.init()
 
         self.engine = engine
-
-        # self.events_dict = dict()
-        # self.controlled_leds = dict()
-
-        # build the dictionaries
-        # for c, l in self.engine.hardware_map[['hardware_key', 'id', 'led_id']].iterrows():
-        #     if l['led_id'] != "":
-        #         self.events_dict[str(int(l["led_id"]))] = "l_" + l["id"].replace('s_', '').replace('b_', "").replace("j_", "")
-        #         self.controlled_leds[l["id"].replace('s_', '').replace('b_', "").replace("j_", "")] = \
-        #             "l_" + l["id"].replace('s_', '').replace('b_', "").replace("j_", "")
-        #     if l["hardware_key"] != "":
-        #         self.events_dict[l["hardware_key"]] = l['id']
 
         # looking for Arduino
         self._arduino = WriteOnlyArduino(self.engine)
@@ -47,14 +35,6 @@ class HardwareHandler(EventObject):
             for b in range(10):
                 self.times[f'joystick{j}-button{b}'] = self.engine.get_time(round_result=False)
                 self.tasks[f'joystick{j}-button{b}'] = None
-
-    # def myFunc(self, keyname):
-    #         print('key down:', keyname)
-
-    # def _hardware_state(self, key):
-    #     if key is None:
-    #         return self.engine.hard_states
-    #     return self.engine.get_hard_state(key)
 
     @event('enable_hardware')
     def enable_inputs(self) -> None:
@@ -79,27 +59,6 @@ class HardwareHandler(EventObject):
         Set all leds off
         """
         self._arduino.all_off()
-
-    # def init_states(self):
-    #     """
-    #     Reads the initial state of all switches and sets the corresponding leds
-    #     """
-    #     states = self._hardware_state(None)
-    #
-    #     for val in states:
-    #         if val.startswith('l_'):
-    #             if states[val]:
-    #                 self.set_led_on(val)
-    #             else:
-    #                 self.set_led_off(val)
-    #
-    #     # new loop over dependant leds
-    #     for led_name in self.controlled_leds:
-    #         if led_name in states:
-    #             if states[led_name]:
-    #                 self.set_led_on(led_name)
-    #             else:
-    #                 self.set_led_off(led_name)
 
     def all_leds_on(self):
         """
@@ -143,35 +102,6 @@ class HardwareHandler(EventObject):
         """
         pygame.quit()
 
-    # def simulate_input(self, event_code, value):
-    #     """
-    #     Simulate an input
-    #
-    #     Args:
-    #         event_code (str): the name of the event
-    #         value (bool): the value
-    #     """
-    #     if event_code in self.events_dict:
-    #         messenger.send(self.events_dict[event_code], [value])
-    #     else:
-    #         Logger.warning(event_code, "is not in the event list !")
-
-    # def check_constrained_led(self, event_name, value):
-    #     """
-    #     React to an event and switch on/off the led if there is one attached
-    #
-    #     Args:
-    #         event_name (str): the name of the event
-    #         value (bool): the value
-    #     """
-    #     if event_name in self.controlled_leds:
-    #         if value:
-    #             Logger.info("setting led", event_name, "on")
-    #             self.set_led_on(self.controlled_leds[event_name])
-    #         else:
-    #             Logger.info("setting led", event_name, "off")
-    #             self.set_led_off(self.controlled_leds[event_name])
-
     def _event_polling(self, task):
         event_name = ""
         value = None
@@ -184,8 +114,6 @@ class HardwareHandler(EventObject):
                 value = ev.value
 
             if len(event_name) > 0:
-                # in_game_name = self.events_dict.get(event_name, None)
-                # if in_game_name is not None:
                 t0 = self.engine.get_time(round_result=False)
                 if event_name in self.times:
                     dt = t0 - self.times[event_name]
@@ -201,14 +129,6 @@ class HardwareHandler(EventObject):
                         name=event_name
                     )
 
-                    # # if it is a switch, we just reverse its value
-                    # if in_game_name.startswith("s_"):
-                    #     value = not self._hardware_state(in_game_name)
-                    # self.tasks[event_name] = self.engine.task_mgr.do_method_later(
-                    #     1.1 * self.firewall_time,
-                    #     self._process_event,
-                    #     name=event_name,
-                    #     extraArgs=[in_game_name, value])
                 elif self.tasks[event_name] is not None and self.engine("show_buttons_ghosts"):
                     Logger.warning("possible ghost from", event_name)
                     self.tasks[event_name].remove()

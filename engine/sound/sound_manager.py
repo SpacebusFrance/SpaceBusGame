@@ -72,9 +72,9 @@ class SoundManager:
                 self._ambient_sounds[key] = self._engine.loader.loadSfx(ambient_folder + file)
 
         # getting the loop ambiant sound
-        ambiant_loop_file = self._get_file_name(self._engine("ambient_loop_file"))
-        if ambiant_loop_file in self._ambient_sounds:
-            self._ambient_loop = self._ambient_sounds.pop(ambiant_loop_file)
+        ambient_loop_file = self._get_file_name(self._engine("ambient_loop_file"))
+        if ambient_loop_file in self._ambient_sounds:
+            self._ambient_loop = self._ambient_sounds.pop(ambient_loop_file)
         else:
             Logger.warning('no ambient loop file !')
         # idem for bips
@@ -151,15 +151,43 @@ class SoundManager:
             return 0.0
 
     @property
-    def is_music_playing(self):
+    def is_music_playing(self) -> bool:
+        """
+        Check if a music is currently playing
+
+        Returns:
+            bool: Is a music playing
+        """
         music = self._music.get(self._last_music_played, None)
         return music is not None and music.status() == music.PLAYING
 
-    def stop_music(self):
+    def stop_music(self) -> None:
+        """
+        Stops current music if it exists
+        """
         if self.is_music_playing:
             self._music[self._last_music_played].stop()
 
-    def play_music(self, name, loop=True, volume=None):
+    def resume_music(self, loop: bool = True) -> None:
+        """
+        Restarts previously played music if it exists
+
+        Args:
+            loop (bool, optional): Plays music in loop. Default to ``True``
+        """
+        if self._last_music_played is not None:
+            self.play_music(self._last_music_played, loop=loop)
+
+    def play_music(self, name: str, loop: bool = True, volume: float = None) -> None:
+        """
+        Starts a music
+
+        Args:
+            name (str): music name
+            loop (bool, optional): Plays music in loop. Default to True
+            volume (float, optional): Music volume. Default to 1.0
+
+        """
         if name in self._music:
             music = self._music[name]
 
@@ -215,9 +243,12 @@ class SoundManager:
         else:
             Logger.warning('sound {} does not exists'.format(name))
 
-    def stop(self, name):
+    def stop(self, name: str) -> None:
         """
         Stop a played sound
+
+        Args:
+            name (str): Sound name to stop
         """
         if name in self._sounds:
             sound = self._sounds[name]

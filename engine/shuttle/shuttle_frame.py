@@ -154,12 +154,12 @@ class ShuttleFrame(DirectObject.DirectObject):
 
         move_time = get_distance(self.frame.get_pos(), target) / (power * self.velocity_mean)
 
-        d = {'time': move_time,
-             'pos': self.frame.get_pos(),
-             'target': target,
-             'power': power,
-             'mean v': self.velocity_mean}
-        Logger.info('new_move : \n\t- {}'.format('\n\t-'.join(['{0} : {1}'.format(k, d[k]) for k in d])))
+        # d = {'time': move_time,
+        #      'pos': self.frame.get_pos(),
+        #      'target': target,
+        #      'power': power,
+        #      'mean v': self.velocity_mean}
+        # Logger.info('new_move : \n\t- {}'.format('\n\t-'.join(['{0} : {1}'.format(k, d[k]) for k in d])))
 
         def start(_):
             self._mvt_tasks = None
@@ -232,11 +232,14 @@ class ShuttleFrame(DirectObject.DirectObject):
             # eventually stops the ongoing tasks
             self._mvt_tasks.finish()
             self._mvt_tasks = None
-            self._engine.taskMgr.remove("goto_start")
-            self._engine.taskMgr.remove("goto_end")
+        # remove goto tasks
+        self._engine.taskMgr.remove("goto_start")
+        self._engine.taskMgr.remove("goto_end")
         self.velocity = LVector3f(0, 0, 0)
         self.spinning_velocity = LVector3f(0, 0, 0)
         self.compute_unit_vectors()
+        # set is_moving to False
+        self._engine.state_manager.is_moving.set_value(True)
         if play_sound:
             self._boost_sound()
 
