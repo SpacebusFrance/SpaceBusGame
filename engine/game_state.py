@@ -117,24 +117,6 @@ class GameState(DirectObject):
             if update_scenario:
                 self.engine.scenario.update_scenario()
 
-
-class KeyboardState(GameState):
-    def reset(self) -> None:
-        self._value = ""
-        self.engine.buttonThrowers[0].node().setKeystrokeEvent('keystroke')
-        self.accept('keystroke', self._on_keystroke)
-        # print(self.engine.win.get_keyboard_map())
-
-    def _on_keystroke(self, key):
-        value = ""
-        # todo: this is not correct
-        # for special_key in ['control', 'shift']:
-        #     if self.engine.mouseWatcherNode.is_button_down(special_key):
-        #         value = f'{special_key}-'
-        value += key
-        self.set_value(key)
-
-
 class GameStateManager:
     @classmethod
     def states(cls) -> dict:
@@ -159,7 +141,6 @@ class GameStateManager:
     listen_to_hardware = GameState(False, StateType.SOFTWARE)
 
     # global game state
-    keyboard = KeyboardState("", StateType.SOFTWARE)
     is_moving = GameState(False, StateType.SOFTWARE)
     freq_comm = GameState(270, StateType.SOFTWARE)
     offset_ps_x = GameState(0, StateType.SOFTWARE)
