@@ -25,21 +25,22 @@ class Gui(EventObject):
     Class that represents the [old]ControlScreen that must be unlocked.
     Displayed on the control screen
     """
-    colors = {'green': (0.2, 0.8, 0.1, 1.0),
-              'red': (0.8, 0.2, 0.1, 1.0),
-              'blue': (0.2, 0.2, 0.6, 1.0),
-              'light': (0.9, 0.9, 0.9, 1.0),
-              'golden': (0.9, 0.9, 0.43, 1.0),
-              'black': (0.0, 0.0, 0.0, 1.0),
-              'dark': (0.2, 0.2, 0.2, 1.0),
-              'dark-blue': (0.1, 0.1, 0.2, 1.0),
-              'dark-sp': (0.2, 0.2, 0.2, 0.7),
-              'darker': (0.1, 0.1, 0.1, 1.0),
-              'dark-window': (0.12, 0.12, 0.12, 1.0),
-              'button-color': (0.15, 0.15, 0.15, 1.0),
-              'background': (0.08, 0.08, 0.08, 1.0),
-              'terminal_bg': (0.174, 0.036, 0.11, 1.0),
-              }
+    colors = {
+        'green': (0.2, 0.8, 0.1, 1.0),
+        'red': (0.8, 0.2, 0.1, 1.0),
+        'blue': (0.2, 0.2, 0.6, 1.0),
+        'light': (0.9, 0.9, 0.9, 1.0),
+        'golden': (0.9, 0.9, 0.43, 1.0),
+        'black': (0.0, 0.0, 0.0, 1.0),
+        'dark': (0.2, 0.2, 0.2, 1.0),
+        'dark-blue': (0.1, 0.1, 0.2, 1.0),
+        'dark-sp': (0.2, 0.2, 0.2, 0.7),
+        'darker': (0.1, 0.1, 0.1, 1.0),
+        'dark-window': (0.12, 0.12, 0.12, 1.0),
+        'button-color': (0.15, 0.15, 0.15, 1.0),
+        'background': (0.08, 0.08, 0.08, 1.0),
+        'terminal_bg': (0.174, 0.036, 0.11, 1.0),
+    }
 
     def __init__(self, engine):
         super().__init__()
@@ -87,13 +88,14 @@ class Gui(EventObject):
             player_time (float):
             total_players (int):
         """
-        self.set_current_window(win=EndWindow,
-                                player_position=player_position,
-                                time_minutes=time_minutes,
-                                time_seconds=time_seconds,
-                                total_players=total_players,
-                                background_color=self.colors['black'],
-                                )
+        self.set_current_window(
+            win=EndWindow,
+            player_position=player_position,
+            time_minutes=time_minutes,
+            time_seconds=time_seconds,
+            total_players=total_players,
+            background_color=self.colors['black'],
+        )
 
         self.accept_once('enter', self.reset)
         # buy default, reset menu after a certain game_time

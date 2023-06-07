@@ -146,6 +146,8 @@ class Window(BaseWidget):
         if shadow:
             self.set_shadow()
 
+        self._gui_engine.engine.sound_manager.play_sfx('window_open')
+
     def get_node(self):
         return self._widget
 

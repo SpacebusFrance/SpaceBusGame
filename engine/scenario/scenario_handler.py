@@ -1,12 +1,47 @@
 import datetime
 import re
+
+from direct.showbase.DirectObject import DirectObject
 from panda3d.core import LVector3f, WindowProperties
 
 from engine.scenario.scenario_event import Event
+from engine.scenario.scenario_event_new import ScenarioStep
 from engine.utils.event_handler import EventObject, event, send_event
 from engine.utils.global_utils import read_xml_args
 from engine.utils.logger import Logger
 from engine.scenario.scenario_step import Step
+
+
+class IncomingGameEvents(DirectObject):
+    _count = 0
+
+    def __init__(self):
+        super().__init__()
+        self._events = dict()
+
+    def add_event(self, time, method) -> str:
+        name = f'scenario_event_{IncomingGameEvents._count}'
+        self._events[name] = self.doMethodLater(
+            time, method, name=name)
+        IncomingGameEvents._count += 1
+        return name
+
+    def is_event_alive(self, name: str) -> bool:
+        task = self._events.get(name, None)
+        if task is not None:
+            return task.is_alive()
+        return False
+
+    def remove_all_events(self):
+        for _event in self._events.values():
+            self.remove_task(_event)
+        self._events.clear()
+        IncomingGameEvents._count = 0
+
+    def remove_event(self, name):
+        task = self._events.pop(name, None)
+        if task is not None:
+            self.remove_task(task)
 
 
 class Scenario(EventObject):
@@ -22,6 +57,7 @@ class Scenario(EventObject):
         self.shuttle = None
         self._scenario = None
 
+        self.event_manager = IncomingGameEvents()
         self.steps = []
         self.pending_steps = dict()
         self.current_step = 0
@@ -32,6 +68,7 @@ class Scenario(EventObject):
         self._paused_tasks = []
 
     def _new_step(self, id, end_conditions=None, action=None, duration=None, delay=None, args_dict=None,
+                  blocking=True,
                   win_sound=None, loose_sound=None, fulfill_if_lost=False, hint_sound=None, hint_time=None):
 
         if action is not None and len(action) > 0:
@@ -48,9 +85,8 @@ class Scenario(EventObject):
                     # default duration o sound length + 1 second
                     duration = self.engine.sound_manager.get_sound_length(args_dict.get("name", None)) + 1.0
 
-                elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score", "set_screen",
-                                "stop_sound", "sound_volume", "update_software_state", "enable_hardware",
-                                "disable_hardware"]:
+                elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score",
+                                "set_screen", "stop_sound", "sound_volume", "disable_hardware"]:
                     # these actions have a default duration to 0.0
                     duration = 0.0
 
@@ -60,33 +96,34 @@ class Scenario(EventObject):
             #     if "close_time" not in args_dict:
             #         args_dict["close_time"] = duration
 
-            if delay is not None and delay > 0.0:
-                if delay in self.pending_steps:
-                    Logger.error('there is already a step for delay :', delay)
-                # add an Event in delay seconds
-                Logger.info(f'adding a delayed event {action} in {delay} seconds.')
-                self.pending_steps[delay] = Event(
-                    self.engine,
-                    id=id,
-                    action=action,
-                    args_dict=args_dict,
-                )
-            else:
+            # if delay is not None and delay > 0.0:
+            #     if delay in self.pending_steps:
+            #         Logger.error('there is already a step for delay :', delay)
+            #     # add an Event in delay seconds
+            #     Logger.info(f'adding a delayed event {action} in {delay} seconds.')
+            #     self.pending_steps[delay] = Event(
+            #         self.engine,
+            #         id=id,
+            #         action=action,
+            #         args_dict=args_dict,
+            #     )
+            # else:
                 # it is a standard blocking step
-                Logger.info(f'adding a blocking event {action}.')
-                self.steps.append(Step(
-                    self.engine,
-                    end_conditions=end_conditions,
-                    action=action,
-                    max_time=duration,
-                    id=id,
-                    args_dict=args_dict,
-                    loose_sound=loose_sound,
-                    win_sound=win_sound,
-                    fulfill_if_lost=fulfill_if_lost,
-                    hint_sound=hint_sound,
-                    hint_time=hint_time
-                ))
+            self.steps.append(ScenarioStep(
+                self.engine,
+                end_conditions=end_conditions,
+                action=action,
+                duration=duration,
+                blocking=blocking,
+                delay=delay,
+                id=id,
+                args_dict=args_dict,
+                loose_sound=loose_sound,
+                win_sound=win_sound,
+                fulfill_if_lost=fulfill_if_lost,
+                hint_sound=hint_sound,
+                hint_time=hint_time
+            ))
 
     def reset(self):
         """
@@ -98,7 +135,8 @@ class Scenario(EventObject):
             self.shuttle = self.engine.shuttle
 
         # removing tasks
-        self.remove_all_tasks()
+        # self.remove_all_tasks()
+        self.event_manager.remove_all_events()
 
         # stop steps
         try:
@@ -130,7 +168,7 @@ class Scenario(EventObject):
             # custom xml file parsing
             def_args = {"action": None, "duration": None, "delay": None, "end_conditions": None, "args_dict": None,
                         "loose_sound": None, "win_sound": None, "fulfill_if_lost": False, "hint_sound": None,
-                        "hint_time": None}
+                        "hint_time": None, 'blocking': True}
             current = def_args.copy()
 
             for line in lines:
@@ -159,9 +197,6 @@ class Scenario(EventObject):
                         current["hint_sound"] = args.pop("hint_sound", None)
                         current["hint_time"] = args.pop("hint_time", None)
 
-                        if 'delay' in args:
-                            # no delay for steps
-                            Logger.warning('delay argument is ignored for steps ! Use a wait step rather.')
                         if len(args) > 0:
                             # store remaining arguments in args_dict argument
                             current["args_dict"] = args.copy()  # noqa
@@ -192,8 +227,13 @@ class Scenario(EventObject):
                         # it is an event
                         args = read_xml_args(line)
                         # simply add a new step
-                        self._new_step(action=args.pop("action"), delay=args.pop('delay', 0.0),
-                                       args_dict=args, id=args.pop("id", f'event_{event_counter}'))
+                        self._new_step(
+                            action=args.pop("action"),
+                            delay=args.pop('delay', 0.0),
+                            args_dict=args,
+                            blocking=False,
+                            id=args.pop("id", f'event_{event_counter}')
+                        )
                         # increment event counter
                         event_counter += 1
 
@@ -259,11 +299,11 @@ class Scenario(EventObject):
         self.game_time = self.engine.get_time()
         self.shuttle.stop(play_sound=False)
 
-        # start all pending steps
-        for time in self.pending_steps:
-            self.do_method_later(time,
-                                 self.pending_steps[time].start,
-                                 name='event_{}'.format(time))
+        # # start all pending steps
+        # for time in self.pending_steps:
+        #     self.do_method_later(time,
+        #                          self.pending_steps[time].start,
+        #                          name='event_{}'.format(time))
 
         if len(self.steps) > 0:
             self.steps[0].start()
@@ -280,28 +320,29 @@ class Scenario(EventObject):
     def on_start(self):
         self.start_game()
 
-    @event(['stop', 'stop_game'])
-    def on_stop(self):
-        self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
-        # this avoids to play next step
-        self.current_step = len(self.steps)
-
-        # remove all incoming events but keep steps
-        self.remove_incoming_events()
+    # @event(['stop', 'stop_game'])
+    # def on_stop(self):
+    #     self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
+    #     # this avoids to play next step
+    #     self.current_step = len(self.steps)
+    #
+    #     # remove all incoming events but keep steps
+    #     self.
+    #     self.remove_incoming_events()
 
     @event('goto_step')
     def on_goto(self, goto_id):
         # stop game
         self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
 
-        # remove all incoming events but keep steps
-        self.remove_incoming_events()
+        # remove all programmed events
+        self.event_manager.remove_all_events()
 
-        # goto next step
+        # goto desired step
         self.current_step = None
         for i, step in enumerate(self.steps):
             if step.id == goto_id:
-                # take i - 1 since will call "start_newt_step()" right after that
+                # take i - 1 since will call "start_next_step()" right after that
                 self.current_step = i - 1
                 break
         if self.current_step is None:
@@ -311,7 +352,7 @@ class Scenario(EventObject):
     @event("end_game")
     def on_end_game(self, show_end_screen=True, save_score=True):
         # remove all incoming events
-        self.remove_incoming_events()
+        self.event_manager.remove_all_events()
 
         # call the end game
         self.end_game(show_end_screen=show_end_screen,
@@ -325,10 +366,18 @@ class Scenario(EventObject):
         self.engine.state_manager.collision_occurred.set_value(True)
         self.engine.sound_manager.stop_bips()
 
-        self.engine.taskMgr.doMethodLater(
-            0.5,
-            self.engine.sound_manager.play_sfx, 'fi3',
-            extraArgs=['gaz_leak', True, 0.5])
+        self.event_manager.add_event(
+            time=0.5,
+            method=lambda *args: self.engine.sound_manager.play_sfx(
+                'gaz_leak',
+                loop=True,
+                volume=0.5
+            )
+        )
+        # self.engine.taskMgr.doMethodLater(
+        #     0.5,
+        #     self.engine.sound_manager.play_sfx, 'fi3',
+        #     extraArgs=['gaz_leak', True, 0.5])
         self.engine.sound_manager.stop("start_music")
 
         # leds
@@ -367,34 +416,37 @@ class Scenario(EventObject):
             # finally, update power
             self.engine.update_power()
 
-        self.engine.taskMgr.doMethodLater(1, detection, 'fi1')
+        self.event_manager.add_event(
+            time=1,
+            method=detection
+        )
 
     @event('asteroid')
     def on_asteroid(self):
         self.engine.asteroid.spawn()
 
-    @event('oxygen_leak')
-    def on_oxygen_leak(self):
-        send_event("set_gauge_goto_time", gauge="main_O2", time=800)
-        self.engine.state_manager.main_O2.set_value(0.0)
-        self.do_method_later(180,
-                             self.engine.sound_manager.play_sfx,
-                             name='sound_o2_1',
-                             extraArgs=['voice_alert_O2_5_33'])
-        self.do_method_later(330,
-                             self.engine.sound_manager.play_sfx,
-                             name='sound_o2_2',
-                             extraArgs=['voice_alert_O2_3_17'])
+    # @event('oxygen_leak')
+    # def on_oxygen_leak(self):
+    #     send_event("set_gauge_goto_time", gauge="main_O2", time=800)
+    #     self.engine.state_manager.main_O2.set_value(0.0)
+    #     self.do_method_later(180,
+    #                          self.engine.sound_manager.play_sfx,
+    #                          name='sound_o2_1',
+    #                          extraArgs=['voice_alert_O2_5_33'])
+    #     self.do_method_later(330,
+    #                          self.engine.sound_manager.play_sfx,
+    #                          name='sound_o2_2',
+    #                          extraArgs=['voice_alert_O2_3_17'])
 
-    @event('oxygen')
-    def on_oxygen(self, time=420., value=0.0):
-        send_event("set_gauge_goto_time", gauge="main_O2", time=time)
-        self.engine.state_manager.main_O2.set_value(value)
-
-    @event('CO2')
-    def on_co2(self, time=420., value=0.0):
-        send_event("set_gauge_goto_time", gauge="main_CO2", time=time)
-        self.engine.state_manager.main_CO2.set_value(value)
+    # @event('oxygen')
+    # def on_oxygen(self, time=420., value=0.0):
+    #     send_event("set_gauge_goto_time", gauge="main_O2", time=time)
+    #     self.engine.state_manager.main_O2.set_value(value)
+    #
+    # @event('CO2')
+    # def on_co2(self, time=420., value=0.0):
+    #     send_event("set_gauge_goto_time", gauge="main_CO2", time=time)
+    #     self.engine.state_manager.main_CO2.set_value(value)
 
     # elementary functions
     @event('shuttle_look_at')
@@ -475,18 +527,18 @@ class Scenario(EventObject):
     def on_led_off(self, led):
         self.engine.state_manager.get_state(led).set_led_off()
 
-    def remove_incoming_events(self) -> None:
-        """
-        Remove all incoming events, ignoring steps
-        """
-        if hasattr(self, '_taskList'):
-            # _taskList attribute is dynamically set when adding a task
-            for task in list(self._taskList.values()):
-                if not task.get_name().startswith('event'):
-                    Logger.info(f'removing task "{task.get_name()}"')
-                    self.remove_task(task)
-                else:
-                    Logger.info(f'keeping task "{task.get_name()}"')
+    # def remove_incoming_events(self) -> None:
+    #     """
+    #     Remove all incoming events, ignoring steps
+    #     """
+    #     if hasattr(self, '_taskList'):
+    #         # _taskList attribute is dynamically set when adding a task
+    #         for task in list(self._taskList.values()):
+    #             if not task.get_name().startswith('event'):
+    #                 Logger.info(f'removing task "{task.get_name()}"')
+    #                 self.remove_task(task)
+    #             else:
+    #                 Logger.info(f'keeping task "{task.get_name()}"')
 
     def pause(self) -> None:
         """
@@ -544,10 +596,10 @@ class Scenario(EventObject):
                 and next step is started
         """
         if len(self.steps) > self.current_step >= 0:
-            Logger.info('updating scenario ...')
+            # Logger.info('updating scenario ...')
             step = self.steps[self.current_step]
             if step.is_fulfilled(wait_end_if_fulfilled=wait_end_if_fulfilled):
                 step.end(True)
-            else:
-                Logger.info('current step is not fullfiled yet. Continuing')
+            # else:
+                # Logger.info('current step is not fulfilled yet. Continuing')
 
