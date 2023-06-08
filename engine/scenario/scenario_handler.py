@@ -5,7 +5,7 @@ from direct.showbase.DirectObject import DirectObject
 from panda3d.core import LVector3f, WindowProperties
 
 from engine.scenario.scenario_event import Event
-from engine.scenario.scenario_event_new import ScenarioStep
+from engine.scenario.scenario_event import ScenarioStep
 from engine.utils.event_handler import EventObject, event, send_event
 from engine.utils.global_utils import read_xml_args
 from engine.utils.logger import Logger
@@ -18,6 +18,7 @@ class IncomingGameEvents(DirectObject):
     def __init__(self):
         super().__init__()
         self._events = dict()
+        self._paused_tasks = []
 
     def add_event(self, time, method) -> str:
         name = f'scenario_event_{IncomingGameEvents._count}'
@@ -36,12 +37,33 @@ class IncomingGameEvents(DirectObject):
         for _event in self._events.values():
             self.remove_task(_event)
         self._events.clear()
-        IncomingGameEvents._count = 0
 
     def remove_event(self, name):
         task = self._events.pop(name, None)
         if task is not None:
             self.remove_task(task)
+
+    def pause(self) -> None:
+        """
+        Pauses the game, removing all incoming tasks
+        """
+        self._paused_tasks.clear()
+        for task in self._events.values():
+            # incoming tasks have a non-null delay and negative elapsed_time which is the time to its start
+            if task.get_delay() > 0.0 and task.get_elapsed_time() < 0:
+                self._paused_tasks.append([task, max(0, -task.get_elapsed_time())])
+                self.remove_task(task)
+
+    def resume(self) -> None:
+        """
+        Resume the game paused with :func:`pause`
+        """
+        for paused_task, delay in self._paused_tasks:
+            # set new delay for each task and add them to the task manager
+            paused_task.set_delay(delay)
+            self.add_task(paused_task)
+        # remove all paused tasks
+        self._paused_tasks.clear()
 
 
 class Scenario(EventObject):
@@ -206,7 +228,7 @@ class Scenario(EventObject):
                             # and reset current arguments
                             current = def_args.copy()
 
-                    if kind == 'group':
+                    elif kind == 'group':
                         # it is a group, we add it as an empty step
                         args = read_xml_args(line)
                         current["action"] = "group" # noqa
@@ -217,13 +239,13 @@ class Scenario(EventObject):
                         # and reset arguments
                         current = def_args.copy()
 
-                    if "</step>" in line:
+                    elif "</step>" in line:
                         # enf od step, store a new one
                         self._new_step(**current)
                         # and reset current arguments
                         current = def_args.copy()
 
-                    if kind == 'event' and 'action=' in line:
+                    elif kind == 'event' and 'action=' in line:
                         # it is an event
                         args = read_xml_args(line)
                         # simply add a new step
@@ -232,10 +254,11 @@ class Scenario(EventObject):
                             delay=args.pop('delay', 0.0),
                             args_dict=args,
                             blocking=False,
+                            duration=0,
                             id=args.pop("id", f'event_{event_counter}')
                         )
-                        # increment event counter
-                        event_counter += 1
+                        # and reset arguments
+                        current = def_args.copy()
 
                     elif "<condition" in line and "key" in line and "value" in line:
                         # a step condition with form <condition key="xxx" value="yyy"/>
@@ -374,10 +397,6 @@ class Scenario(EventObject):
                 volume=0.5
             )
         )
-        # self.engine.taskMgr.doMethodLater(
-        #     0.5,
-        #     self.engine.sound_manager.play_sfx, 'fi3',
-        #     extraArgs=['gaz_leak', True, 0.5])
         self.engine.sound_manager.stop("start_music")
 
         # leds
@@ -544,25 +563,13 @@ class Scenario(EventObject):
         """
         Pauses the game, removing all incoming tasks
         """
-        self._paused_tasks.clear()
-        if hasattr(self, '_taskList'):
-            # _taskList attribute is dynamically set when adding a task
-            for task in list(self._taskList.values()):
-                # incoming tasks have a non-null delay and negative elapsed_time which is the time to its start
-                if task.get_delay() > 0.0 and task.get_elapsed_time() < 0:
-                    self._paused_tasks.append([task, -task.get_elapsed_time()])
-                    self.remove_task(task)
+        self.event_manager.pause()
 
     def resume(self) -> None:
         """
         Resume the game paused with :func:`pause`
         """
-        for paused_task, delay in self._paused_tasks:
-            # set new delay for each task and add them to the task manager
-            paused_task.set_delay(delay)
-            self.add_task(paused_task)
-        # remove all paused tasks
-        self._paused_tasks.clear()
+        self.event_manager.resume()
 
     def fulfill_current_step(self):
         """
@@ -596,10 +603,11 @@ class Scenario(EventObject):
                 and next step is started
         """
         if len(self.steps) > self.current_step >= 0:
-            # Logger.info('updating scenario ...')
+            Logger.info('updating scenario ...')
             step = self.steps[self.current_step]
             if step.is_fulfilled(wait_end_if_fulfilled=wait_end_if_fulfilled):
+                Logger.info('ending current step')
                 step.end(True)
-            # else:
-                # Logger.info('current step is not fulfilled yet. Continuing')
+            else:
+                Logger.info('current step is not fulfilled yet. Continuing')
 
