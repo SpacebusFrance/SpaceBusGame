@@ -4,12 +4,10 @@ import re
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import LVector3f, WindowProperties
 
-from engine.scenario.scenario_event import Event
 from engine.scenario.scenario_event import ScenarioStep
 from engine.utils.event_handler import EventObject, event, send_event
 from engine.utils.global_utils import read_xml_args
 from engine.utils.logger import Logger
-from engine.scenario.scenario_step import Step
 
 
 class IncomingGameEvents(DirectObject):
@@ -22,6 +20,7 @@ class IncomingGameEvents(DirectObject):
 
     def add_event(self, time, method) -> str:
         name = f'scenario_event_{IncomingGameEvents._count}'
+        Logger.info(f'adding event {name} in {time:.2f} seconds')
         self._events[name] = self.doMethodLater(
             time, method, name=name)
         IncomingGameEvents._count += 1
@@ -83,7 +82,6 @@ class Scenario(EventObject):
         self.steps = []
         self.pending_steps = dict()
         self.current_step = 0
-        Step.step_counter = 0
         self.game_time = None
         self.last_score = None
 
@@ -167,7 +165,6 @@ class Scenario(EventObject):
             pass
 
         self.current_step = 0
-        Step.step_counter = 0
         self.game_time = None
         self.last_score = None
 
@@ -355,21 +352,30 @@ class Scenario(EventObject):
 
     @event('goto_step')
     def on_goto(self, goto_id):
-        # stop game
+        # stop current step
         self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
 
-        # remove all programmed events
+        # remove all programmed events that have been set in
+        # the previous branch of the game
         self.event_manager.remove_all_events()
 
         # goto desired step
         self.current_step = None
+        # iterate over steps to find the one with
+        # corresponding ID
         for i, step in enumerate(self.steps):
             if step.id == goto_id:
-                # take i - 1 since will call "start_next_step()" right after that
+                # take i - 1 since will call
+                # "start_next_step()" right after that
+                # we thus stick to the previous step to
+                # start the next (desired) one
                 self.current_step = i - 1
                 break
         if self.current_step is None:
             raise KeyError(f'goto_id "{goto_id}" does not exist !')
+        # and start the next step, which
+        # basically increment "current_step"
+        # and starts the new step
         self.start_next_step()
 
     @event("end_game")
@@ -603,11 +609,11 @@ class Scenario(EventObject):
                 and next step is started
         """
         if len(self.steps) > self.current_step >= 0:
-            Logger.info('updating scenario ...')
+            # Logger.info('updating scenario ...')
             step = self.steps[self.current_step]
             if step.is_fulfilled(wait_end_if_fulfilled=wait_end_if_fulfilled):
-                Logger.info('ending current step')
+                # Logger.info('ending current step')
                 step.end(True)
-            else:
-                Logger.info('current step is not fulfilled yet. Continuing')
+            # else:
+                # Logger.info('current step is not fulfilled yet. Continuing')
 

@@ -3,6 +3,7 @@
     <group name="debut de jeux">
         <!-- set the screen "lost_astronaut" (never-mind the name) -->
         <step action="set_screen" name="lost_astronaut"/>
+        <step action="wait" duration="2"/>
         <!-- starts the background music -->
         <step action="play_music" name="music_1" volume="0.2"/>
 <!--        <step action="wait">-->
@@ -18,16 +19,11 @@
         <step action="info" title="$la_game_info_title$" text="$la_text$" duration="40" icon="compose" close_on_enter="False" text_size="0.035"/>
 
         <!-- setup timer and events (fixed time) -->
-<!--        <event action="start_chrono" time="900" delay="0"/> -->
-<!--        <event action="goto_step" goto_id="end" delay="900"/>-->
-<!--        <event action="play_sound" name="voice_bio_15min" delay="0" volume="3.0" duration="0"/>-->
-<!--        <event action="play_sound" name="voice_bio_5min" delay="615" volume="3.0" duration="0"/>-->
-<!--        <event action="play_sound" name="voice_bio_1min" delay="855" volume="3.0" duration="0"/>-->
-        <event action="start_chrono" time="50" delay="1"/>
-        <event action="goto_step" goto_id="end" delay="50"/>
-        <event action="play_sound" name="voice_bio_15min" delay="1" volume="3.0"/>
-        <event action="play_sound" name="voice_bio_5min" delay="30" volume="3.0"/>
-        <event action="play_sound" name="voice_bio_1min" delay="40" volume="3.0"/>
+        <event action="start_chrono" time="900" delay="0"/>
+        <event action="goto_step" goto_id="end" delay="900"/>
+        <event action="play_sound" name="voice_bio_15min" delay="0" volume="3.0" duration="0"/>
+        <event action="play_sound" name="voice_bio_5min" delay="615" volume="3.0" duration="0"/>
+        <event action="play_sound" name="voice_bio_1min" delay="855" volume="3.0" duration="0"/>
 
         <!-- game instructions -->
         <step action="info" title="$la_game_info_title$" text="$la_instructions$" duration="30" icon="compose" close_on_enter="True"/>
@@ -48,7 +44,7 @@
         <step action="2d_game_start" goal="30"/>
 
         <!-- display code -->
-        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" duration="15"/>
+        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" duration="15" close_on_enter="False"/>
 
         <!-- wait for end -->
         <step action="keyboard" key="control-enter"/>

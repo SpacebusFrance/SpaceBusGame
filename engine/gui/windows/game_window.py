@@ -1,14 +1,18 @@
 import os
+from typing import Optional
 
 import numpy as np
 from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText
 from direct.interval.FunctionInterval import Func, Wait
 from direct.interval.MetaInterval import Sequence, Parallel
+from direct.task.Task import Task
 from direct.task.TaskManagerGlobal import taskMgr
 from panda3d.core import TransparencyAttrib, KeyboardButton, Vec3, TextNode
 
 from engine.gui.windows.window import Window
+from engine.utils.event_handler import event
+from engine.utils.logger import Logger
 
 
 class Rock:
@@ -89,14 +93,21 @@ class GameWindow(Window):
         self._rocks = []
         self._stars = []
         self._status = 0
-        self._task = None
+        self._task: Optional[Task] = None
         self._interval = None
         self._score = 0
         self._score_txt = OnscreenText(parent=self._game_background, scale=0.1, pos=(0, 1.1), fg=[1] * 4,
                                        align=TextNode.ALeft)
         self._last_rock_spawn_time = 0
         self._last_star_spawn_time = 0
+        self._finished = False
         self.play_game()
+
+    @event('current_step_end')
+    def on_step_end(self) -> None:
+        self._gui_engine.engine.sound_manager.stop('star_game_music')
+        self._gui_engine.engine.sound_manager.resume_music()
+        self._gui_engine.close_window_and_go()
 
     def play_game(self, *_):
         text = OnscreenText(parent=self._game_background, scale=0.15, pos=(0, 0.5),
@@ -109,11 +120,12 @@ class GameWindow(Window):
 
         if self._status == 0:
             def start():
-                # reset task
-                if self._task is not None and self._task.is_alive():
-                    self._task.remove()
-                self._task = taskMgr.add(self._run_game, uponDeath=self.play_game)
-                self._game_background.accept('a', self._spawn_rock)
+                if not self._finished:
+                    # reset task
+                    if self._task is not None and self._task.is_alive():
+                        self._task.remove()
+                    self._task = taskMgr.add(self._run_game, uponDeath=self.play_game)
+                    self._game_background.accept('a', self._spawn_rock)
 
             # start game
 
@@ -157,6 +169,11 @@ class GameWindow(Window):
             self._gui_engine.engine.sound_manager.resume_music()
 
             text.setText(self._gui_engine.process_text('$la_game_win$'))
+
+            def done():
+                if not self._finished:
+                    self._gui_engine.close_window_and_go()
+
             self._interval = Sequence(
                 Parallel(
                     text.colorScaleInterval(3, (1, 1, 1, 1), (1, 1, 1, 0)),
@@ -164,9 +181,11 @@ class GameWindow(Window):
                          ),
                 Wait(1),
                 Func(text.remove_node),
-                Func(self._gui_engine.close_window_and_go)
+                Func(done)
             )
             self._interval.start()
+        else:
+            pass
 
     def _run_game(self, task):
         dv = Vec3(0)
@@ -261,10 +280,13 @@ class GameWindow(Window):
         return sprite
 
     def destroy(self):
+        self._status = 2
+        self._finished = True
+        if self._task is not None: # and self._task.is_alive():
+            self._task.cancel()
+            self._task.remove()
         if self._interval is not None:
             self._interval.finish()
-        if self._task is not None and self._task.is_alive():
-            self._task.remove()
 
         for rock in self._rocks:
             rock.remove_node()

@@ -41,6 +41,15 @@ class _EventHandler:
             for func, args in self._methods[name]:
                 func(*args, kwargs)
 
+    def ignore(self, name: str, method: callable) -> None:
+        if name in self._methods:
+            self._methods[name] = [
+                element for element in self._methods[name] if element[0] != method
+            ]
+            if len(self._methods[name]) == 0:
+                messenger.ignore(name, self)
+                self._methods.pop(name)
+
     @property
     def events(self):
         return list(self._methods.keys())
@@ -101,6 +110,7 @@ class EventObject(DirectObject):
     """
     def __init__(self):
         super().__init__()
+        self.__events = []
 
         for name in dir(self):
             if not name.startswith('_') and not name.startswith('__'):
@@ -118,9 +128,16 @@ class EventObject(DirectObject):
 
                     if isinstance(events, list):
                         for evt in events:
+                            self.__events.append((f'event_{evt}', _call))
                             event_handler.accept(f'event_{evt}', _call, extra_args=[method])
                     elif isinstance(events, str):
+                        self.__events.append((f'event_{events}', _call))
                         event_handler.accept(f'event_{events}', _call, extra_args=[method])
+
+    def destroy(self):
+        for evt in self.__events:
+            event_handler.ignore(*evt)
+        self.__events.clear()
 
 
 if __name__ == '__main__':

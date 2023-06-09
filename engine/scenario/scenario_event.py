@@ -1,3 +1,5 @@
+import inspect
+
 from engine.utils.event_handler import send_event
 from engine.utils.logger import Logger
 
@@ -69,7 +71,7 @@ class ScenarioStep:
         self._win_sound = win_sound
         self._fulfill_if_lost = fulfill_if_lost
 
-    def start(self):
+    def start(self) -> None:
         """
         Start this step
         """
@@ -85,11 +87,13 @@ class ScenarioStep:
         if self.constraints is None and self.duration is None and self._blocking:
             Logger.warning('this step has no end conditions nor max time')
 
-        if self.duration is not None and self.duration > 0:
+        if self.duration is not None and self._blocking:
+            end_time = self.delay + self.duration + 1e-1
             self._end_task = self.scenario.event_manager.add_event(
-                time=max(self.delay + self.duration, 1e-1),
+                time=end_time,
                 method=lambda *args: self.end(False)
             )
+
         if self._event_name is not None:
             if self.delay > 0:
                 self._action_task = self.scenario.event_manager.add_event(
@@ -98,11 +102,13 @@ class ScenarioStep:
                 )
             else:
                 send_event(self._event_name, **self._event_kwargs)
+
         if self._hint_sound is not None and self._hint_time is not None:
             self._hint_task = self.scenario.event_manager.add_event(
                 time=self.delay + self._hint_time,
                 method=lambda *args: self.engine.sound_manager.play_sfx(self._hint_sound)
             )
+
         if not self._blocking:
             # simply end this step
             self.scenario.start_next_step()
@@ -169,6 +175,9 @@ class ScenarioStep:
 
         # removing tasks
         self.kill()
+
+        # tell the game that we stop current task
+        send_event('current_step_end')
 
         # starting the next step
         self.scenario.start_next_step()

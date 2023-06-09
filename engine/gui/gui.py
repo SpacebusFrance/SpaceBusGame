@@ -176,6 +176,7 @@ class Gui(EventObject):
         """
         if self._current_window is not None and not self._current_window.is_empty():
             self._current_window.destroy()
+            self._current_window = None
             # if the task is fulfilled, just kill it, no need to wait until its end
             self.engine.scenario.update_scenario(wait_end_if_fulfilled=False)
 

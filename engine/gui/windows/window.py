@@ -156,7 +156,7 @@ class Window(BaseWidget):
             self._background.remove_node()
         self._widget.ignore_all()
         self._widget.remove_all_tasks()
-        self._widget.destroy()
+        super().destroy()
 
     def check(self, entry_text=None):
         """

@@ -3,14 +3,17 @@ import os
 from direct.gui.OnscreenImage import OnscreenImage
 from panda3d.core import TransparencyAttrib, NodePath
 
+from engine.utils.event_handler import EventObject
 
-class BaseWidget:
+
+class BaseWidget(EventObject):
     shadows_path = 'data/gui/shadow'
     _selected_button = None
 
     def __init__(self,
                  gui_engine,
                  shadow_scale=0.05):
+        super().__init__()
         self._gui_engine = gui_engine
         self._widget = None
         self._shadow_scale = shadow_scale
@@ -64,5 +67,6 @@ class BaseWidget:
         node.flatten_strong()
 
     def destroy(self):
+        super().destroy()
         if self._widget is not None:
             self._widget.destroy()
