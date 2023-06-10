@@ -63,7 +63,7 @@ class SoundManager:
             if file.endswith(self._supported_sound_format) and 'old' not in file:
                 self._sounds[key] = self._engine.loader.loadSfx(folder + file)
 
-        Logger.info('loading ambiant musics')
+        Logger.info('loading ambient musics')
         ambient_folder = self._engine("ambient_sound_folder")
         for file in listdir(ambient_folder):
             key = self._get_file_name(file)
@@ -71,7 +71,7 @@ class SoundManager:
                 Logger.info(f'loading ambient sound : {key}')
                 self._ambient_sounds[key] = self._engine.loader.loadSfx(ambient_folder + file)
 
-        # getting the loop ambiant sound
+        # getting the loop ambient sound
         ambient_loop_file = self._get_file_name(self._engine("ambient_loop_file"))
         if ambient_loop_file in self._ambient_sounds:
             self._ambient_loop = self._ambient_sounds.pop(ambient_loop_file)
@@ -106,10 +106,12 @@ class SoundManager:
         for name in self._ambient_sounds:
             t = t_max * np.random.rand(n)
             for i in t:
-                self._ambient_tasks.append(self._engine.taskMgr.doMethodLater(i,
-                                                                              self._play_ambient,
-                                                                              name="ambient",
-                                                                              extraArgs=[name]))
+                self._ambient_tasks.append(self._engine.taskMgr.doMethodLater(
+                    i,
+                    self._play_ambient,
+                    name="ambient",
+                    extraArgs=[name])
+                )
 
     def set_ambient_volume(self, volume):
         self._ambient_volume = volume
@@ -120,13 +122,13 @@ class SoundManager:
 
     def _play_ambient(self, name):
         if name in self._ambient_sounds:
-            self._ambient_sounds[name].setVolume(0.1 * self._engine("ambient_sound_volume"))
+            self._ambient_sounds[name].setVolume(self._engine("volume_ambient"))
             self._ambient_sounds[name].play()
 
     def play_ambient_sound(self):
         if self._ambient_loop is not None:
             self._ambient_loop.setLoop(True)
-            self._ambient_loop.setVolume(self._engine("ambient_sound_volume"))
+            self._ambient_loop.setVolume(self._engine("volume_ambient"))
             self._ambient_loop.play()
         self.play_bips()
 
@@ -199,8 +201,7 @@ class SoundManager:
                     return
 
             music.setLoop(loop)
-            if volume is not None:
-                music.set_volume(volume)
+            music.set_volume(volume or self._engine('volume_music'))
 
             self._last_music_played = name
             music.play()
@@ -222,9 +223,14 @@ class SoundManager:
             if loop:
                 # set loop
                 sound.setLoop(True)
-            if volume is not None:
-                # eventually, set volume
-                sound.setVolume(volume)
+
+            # set volume
+            is_voice = 'voice' in name or 'human' in name
+            volume = volume if volume is not None \
+                else self._engine('volume_voice') if is_voice \
+                else self._engine('volume_sfx')
+            sound.setVolume(volume)
+
             if name in self._protected_sounds or (self._engine("voice_sound_do_not_overlap") and
                                                   ("voice" in name or "human" in name)):
                 # if playing sound is protected or either "voice" or "human" is in file name, we queue it

@@ -88,7 +88,7 @@ class ScenarioStep:
             Logger.warning('this step has no end conditions nor max time')
 
         if self.duration is not None and self._blocking:
-            end_time = self.delay + self.duration + 1e-1
+            end_time = self.delay + self.duration + 1e-2
             self._end_task = self.scenario.event_manager.add_event(
                 time=end_time,
                 method=lambda *args: self.end(False)

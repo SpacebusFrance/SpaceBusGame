@@ -132,6 +132,11 @@ class Window(BaseWidget):
             self._widget.do_method_later(min(0.05, 0.95 * life_time),
                                          lambda task: self._widget.accept_once('enter', on_enter, extraArgs=[self]),
                                          'accepting')
+            OnscreenText(scale=0.05, parent=self._widget,
+                         pos=(0, -0.5 * size_y - 2 * self._widget_pad),
+                         text=self._gui_engine.process_text('$window_enter_to_close$'),
+                         fg=(1.0, 0.8, 0.7, 0.6)
+                         )
         if icon is not None:
             im = OnscreenImage(image=os.path.join(self._gui_engine.engine('icon_path'), '{}.png'.format(icon)),
                                scale=icon_size,
