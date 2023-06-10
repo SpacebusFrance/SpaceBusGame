@@ -106,29 +106,14 @@ class Scenario(EventObject):
                     duration = self.engine.sound_manager.get_sound_length(args_dict.get("name", None)) + 1.0
 
                 elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score",
-                                "set_screen", "stop_sound", "sound_volume", "disable_hardware"]:
+                                "set_screen", "stop_sound", "sound_volume", "disable_hardware", "play_music",
+                                "enable_hardware"]:
                     # these actions have a default duration to 0.0
                     duration = 0.0
 
-            # if action == "info_text":
-            #     if args_dict is None:
-            #         args_dict = {}
-            #     if "close_time" not in args_dict:
-            #         args_dict["close_time"] = duration
+            if duration == 0.0:
+                blocking = False
 
-            # if delay is not None and delay > 0.0:
-            #     if delay in self.pending_steps:
-            #         Logger.error('there is already a step for delay :', delay)
-            #     # add an Event in delay seconds
-            #     Logger.info(f'adding a delayed event {action} in {delay} seconds.')
-            #     self.pending_steps[delay] = Event(
-            #         self.engine,
-            #         id=id,
-            #         action=action,
-            #         args_dict=args_dict,
-            #     )
-            # else:
-                # it is a standard blocking step
             self.steps.append(ScenarioStep(
                 self.engine,
                 end_conditions=end_conditions,
@@ -314,10 +299,13 @@ class Scenario(EventObject):
         """
         Starts the game. Stops the shuttle, reset the time and starts the first step
         """
-        Logger.title('Starting new scenario')
+        Logger.info('-'*20)
+        Logger.info('Starting new scenario')
+        Logger.info('-'*20)
+        Logger.info('')
         self.current_step = 0
         self.game_time = self.engine.get_time()
-        self.shuttle.stop(play_sound=False)
+        # self.shuttle.stop(play_sound=False)
 
         # # start all pending steps
         # for time in self.pending_steps:
@@ -504,6 +492,7 @@ class Scenario(EventObject):
 
     @event('keyboard')
     def on_keyboard(self, key):
+        Logger.warning(f'listen to keyboard {key}')
         self.accept_once(key, self.start_next_step)
 
     @event('wait')
@@ -528,6 +517,7 @@ class Scenario(EventObject):
 
     @event('play_sound')
     def on_play_sound(self, name=None, volume=None, loop=False):
+        Logger.info(f'playing SFX {name}')
         self.engine.sound_manager.play_sfx(name, volume=volume, loop=loop)
 
     @event('stop_sound')
@@ -592,6 +582,9 @@ class Scenario(EventObject):
         See Also
             :func:`fulfill_current_step`
         """
+        Logger.info('='*10)
+        Logger.info(f'starting next step {self.current_step} -> {self.current_step+1}')
+        Logger.info('='*10)
         self.current_step += 1
         if self.current_step < len(self.steps):
             self.steps[self.current_step].start()

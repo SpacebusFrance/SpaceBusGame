@@ -25,6 +25,8 @@
         <event action="play_sound" name="voice_bio_5min" delay="615" duration="0"/>
         <event action="play_sound" name="voice_bio_1min" delay="855" duration="0"/>
 
+        <step action="wait" duration="2"/>
+
         <!-- game instructions -->
         <step action="info" title="$la_game_info_title$" text="$la_instructions$" duration="30" icon="compose" close_on_enter="True"/>
 
