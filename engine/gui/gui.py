@@ -164,7 +164,7 @@ class Gui(EventObject):
         if self._current_window is not None and not self._current_window.is_empty():
             self._current_window.destroy()
         if 'background_color' not in kwargs:
-            kwargs['background_color'] = (0.0, 0.0, 0.0, 0.5)
+            kwargs['background_color'] = (0.0, 0.0, 0.0, 0.8)
         self._current_window = win(self, **kwargs)
 
     def close_window_and_go(self, *args):
@@ -209,6 +209,8 @@ class Gui(EventObject):
                 color='dark-window', **kwargs):
         self.set_current_window(
             icon=icon,
+            size_x=1.2,
+            size_y=0.9,
             title=self.process_text(title),
             text=self.process_text(text),
             life_time=duration,

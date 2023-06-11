@@ -150,24 +150,34 @@ class ScenarioStep:
         Returns
             a :obj:`bool`
         """
-        if self._next_step_started:
+        Logger.info(f'checking is step {self.name} can end')
+        if self._next_step_started or not self._blocking:
             # This step has already been stopped
             # somewhere else (in start for example).
             # This call is likely to have been triggered
             # by `update_scenario`, triggered by some
             # game state update. Since we don't want to stop
             # current step, we simply return False
+            Logger.info('-> Cannot end since already ended')
             return False
         if self.constraints is not None:
             for key in self.constraints:
                 value = self.constraints[key]
                 game_value = self.engine.state_manager.get_state(key).get_value()
                 if value != game_value:
+                    Logger.info('-> Cannot end since constrain not fulfilled')
                     return False
             return True
         if wait_end_if_fulfilled:
-            return self._end_task is None or not self.scenario.event_manager.is_event_alive(self._end_task)
+            res = self._end_task is None or not self.scenario.event_manager.is_event_alive(self._end_task)
+            if res:
+                Logger.info('-> Can end since task ended')
+                return True
+            else:
+                Logger.info('-> Cannot end since task not ended')
+                return False
         else:
+            Logger.info('-> Can end task')
             return True
 
     def kill(self):

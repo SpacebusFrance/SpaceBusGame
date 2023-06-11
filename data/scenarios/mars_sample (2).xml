@@ -3,20 +3,19 @@
     <group name="debut de jeux">
         <!-- set the screen "lost_astronaut" (never-mind the name) -->
         <step action="set_screen" name="lost_astronaut"/>
+        <step action="keyboard" key="control-enter"/>
+
         <step action="wait" duration="2"/>
         <!-- starts the background music -->
         <step action="play_music" name="music_1"/>
-<!--        <step action="wait">-->
-<!--            <condition key="keyboard" value="control-p"/>-->
-<!--        </step>-->
 
         <!-- lock password -->
-        <step action="password" password="XXX" title="$la_lock_tile$" text="$la_lock_text$" icon="locked"/>
+        <step action="password" password="RTJ108" title="$la_lock_tile$" text="$la_lock_text$" icon="locked"/>
 
         <!-- <step action="play_sound" name="ok" duration="0"/> -->
         <step action="wait" duration="2"/>
-<!--        <step action="play_sound" name="voice_bio_intro" duration="0"/>-->
-<!--        <step action="info" title="$la_game_info_title$" text="$la_text$" duration="40" icon="compose" close_on_enter="False" text_size="0.035"/>-->
+        <step action="play_sound" name="voice_bio_intro" duration="0"/>
+        <step action="info" title="$la_game_info_title$" text="$la_text$" duration="40" icon="compose" close_on_enter="False" text_size="0.042"/>
 
         <!-- setup timer and events (fixed time) -->
         <event action="start_chrono" time="900" delay="0"/>
@@ -33,32 +32,34 @@
         <step action="enable_hardware"/>
 <!--        &lt;!&ndash; game unlock condition &ndash;&gt;-->
         <step action="wait">
-            <condition key="pilote_automatique1" value="False"/>
-            <condition key="pilote_automatique2" value="False"/>
-            <condition key="correction_roulis" value="False"/>
-            <condition key="correction_stabilisation" value="False"/>
-            <condition key="correction_direction" value="False"/>
+            <condition key="pilote_automatique1" value="True"/>
+            <condition key="pilote_automatique2" value="True"/>
+            <condition key="correction_roulis" value="True"/>
+            <condition key="correction_stabilisation" value="True"/>
+            <condition key="correction_direction" value="True"/>
         </step>
         <step action="disable_hardware"/>
+        <step action="wait" duration="2"/>
 
-        <step action="info" title="$la_game_info_title$" text="$la_game_info_text$" duration="15" icon="gamecontroller"/>
+        <step action="info" title="$la_game_info_title$" text="$la_game_info_text$" duration="30" icon="gamecontroller"/>
         <!-- start game -->
         <step action="2d_game_start" goal="30"/>
 
         <!-- display code -->
-        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" duration="15" close_on_enter="False"/>
+        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" close_on_enter="False"/>
 
-        <!-- wait for end -->
-        <step action="keyboard" key="control-enter"/>
-        <step action="restart"/>
+<!--        <step action="keyboard" key="control-enter"/>-->
+<!--        &lt;!&ndash; wait for end &ndash;&gt;-->
+<!--        <step action="restart"/>-->
     </group>
     <group id="end">
-        <step action="play_sound" name="voice_bio_end" duration="0"/>
-        <step action="info" title="$la_chrono_end_title$" text="$la_chrono_end_text$" duration="2" icon="caution"/>
-        <step action="play_sound" name="siren1"/>
+        <step action="play_sound" name="voice_bio_end"/>
+        <step action="play_sound" name="siren1" duration="0"/>
+        <step action="led_on" led="alert0"/>
+        <step action="led_on" led="alert1"/>
+        <step action="info" title="$la_chrono_end_title$" text="$la_chrono_end_text$" duration="15" icon="caution"/>
 
         <!-- wait for end -->
-        <step action="keyboard" key="control-enter"/>
         <step action="restart"/>
     </group>
 </scenario>

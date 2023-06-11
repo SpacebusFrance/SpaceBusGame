@@ -168,7 +168,7 @@ class Game(ShowBase):
             if self('max_fps') is not None:
                 globalClock.setMode(ClockObject.MLimited)
                 globalClock.setFrameRate(self('max_fps'))
-            self.setFrameRateMeter(True)
+            # self.setFrameRateMeter(True)
             # if self("play_scenario"):
             #     self.load_scenario(self('scenario'))
 
@@ -332,7 +332,7 @@ class Game(ShowBase):
 
         return True
 
-    def check_hardware_state_update(self, state_name: str, value: Any) -> None:
+    def check_hardware_state_update(self, state_name: str, value: Any, **kwargs) -> None:
         """
         Update the game states accordingly to some hardware inputs
         such as joystick and switches.
@@ -341,33 +341,35 @@ class Game(ShowBase):
             state_name (str): GameState name
             value (any): GameState value
         """
-        if state_name == "sp_orientation_h":
+        if state_name == "sp_orientation_h" and value != 0:
             # joystick control solar panel (sp) horizontal orientation
             # update the value of solar panel offset x
-            func = max if value > 0 else min
-            dx = 1 if value > 0 else -1
+            new_value = self.state_manager.offset_ps_x.get_value() - value
             self.state_manager.offset_ps_x.set_value(
-                func(self.state_manager.offset_ps_x.get_value() + dx, dx * 10),
+                min(10, max(-10, new_value)),
+                **kwargs
             )
-        elif state_name == "sp_orientation_v":
+        elif state_name == "sp_orientation_v" and value != 0:
             # joystick control solar panel (sp) vertical orientation
             # update the value of solar panel offset y
-            func = max if value > 0 else min
-            dx = 1 if value > 0 else -1
+            new_value = self.state_manager.offset_ps_y.get_value() + value
             self.state_manager.offset_ps_y.set_value(
-                func(self.state_manager.offset_ps_y.get_value() + dx, dx * 10),
+                min(10, max(-10, new_value)),
+                **kwargs
             )
         elif state_name == "freq_moins" and value:
             # button controlling communication frequency
             # decrease the state "freq_comm"
             self.state_manager.freq_comm.set_value(
                 self.state_manager.freq_comm.get_value() - self('freq_comm_increment'),
+                **kwargs
             )
         elif state_name == "freq_plus" and value:
             # button controlling communication frequency
             # increase the state "freq_comm"
             self.state_manager.freq_comm.set_value(
                 self.state_manager.freq_comm.get_value() + self('freq_comm_increment'),
+                **kwargs
             )
         elif state_name[:-1] == 'pilote_automatique':
             # global state "pilote_automatique" is set if both
@@ -375,9 +377,9 @@ class Game(ShowBase):
             # otherwise, unset it
             other = 'pilote_automatique1' if state_name[-1] == '2' else 'pilote_automatique2'
             if value and self.state_manager.get_state(other).is_on():
-                self.state_manager.pilote_automatique.set_value(True)
+                self.state_manager.pilote_automatique.set_value(True, **kwargs)
             elif not value and not self.state_manager.get_state(other).is_on():
-                self.state_manager.pilote_automatique.set_value(False)
+                self.state_manager.pilote_automatique.set_value(False, **kwargs)
 
         elif state_name in ['offset_ps_x', 'offset_ps_y']:
             # Check if solar panels are nominal, i.e. if game states ``offset_ps_x`` and

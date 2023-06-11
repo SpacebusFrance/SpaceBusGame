@@ -108,7 +108,10 @@ class GameState(DirectObject):
             # tell engine that state is changed
             # except if this is power (avoid loops)
             if self.name != 'main_power':
-                self.engine.check_hardware_state_update(self.name, self._value)
+                self.engine.check_hardware_state_update(self.name, self._value,
+                                                        silent=silent,
+                                                        update_scenario=update_scenario,
+                                                        update_power=update_power)
                 # self.engine.check_solar_panels_leds()
                 if update_power:
                     self.engine.update_power()
@@ -128,6 +131,14 @@ class GameStateManager:
     def reset(cls):
         for item in cls.states().values():
             item.reset()
+
+    @classmethod
+    def reset_leds(cls):
+        for item in cls.states().values():
+            if item.is_on():
+                item.set_led_on()
+            else:
+                item.set_led_off()
 
     @classmethod
     def get_state(cls, key: str) -> GameState:

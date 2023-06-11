@@ -19,8 +19,25 @@ class LostAstronautScreen(MainScreen):
         Build the screen
         """
         self._build_chrono()
+        self.set_game_values()
         # self._build_terminal()
         # # # self._build_gauge()
+
+    def set_game_values(self) -> None:
+        """
+        Switch game values accordingly to game
+        """
+        kwargs = dict(
+            new_value=False,
+            update_power=False,
+            silent=True,
+            update_scenario=False
+        )
+        self.engine.state_manager.correction_direction.set_value(**kwargs)
+        self.engine.state_manager.correction_roulis.set_value(**kwargs)
+        self.engine.state_manager.correction_stabilisation.set_value(**kwargs)
+        self.engine.state_manager.pilote_automatique1.set_value(**kwargs)
+        self.engine.state_manager.pilote_automatique2.set_value(**kwargs)
 
     # @event('terminal_show')
     # def on_terminal_show(self, text='$no_text$', focus=False, dt=0.0):

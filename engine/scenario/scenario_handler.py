@@ -1,4 +1,5 @@
 import datetime
+import inspect
 import re
 
 from direct.showbase.DirectObject import DirectObject
@@ -107,14 +108,14 @@ class Scenario(EventObject):
 
                 elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score",
                                 "set_screen", "stop_sound", "sound_volume", "disable_hardware", "play_music",
-                                "enable_hardware"]:
+                                "enable_hardware"] and duration is None:
                     # these actions have a default duration to 0.0
                     duration = 0.0
 
             if delay is None:
                 delay = 0.0
 
-            if (duration == 0.0 or duration is None) and delay == 0.0 and end_conditions is None:
+            if duration == 0.0 and delay == 0.0 and end_conditions is None:
                 # if both duration and delay are zeros
                 # together with no end conditions
                 # it means that this step is not blocking.
@@ -511,7 +512,15 @@ class Scenario(EventObject):
     @event('keyboard')
     def on_keyboard(self, key):
         Logger.warning(f'listen to keyboard {key}')
-        self.accept_once(key, self.start_next_step)
+        send_event('info',
+                   icon='hourglass',
+                   title='Keyboard',
+                   text=f'Pour lancer le jeu, appuyez sur: \n\n\t"{key}"',
+                   duration=None,
+                   text_size=0.06,
+                   close_on_enter=False
+                   )
+        self.accept_once(key, self.engine.gui.close_window_and_go)
 
     @event('wait')
     def on_wait(self):
@@ -550,6 +559,7 @@ class Scenario(EventObject):
     def on_reset_leds(self):
         self.engine.sound_manager.play_sfx("engine_starts")
         self.engine.hardware.hello_world()
+        self.engine.state_manager.reset()
         # self.engine.hardware.init_states()
 
     @event('led_on')
@@ -600,9 +610,13 @@ class Scenario(EventObject):
         See Also
             :func:`fulfill_current_step`
         """
+        Logger.info('')
         Logger.info('='*10)
         Logger.info(f'starting next step {self.current_step} -> {self.current_step+1}')
         Logger.info('='*10)
+        # curframe = inspect.currentframe()
+        # calframe = inspect.getouterframes(curframe, 2)
+        # Logger.info(f'called by {calframe[1][3]}')
         self.current_step += 1
         if self.current_step < len(self.steps):
             self.steps[self.current_step].start()

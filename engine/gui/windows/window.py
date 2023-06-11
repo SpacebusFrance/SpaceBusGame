@@ -48,7 +48,7 @@ class Window(BaseWidget):
             ar = self._gui_engine.engine('screen_resolution')[0] / self._gui_engine.engine('screen_resolution')[1]
             cm = CardMaker('back')
             cm.set_color(self.color(background_color) if isinstance(background_color, str) else background_color)
-            cm.set_frame(-ar, ar, -1., 1.0)
+            cm.set_frame(-ar, ar, -1.0, 1.0)
             self._background = self._gui_engine.screen.attach_new_node(cm.generate())
             self._background.setTransparency(TransparencyAttrib.MAlpha)
 
@@ -127,11 +127,14 @@ class Window(BaseWidget):
                                    lambda *args: on_entry_delete(self.get_entry_text()))
 
             self._widget.ignore_all()
-        elif callable(on_enter) and life_time is not None:
-            # accept on_enter at most 0.05 secs after (to avoid event conflicts)
-            self._widget.do_method_later(min(0.05, 0.95 * life_time),
-                                         lambda task: self._widget.accept_once('enter', on_enter, extraArgs=[self]),
-                                         'accepting')
+        elif callable(on_enter):
+            if life_time is not None:
+                # accept on_enter at most 0.05 secs after (to avoid event conflicts)
+                self._widget.do_method_later(min(0.05, 0.95 * life_time),
+                                             lambda task: self._widget.accept_once('enter', on_enter, extraArgs=[self]),
+                                             'accepting')
+            else:
+                self._widget.accept_once('enter', on_enter, extraArgs=[self])
             OnscreenText(scale=0.05, parent=self._widget,
                          pos=(0, -0.5 * size_y - 2 * self._widget_pad),
                          text=self._gui_engine.process_text('$window_enter_to_close$'),

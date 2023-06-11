@@ -20,21 +20,21 @@
 
         <!-- identification -->
         <step action="info" title="$id_info_title$" text="$id_info_text$" duration="20"/>
-        <step action="password" password="Aa" title="$id_title$" text="$id_text_0$" icon="locked"/>
-        <step action="password" password="Bb" title="$id_title$" text="$id_text_1$" icon="locked"/>
-        <step action="password" password="Cc" title="$id_title$" text="$id_text_2$" icon="locked"/>
+        <step action="password" password="RTJ108" title="$id_title$" text="$id_text_0$" icon="locked"/>
+        <step action="password" password="24K18E" title="$id_title$" text="$id_text_1$" icon="locked"/>
+        <step action="password" password="12AN4D" title="$id_title$" text="$id_text_2$" icon="locked"/>
 
         <!-- fermeture des portes -->
         <step action="wait" duration="2"/>
-        <step action="play_sound" name="voice_door_close" volume="3.0" duration="1"/>
-        <step action="play_sound" name="door_close" volume="3.0" duration="10"/>
+        <step action="play_sound" name="voice_door_close" volume="1.0" duration="1"/>
+        <step action="play_sound" name="door_close" volume="1.0" duration="10"/>
 
         <!-- cible -->
         <step action="play_sound" name="human_target" duration="0"/>
         <!-- 180 = 3 MINUTES POUR LA BASE-->
         <step action="info" duration="20" title="$target_title_info$" text="$target_text_info$" icon="target"/>
-        <step action="password" format="target" password="XX-XX-XX" title="$target_title$" icon="target" text="$target_text_1$" hint_sound="human_hint_target" hint_time="180"/>
-        <step action="password" format="target" password="XX-XX-XX" title="$target_title$" icon="target" text="$target_text_2$" hint_sound="human_hint_target" hint_time="180"/>
+        <step action="password" format="target" password="rer" title="$target_title$" icon="target" text="$target_text_1$" hint_sound="human_hint_target" hint_time="180"/>
+        <step action="password" format="target" password="55-47-24" title="$target_title$" icon="target" text="$target_text_2$" hint_sound="human_hint_target" hint_time="180"/>
         <step action="info" duration="4" title="$target_ok_title$" text="$target_ok_text$" icon="load_spinner"/>
 
          <!--mise ne route des moteurs-->
@@ -66,7 +66,8 @@
         <!-- enable hardware listening -->
         <step action="enable_hardware"/>
 
-        <step action="info" close_time="20" title="$title_procedure$" text="$text_procedure_pu2$">
+        <step action="info" close_time="20" title="$title_procedure$" text="$text_procedure_pu2$"/>
+        <step action="wait">
             <condition key="freq_comm" value="310"/>
         </step>
 
@@ -134,9 +135,8 @@
     <group name="good end">
         <step action="wait" duration="2.0"/>
         <step action="play_sound" name="human_p_a_ok" duration="10"/>
-        <step action="end_game"/>
-        <step action="led_off" led="l_alert0"/>
-        <step action="led_off" led="l_alert1"/>
+        <step action="led_off" led="alert0"/>
+        <step action="led_off" led="alert1"/>
 
         <!-- LAST MOVE -->
         <step action="play_sound" name="end_music" duration="0"/>
