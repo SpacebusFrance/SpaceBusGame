@@ -265,7 +265,7 @@ class Game(ShowBase):
 
         self.clock.reset()
         self.sound_manager.reset()
-        self.hardware.all_leds_off()
+        self.hardware.reset()
         self.hardware.disable_inputs()
 
         # reset hardware (reset leds)

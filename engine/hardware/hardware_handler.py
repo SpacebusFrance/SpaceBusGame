@@ -33,10 +33,11 @@ class HardwareHandler(EventObject):
 
         # self.firewall_time = 0.05
         self.firewall_time = self.engine('hardware_input_firewall_time')
-        for j in range(3):
-            for b in range(10):
-                self.times[f'joystick{j}-button{b}'] = self.engine.get_time(round_result=False)
-                self.tasks[f'joystick{j}-button{b}'] = None
+
+        # for j in range(3):
+        #     for b in range(10):
+        #         self.times[f'joystick{j}-button{b}'] =
+        #         self.tasks[f'joystick{j}-button{b}'] = None
 
     @event('enable_hardware')
     def enable_inputs(self) -> None:
@@ -60,9 +61,15 @@ class HardwareHandler(EventObject):
 
     def reset(self):
         """
-        Set all leds off
+        Set all leds off and register events from game states
         """
         self._arduino.all_off()
+        for item in self.engine.state_manager.states().values():
+            event_name = item.hardware_key
+            if event_name is not None:
+                Logger.info(f'saving event {event_name} in hardware register')
+                self.times[event_name] = self.engine.get_time(round_result=False)
+                self.tasks[event_name] = None
 
     def all_leds_on(self):
         """
@@ -125,18 +132,17 @@ class HardwareHandler(EventObject):
                 # store this value for next comparison
                 self._axes_value[event_name] = value
 
-            if len(event_name) > 0 and axis_moved and not event_name.endswith('axis2'):
+            if len(event_name) > 0 and axis_moved and event_name in self.times:
                 # try to avoid repetition of the same
                 # event in a short time. We start by
                 # computing time delta from previous
                 # record of the same event
                 t0 = self.engine.get_time(round_result=False)
-                dt = t0 - self.times.get(event_name, t0 - 10.0)
+                dt = t0 - self.times[event_name]
                 # we store event time in corresponding
                 # event
                 self.times[event_name] = t0
 
-                # todo: only listen for registrered events !!
                 if dt > self.firewall_time:
                     # if delta is larger than
                     # firewall_time, we send an event in
@@ -145,15 +151,10 @@ class HardwareHandler(EventObject):
                     # a few µs latter, hence the event is
                     # effectively sent after firewall_time
                     Logger.info(f'sending event "{event_name}" in {self.firewall_time} seconds')
-                    # todo: check why that does work ...
-                    # messenger.send(event_name, sentArgs=[value])
                     self.tasks[event_name] = self.engine.task_mgr.do_method_later(
                         self.firewall_time,
-                        # messenger.send,
-                        # extraArgs=[event_name, {'sentArgs': value}],
                         self._process_event,
                         extraArgs=[event_name, value],
-                        # lambda *_: messenger.send(event_name, sentArgs=[value]),
                         name=event_name
                     )
 
