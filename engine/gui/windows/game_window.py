@@ -103,11 +103,11 @@ class GameWindow(Window):
         self._finished = False
         self.play_game()
 
-    @event('current_step_end')
-    def on_step_end(self) -> None:
-        self._gui_engine.engine.sound_manager.stop('star_game_music')
-        self._gui_engine.engine.sound_manager.resume_music()
-        self._gui_engine.close_window_and_go()
+    # @event('current_step_end')
+    # def on_step_end(self) -> None:
+    #     self._gui_engine.engine.sound_manager.stop('star_game_music')
+    #     self._gui_engine.engine.sound_manager.resume_music()
+    #     self._gui_engine.close_window_and_go()
 
     def play_game(self, *_):
         text = OnscreenText(parent=self._game_background, scale=0.15, pos=(0, 0.5),
@@ -280,6 +280,9 @@ class GameWindow(Window):
         return sprite
 
     def destroy(self):
+        self._gui_engine.engine.sound_manager.stop('star_game_music')
+        self._gui_engine.engine.sound_manager.resume_music()
+
         self._status = 2
         self._finished = True
         if self._task is not None: # and self._task.is_alive():
