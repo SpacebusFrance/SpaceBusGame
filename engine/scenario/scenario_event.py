@@ -50,6 +50,8 @@ class ScenarioStep:
         self.sound_player = engine.sound_manager
         self.name = action
         self.id = id
+
+        self._next_step_started = False
         # self.counter = ScenarioStep.step_counter
         # ScenarioStep.step_counter += 1
 
@@ -89,13 +91,20 @@ class ScenarioStep:
             Logger.warning('this step has no end conditions nor max time')
 
         if self.duration is not None and self._blocking:
-            end_time = self.delay + self.duration + 1e-2
+            # it is a blocking step with a duration
+            # this duration can be either 0.0 or a positive number.
+            # If we are here it means that either delay is set or
+            # duration is > 0 and no end_conditions.
+            # We stop this step in delay + durations seconds
+            end_time = self.delay + self.duration
             self._end_task = self.scenario.event_manager.add_event(
                 time=end_time,
                 method=lambda *args: self.end(False)
             )
 
         if self._event_name is not None:
+            # send the event in 'delay' seconds
+            # possibly instantaneously if delay = 0
             if self.delay > 0:
                 self._action_task = self.scenario.event_manager.add_event(
                     time=self.delay,
@@ -105,21 +114,19 @@ class ScenarioStep:
                 send_event(self._event_name, **self._event_kwargs)
 
         if self._hint_sound is not None and self._hint_time is not None:
+            # play some hint sfx in hint_time
+            # if set
             self._hint_task = self.scenario.event_manager.add_event(
                 time=self.delay + self._hint_time,
                 method=lambda *args: self.engine.sound_manager.play_sfx(self._hint_sound)
             )
 
-        Logger.info(f'step {self.name} blocking ? {self._blocking}')
         if not self._blocking:
-            Logger.info(f'\t- /!\ blocking \t\t: {self._blocking}')
-            # simply end this step
-            Logger.info(f'non blocking event ({self._blocking}) => starting next step')
-            self.scenario.event_manager.add_event(
-                time=0.1,
-                method=lambda *args: self.scenario.start_next_step()
-            )
-            # self.scenario.start_next_step()
+            # if we are here, it means that we are non-blocking.
+            # We simply start the next step and avoid to start it
+            # latter when some game-state is updated
+            self._next_step_started = True
+            self.scenario.start_next_step()
 
     def force_fulfill(self):
         """
@@ -136,14 +143,20 @@ class ScenarioStep:
             self.end(False)
         Logger.warning('- step forced')
 
-    def is_fulfilled(self, wait_end_if_fulfilled=True):
+    def can_end_step(self, wait_end_if_fulfilled=True):
         """
         Checks if the wining conditions of this step are fulfilled.
 
         Returns
             a :obj:`bool`
         """
-        if not self._blocking:
+        if self._next_step_started:
+            # This step has already been stopped
+            # somewhere else (in start for example).
+            # This call is likely to have been triggered
+            # by `update_scenario`, triggered by some
+            # game state update. Since we don't want to stop
+            # current step, we simply return False
             return False
         if self.constraints is not None:
             for key in self.constraints:
@@ -186,8 +199,11 @@ class ScenarioStep:
         # removing tasks
         self.kill()
 
-        # tell the game that we stop current task
-        send_event('current_step_end')
+        # check that next step isn't started already
+        if not self._next_step_started:
+            self._next_step_started = True
+            # tell the game that we stop current task
+            send_event('current_step_end')
 
-        # starting the next step
-        self.scenario.start_next_step()
+            # starting the next step
+            self.scenario.start_next_step()

@@ -111,8 +111,26 @@ class Scenario(EventObject):
                     # these actions have a default duration to 0.0
                     duration = 0.0
 
-            if duration == 0.0:
+            if delay is None:
+                delay = 0.0
+
+            if (duration == 0.0 or duration is None) and delay == 0.0 and end_conditions is None:
+                # if both duration and delay are zeros
+                # together with no end conditions
+                # it means that this step is not blocking.
                 blocking = False
+
+            # check that we don't have simultaneously
+            # end conditions and a duration
+            assert duration is None or end_conditions is None, \
+                f'step {action} with id {id} has both duration ({duration}) and' \
+                f'end conditions {end_conditions}. Cannot have both simultaneously.'
+
+            # check that this step is either blocking or has a zero
+            # duration and no end conditions
+            assert blocking or ((duration == 0.0 or duration is None) and end_conditions is None), \
+                f'step {action} with id {id} is not blocking but has a duration ({duration}) and/or ' \
+                f'end conditions {end_conditions}'
 
             self.steps.append(ScenarioStep(
                 self.engine,
@@ -604,7 +622,7 @@ class Scenario(EventObject):
         if len(self.steps) > self.current_step >= 0:
             # Logger.info('updating scenario ...')
             step = self.steps[self.current_step]
-            if step.is_fulfilled(wait_end_if_fulfilled=wait_end_if_fulfilled):
+            if step.can_end_step(wait_end_if_fulfilled=wait_end_if_fulfilled):
                 # Logger.info('ending current step')
                 step.end(True)
             # else:
