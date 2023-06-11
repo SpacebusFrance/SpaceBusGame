@@ -309,10 +309,10 @@ class Game(ShowBase):
 
     def can_set_state(self, state_name: str, value: Any) -> bool:
         # cannot set one of these values if "pilote_automatique" is on
-        if state_name in ["correction_roulis", "correction_direction", "correction_stabilisation"] \
-                and value \
-                and not self.state_manager.pilote_automatique.is_on():
-            return False
+        # if state_name in ["correction_roulis", "correction_direction", "correction_stabilisation"] \
+        #         and value \
+        #         and not self.state_manager.pilote_automatique.is_on():
+        #     return False
 
         # cannot set any battery if global batteries is off
         if state_name.startswith("batterie") \

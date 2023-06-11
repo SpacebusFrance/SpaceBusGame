@@ -200,6 +200,12 @@ class Gui(EventObject):
         else:
             self.set_screen(None)
 
+    @event('current_step_end')
+    def on_current_step_end(self):
+        if self._current_window is not None and not self._current_window.is_empty():
+            self._current_window.destroy()
+            self._current_window = None
+
     @event('end_screen')
     def on_end_screen(self):
         self.end_screen()

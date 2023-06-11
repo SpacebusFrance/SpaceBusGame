@@ -1,7 +1,7 @@
-from typing import Union
+from typing import Union, Any
 
 import pygame
-from engine.utils.event_handler import EventObject, event
+from engine.utils.event_handler import EventObject, event, send_event
 from direct.showbase.MessengerGlobal import messenger
 from direct.showbase.ShowBase import ShowBase
 
@@ -107,9 +107,10 @@ class HardwareHandler(EventObject):
         pygame.quit()
 
     def _event_polling(self, task):
-        event_name = ""
-        value = None
+
         for ev in pygame.event.get():
+            event_name = ""
+            value = None
             axis_moved = True
             if ev.type == pygame.JOYBUTTONDOWN or ev.type == pygame.JOYBUTTONUP:
                 event_name = 'joystick%d-button%d' % (ev.joy, ev.button)
@@ -124,7 +125,7 @@ class HardwareHandler(EventObject):
                 # store this value for next comparison
                 self._axes_value[event_name] = value
 
-            if len(event_name) > 0 and axis_moved:
+            if len(event_name) > 0 and axis_moved and not event_name.endswith('axis2'):
                 # try to avoid repetition of the same
                 # event in a short time. We start by
                 # computing time delta from previous
@@ -135,28 +136,38 @@ class HardwareHandler(EventObject):
                 # event
                 self.times[event_name] = t0
 
+                # todo: only listen for registrered events !!
                 if dt > self.firewall_time:
                     # if delta is larger than
                     # firewall_time, we send an event in
                     # 1.1 * firewall_time
-                    # Logger.warning(f'sending event "{event_name}" in {1.1 * self.firewall_time:.2f} seconds')
-                    # Logger.warning(f'catch and send event {event_name} with value {value} (dt={dt} > {self.firewall_time})')
-                    messenger.send(event_name, sentArgs=[value])
-                    # self.tasks[event_name] = self.engine.task_mgr.do_method_later(
-                    #     1.1 * self.firewall_time,
-                    #     lambda *_: messenger.send(event_name, sentArgs=[value]),
-                    #     name=event_name
-                    # )
+                    # the risk is that the same event is fired
+                    # a few µs latter, hence the event is
+                    # effectively sent after firewall_time
+                    Logger.info(f'sending event "{event_name}" in {self.firewall_time} seconds')
+                    # todo: check why that does work ...
+                    # messenger.send(event_name, sentArgs=[value])
+                    self.tasks[event_name] = self.engine.task_mgr.do_method_later(
+                        self.firewall_time,
+                        # messenger.send,
+                        # extraArgs=[event_name, {'sentArgs': value}],
+                        self._process_event,
+                        extraArgs=[event_name, value],
+                        # lambda *_: messenger.send(event_name, sentArgs=[value]),
+                        name=event_name
+                    )
 
-                # elif self.tasks[event_name] is not None:
-                #     # otherwise, if a previous record exists
-                #     # we remove the incoming
-                #     # Logger.warning("possible ghost from", event_name)
-                #     self.tasks[event_name].remove()
+                elif self.tasks[event_name] is not None:
+                    # the same event was fired just before,
+                    # we consider that this event and the previous
+                    # one are ghost. We remove the task
+                    Logger.warning(f"possible ghost from {event_name} with value {value}.")
+                    self.tasks[event_name].remove()
         return task.cont
 
-    # def _process_event(self, in_game_name, value):
-    #     self.engine.update_hard_state(in_game_name, value)
+    @staticmethod
+    def _process_event(event_name: str, value: Any) -> None:
+        messenger.send(event_name, sentArgs=[value])
 
 
 if __name__ == '__main__':
