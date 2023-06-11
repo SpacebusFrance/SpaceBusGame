@@ -30,6 +30,7 @@ class MainScreen(EventObject):
         self._icon_size = 0.05
 
         ar = self.engine('screen_resolution')[0] / self.engine('screen_resolution')[1]
+        # ar *= 1.5
         # cm = CardMaker('back')
         # cm.set_color(self.gui.colors['background'])
         # cm.set_frame(-ar, ar, -1., 1.0)

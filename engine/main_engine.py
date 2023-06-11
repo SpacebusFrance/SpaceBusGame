@@ -5,6 +5,7 @@ from typing import Any
 from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import WindowProperties
 from direct.showbase.ShowBase import ShowBase, ClockObject
+from direct.showbase.ShowBaseGlobal import globalClock
 from panda3d.core import AntialiasAttrib, LVector3f
 
 from engine.display.camera import FreeCameraControl
@@ -36,7 +37,7 @@ class Game(ShowBase):
         props.set_undecorated(True)
         props.set_size(800, 600)
         self.win.request_properties(props)
-        OnscreenImage(image='data/gui/images/splashscreen.png', parent=self.render2d)
+        self.splashscreen = OnscreenImage(image='data/gui/images/splashscreen.png', parent=self.render2d)
         # render three (?) frames to actually see it
         self.graphicsEngine.renderFrame()
         self.graphicsEngine.renderFrame()
@@ -51,8 +52,8 @@ class Game(ShowBase):
         self.default_params = ParamUtils.read_ini_file(default_param_file)
         self.default_params['param_file'] = param_file
 
-        # self.hardware_map = None
-        self.clock = ClockObject()
+        # store clock object
+        self.clock = globalClock
 
         if self("test_3D"):
             self.earth = Earth(self)
@@ -164,6 +165,10 @@ class Game(ShowBase):
                 self.setFrameRateMeter(True)
             if self("anti_aliasing"):
                 self.render.setAntialias(AntialiasAttrib.MAuto)
+            if self('max_fps') is not None:
+                globalClock.setMode(ClockObject.MLimited)
+                globalClock.setFrameRate(self('max_fps'))
+            self.setFrameRateMeter(True)
             # if self("play_scenario"):
             #     self.load_scenario(self('scenario'))
 
@@ -210,6 +215,7 @@ class Game(ShowBase):
         """
         Generate screens for the game. Either with or without 3D screens
         """
+        self.splashscreen.remove_node()
         self.gui.set_single_window(self('show_3d_windows'), screen_number=self('screen_number'))
 
         if self("show_3d_windows"):

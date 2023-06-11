@@ -75,20 +75,21 @@ class ScenarioStep:
         """
         Start this step
         """
-        Logger.print(f'\n[{self.engine.get_time(True)}] starting step "{self.name}" (id "{self.id}", '
-                     f'starts in {self.delay:.2f} seconds)',
-                     color='blue')
-        Logger.print(f'\t- blocking \t\t: {self._blocking}', color='blue')
-        Logger.print(f'\t- delay \t\t: {self.delay:.2f} seconds', color='blue')
-        Logger.print(f'\t- duration \t\t: {self.duration if self.duration is not None else "infinity"} seconds.',
-                     color='blue')
-        Logger.print(f'\t- conditions\t: {self.constraints}', color='blue')
+        Logger.info('')
+        Logger.info('_'*10)
+        Logger.info(f'starting step "{self.name}" (id "{self.id}", starts in {self.delay:.2f} seconds)')
+        Logger.info(f'\t- blocking \t\t: {self._blocking}')
+        Logger.info(f'\t- delay \t\t: {self.delay:.2f} seconds')
+        Logger.info(f'\t- duration \t\t: {self.duration if self.duration is not None else "infinity"} seconds.')
+        Logger.info(f'\t- conditions\t: {self.constraints}')
+        Logger.info(f'\t- event name\t: {self._event_name}')
+        Logger.info(f'\t- event args\t: {self._event_kwargs}')
 
         if self.constraints is None and self.duration is None and self._blocking:
             Logger.warning('this step has no end conditions nor max time')
 
         if self.duration is not None and self._blocking:
-            end_time = self.delay + self.duration + 1e-1
+            end_time = self.delay + self.duration + 1e-2
             self._end_task = self.scenario.event_manager.add_event(
                 time=end_time,
                 method=lambda *args: self.end(False)
@@ -109,15 +110,22 @@ class ScenarioStep:
                 method=lambda *args: self.engine.sound_manager.play_sfx(self._hint_sound)
             )
 
+        Logger.info(f'step {self.name} blocking ? {self._blocking}')
         if not self._blocking:
+            Logger.info(f'\t- /!\ blocking \t\t: {self._blocking}')
             # simply end this step
-            self.scenario.start_next_step()
+            Logger.info(f'non blocking event ({self._blocking}) => starting next step')
+            self.scenario.event_manager.add_event(
+                time=0.1,
+                method=lambda *args: self.scenario.start_next_step()
+            )
+            # self.scenario.start_next_step()
 
     def force_fulfill(self):
         """
         Fulfill this step. If there are wining conditions, these conditions will be forced
         """
-        Logger.warning('fulfilling step', self.name)
+        Logger.warning(f'fulfilling step {self.name}')
 
         if self.constraints is not None:
             for key, value in self.constraints.items():
@@ -135,6 +143,8 @@ class ScenarioStep:
         Returns
             a :obj:`bool`
         """
+        if not self._blocking:
+            return False
         if self.constraints is not None:
             for key in self.constraints:
                 value = self.constraints[key]
@@ -165,10 +175,10 @@ class ScenarioStep:
                 Otherwise, the :code:`loose_function` is called.
         """
         if win:
-            Logger.print('\t-> task complete', color='green')
+            Logger.info('\t-> task complete')
             self.sound_player.play_sfx(self._win_sound)
         else:
-            Logger.print('\t-> task ended', color='red')
+            Logger.info('\t-> task ended')
             self.sound_player.play_sfx(self._loose_sound)
             if self._fulfill_if_lost:
                 self.force_fulfill()

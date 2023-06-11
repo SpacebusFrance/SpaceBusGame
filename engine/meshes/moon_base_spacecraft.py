@@ -51,7 +51,7 @@ class NewSpaceCraft:
         self.base.render.setLight(self.sun_light_node)
 
         if quality > 0:
-            Logger.info('setting ShadowCaster quality to', quality*512)
+            Logger.info(f'setting ShadowCaster quality to {quality *512}')
             self.sun_light.setShadowCaster(True, quality*512, quality*512)
 
         # self.sun_light.getLens().setFilmSize(60., 40.)

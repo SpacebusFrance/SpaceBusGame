@@ -69,14 +69,14 @@ class GameState(DirectObject):
         """
         Set corresponding led on if it exist and is valid
         """
-        if self.led_id is not None and self.led_id.isdigit():
+        if self.led_id is not None: # and self.led_id.isdigit():
             self.engine.hardware.switch_led_on(self.led_id)
 
     def set_led_off(self) -> None:
         """
         Set corresponding led on if it exist and is valid
         """
-        if self.led_id is not None and self.led_id.isdigit():
+        if self.led_id is not None:# and self.led_id.isdigit():
             self.engine.hardware.switch_led_off(self.led_id)
 
     def set_value(self, new_value: Any,
@@ -116,6 +116,7 @@ class GameState(DirectObject):
             # finally, update scenario
             if update_scenario:
                 self.engine.scenario.update_scenario()
+
 
 class GameStateManager:
     @classmethod

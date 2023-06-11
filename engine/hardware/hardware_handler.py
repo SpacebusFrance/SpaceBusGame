@@ -29,6 +29,8 @@ class HardwareHandler(EventObject):
         # ghost firewall
         self.times = dict()
         self.tasks = dict()
+        self._axes_value = dict()
+
         # self.firewall_time = 0.05
         self.firewall_time = self.engine('hardware_input_firewall_time')
         for j in range(3):
@@ -41,6 +43,8 @@ class HardwareHandler(EventObject):
         """
         Enable hardware inputs
         """
+        # remove all stored events
+        pygame.event.clear()
         self.engine.taskMgr.add(self._event_polling, 'Hardware_Polling')
         # self.engine.update_soft_state("listen_to_hardware", True)
         self.engine.state_manager.listen_to_hardware.set_value(True)
@@ -94,7 +98,7 @@ class HardwareHandler(EventObject):
         Args:
             id_id (str): the *id* of the led
         """
-        self._arduino.led_on(led_id)
+        self._arduino.led_off(led_id)
 
     def destroy(self):
         """
@@ -106,36 +110,53 @@ class HardwareHandler(EventObject):
         event_name = ""
         value = None
         for ev in pygame.event.get():
-            if ev.type is pygame.JOYBUTTONDOWN or ev.type is pygame.JOYBUTTONUP:
+            axis_moved = True
+            if ev.type == pygame.JOYBUTTONDOWN or ev.type == pygame.JOYBUTTONUP:
                 event_name = 'joystick%d-button%d' % (ev.joy, ev.button)
-                value = ev.type is pygame.JOYBUTTONDOWN
-            elif ev.type is pygame.JOYAXISMOTION:
+                value = ev.type == pygame.JOYBUTTONDOWN
+            elif ev.type == pygame.JOYAXISMOTION:
                 event_name = 'joystick%d-axis%d' % (ev.joy, ev.axis)
-                value = ev.value
+                # value should be [-1, 0, 1]
+                value = round(ev.value)
+                # only trigger an event if axes changed value
+                # as in 0 to 1 or -1 to 0 etc
+                axis_moved = value != self._axes_value.get(event_name, 0)
+                # store this value for next comparison
+                self._axes_value[event_name] = value
 
-            if len(event_name) > 0:
+            if len(event_name) > 0 and axis_moved:
+                # try to avoid repetition of the same
+                # event in a short time. We start by
+                # computing time delta from previous
+                # record of the same event
                 t0 = self.engine.get_time(round_result=False)
-                if event_name in self.times:
-                    dt = t0 - self.times[event_name]
-                else:
-                    dt = 10.
+                dt = t0 - self.times.get(event_name, t0 - 10.0)
+                # we store event time in corresponding
+                # event
                 self.times[event_name] = t0
 
                 if dt > self.firewall_time:
-                    Logger.warning(f'sending event "{event_name}" in {1.1 * self.firewall_time:.2f} seconds')
-                    self.tasks[event_name] = self.engine.task_mgr.do_method_later(
-                        1.1 * self.firewall_time,
-                        lambda *_: messenger.send(event_name, sentArgs=[value]),
-                        name=event_name
-                    )
+                    # if delta is larger than
+                    # firewall_time, we send an event in
+                    # 1.1 * firewall_time
+                    # Logger.warning(f'sending event "{event_name}" in {1.1 * self.firewall_time:.2f} seconds')
+                    # Logger.warning(f'catch and send event {event_name} with value {value} (dt={dt} > {self.firewall_time})')
+                    messenger.send(event_name, sentArgs=[value])
+                    # self.tasks[event_name] = self.engine.task_mgr.do_method_later(
+                    #     1.1 * self.firewall_time,
+                    #     lambda *_: messenger.send(event_name, sentArgs=[value]),
+                    #     name=event_name
+                    # )
 
-                elif self.tasks[event_name] is not None and self.engine("show_buttons_ghosts"):
-                    Logger.warning("possible ghost from", event_name)
-                    self.tasks[event_name].remove()
+                # elif self.tasks[event_name] is not None:
+                #     # otherwise, if a previous record exists
+                #     # we remove the incoming
+                #     # Logger.warning("possible ghost from", event_name)
+                #     self.tasks[event_name].remove()
         return task.cont
 
-    def _process_event(self, in_game_name, value):
-        self.engine.update_hard_state(in_game_name, value)
+    # def _process_event(self, in_game_name, value):
+    #     self.engine.update_hard_state(in_game_name, value)
 
 
 if __name__ == '__main__':
@@ -144,8 +165,8 @@ if __name__ == '__main__':
             ShowBase.__init__(self)
             self.arduino = WriteOnlyArduino(self)
             self.arduino.all_off()
-            self.arduino.led_off(54)
-            self.arduino.led_off(55)
+            self.arduino.led_on('54')
+            # self.arduino.led_on('55')
 
 
     main = Test()

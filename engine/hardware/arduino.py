@@ -16,7 +16,7 @@ class WriteOnlyArduino:
         ports = list(list_ports.comports())
         self.board = None
         for p in ports:
-            Logger.info(p, p[2], 'description :', p.description)
+            # Logger.info(p, p[2], 'description :', p.description)
             if "ttyACM0" in p.description:
                 self.board = Serial(p[0], 9600, timeout=5)
 
