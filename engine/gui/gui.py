@@ -2,9 +2,7 @@ import math
 import os
 import re
 import pandas as pd
-from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import WindowProperties
-from panda3d.core import PGTop
 
 from engine.gui.main_screens.main_screen import MainScreen
 from engine.gui.main_screens.got_to_mars_screen import GoToMarsScreen
@@ -28,6 +26,7 @@ class Gui(EventObject):
     colors = {
         'green': (0.2, 0.8, 0.1, 1.0),
         'red': (0.8, 0.2, 0.1, 1.0),
+        'orange': (0.6, 0.3, 0.2, 1.0),
         'blue': (0.2, 0.2, 0.6, 1.0),
         'light': (0.9, 0.9, 0.9, 1.0),
         'golden': (0.9, 0.9, 0.43, 1.0),
@@ -230,8 +229,9 @@ class Gui(EventObject):
     def on_password(self, icon='caution', title='$password_title$', text='', text_size=0.05, duration=-1, password='', format=None,
                     on_password_find=None, color='dark-window', **kwargs):
         def format_target(x):
-            x = x.replace('-', '')[:6]
-            self._current_window.set_entry_text('-'.join([x[2 * i:2 * (i + 1)] for i in range(math.ceil(len(x) / 2))]))
+            char = ':'
+            x = x.replace(char, '')[:6]
+            self._current_window.set_entry_text(char.join([x[2 * i:2 * (i + 1)] for i in range(math.ceil(len(x) / 2))]))
 
         if format is not None:
             if format == 'target':

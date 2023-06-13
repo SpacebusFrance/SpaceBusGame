@@ -1,11 +1,7 @@
 from direct.gui.DirectFrame import DirectFrame
-from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText
-from direct.showbase import DirectObject
-from panda3d.core import CardMaker
 
 from engine.utils.event_handler import EventObject
-from engine.utils.logger import Logger
 
 
 class MainScreen(EventObject):

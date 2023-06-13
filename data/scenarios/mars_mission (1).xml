@@ -33,8 +33,8 @@
         <step action="play_sound" name="human_target" duration="0"/>
         <!-- 180 = 3 MINUTES POUR LA BASE-->
         <step action="info" duration="20" title="$target_title_info$" text="$target_text_info$" icon="target"/>
-        <step action="password" format="target" password="rer" title="$target_title$" icon="target" text="$target_text_1$" hint_sound="human_hint_target" hint_time="180"/>
-        <step action="password" format="target" password="55-47-24" title="$target_title$" icon="target" text="$target_text_2$" hint_sound="human_hint_target" hint_time="180"/>
+        <step action="password" format="target" password="11:22:33" title="$target_title$" icon="target" text="$target_text_1$" hint_sound="human_hint_target" hint_time="180"/>
+        <step action="password" format="target" password="55:47:24" title="$target_title$" icon="target" text="$target_text_2$" hint_sound="human_hint_target" hint_time="180"/>
         <step action="info" duration="4" title="$target_ok_title$" text="$target_ok_text$" icon="load_spinner"/>
 
          <!--mise ne route des moteurs-->

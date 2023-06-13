@@ -3,10 +3,10 @@ from math import sqrt
 from typing import Any
 
 from direct.gui.OnscreenImage import OnscreenImage
-from direct.gui.OnscreenText import WindowProperties
+from direct.gui.OnscreenText import WindowProperties, OnscreenText
 from direct.showbase.ShowBase import ShowBase, ClockObject
 from direct.showbase.ShowBaseGlobal import globalClock
-from panda3d.core import AntialiasAttrib, LVector3f
+from panda3d.core import AntialiasAttrib, LVector3f, TextNode
 
 from engine.display.camera import FreeCameraControl
 from engine.display.screens import FakeScreen3D
@@ -168,11 +168,74 @@ class Game(ShowBase):
             if self('max_fps') is not None:
                 globalClock.setMode(ClockObject.MLimited)
                 globalClock.setFrameRate(self('max_fps'))
-            # self.setFrameRateMeter(True)
-            # if self("play_scenario"):
-            #     self.load_scenario(self('scenario'))
+
+            # debug window displaying logs
+            self.debug_window = OnscreenText(
+                text='',
+                pos=(0.1, -0.1),
+                fg=(0.7, 0.7, 0.7, 1.0),
+                bg=(0.2, 0.2, 0.2, 0.8),
+                scale=0.03,
+                wordwrap=25,
+                align=TextNode.ALeft,
+                parent=self.a2dTopLeft
+            )
+            self.debug_logs = []
+            self.log_shift = 0
+            self.log_size = 30
+            self.debug_window.setBin('gui-popup', 1)
+            self.accept('control-l', self.toggle_debug_window)
+            self.accept('log_event', self.on_log_event)
+            self.accept('wheel_up', self.on_wheel_up)
+            self.accept('wheel_down', self.on_wheel_down)
 
             self.reset_game()
+
+    def toggle_debug_window(self) -> None:
+        """
+        Show or hide the debug window
+        """
+        if self.debug_window.is_hidden():
+            self.debug_window.show()
+        else:
+            self.debug_window.hide()
+
+    def on_wheel_down(self, *args) -> None:
+        """
+        Listen to mouse wheel up event and shift logs accordingly
+        """
+        self.log_shift = max(self.log_shift - 1, 0)
+        self.draw_log()
+
+    def on_wheel_up(self, *args):
+        """
+        Listen to mouse wheel up event and shift logs accordingly
+        """
+        self.log_shift += 1
+        self.draw_log()
+
+    def draw_log(self):
+        """
+        Draw logs on the debug window
+        """
+        self.debug_window.setText('\n'.join(self.debug_logs[-self.log_size - self.log_shift: - 1 - self.log_shift]))
+
+    def on_log_event(self, level, message) -> None:
+        """
+        Triggered when anything is logged in logging module.
+        Update the log debug window
+
+        Args:
+            level (str): message level
+            message (str): message
+        """
+        if level == 'WARNING':
+            message = f'\1orange\1{message}\2'
+        elif level == 'ERROR':
+            message = f'\1red\1{message}\2'
+        self.debug_logs.append(message)
+        self.log_shift = 0
+        self.draw_log()
 
     def __call__(self, key, default=False):
         """

@@ -1,10 +1,19 @@
 import logging
+from direct.showbase.MessengerGlobal import messenger
+
 
 logging.basicConfig(
     format='%(levelname)s [%(asctime)s]: %(message)s',
     level=logging.INFO)
 
+
+class LoggerHandler(logging.Handler):
+    def emit(self, record):
+        messenger.send('log_event', sentArgs=[record.levelname, record.message])
+
+
 Logger = logging
+Logger.getLogger().addHandler(LoggerHandler())
 Logger.title = logging.info
 Logger.print = logging.info
 

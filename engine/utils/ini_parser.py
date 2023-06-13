@@ -9,7 +9,6 @@ class ParamUtils:
     def smart_cast(s):
         if isinstance(s, str):
             try:
-                # todo: remove eval and do naive cast
                 return eval(s.strip())
             except (NameError, SyntaxError):
                 return s.strip()
