@@ -106,13 +106,24 @@ class Scenario(EventObject):
                     # default duration o sound length + 1 second
                     duration = self.engine.sound_manager.get_sound_length(args_dict.get("name", None)) + 1.0
 
-                elif action in ["shuttle_stop", "led_off", "led_on", "restart", "start_game", "show_score",
+                elif action in ["shuttle_stop", "led_off", "led_on", "start_game", "show_score",
                                 "set_screen", "stop_sound", "sound_volume", "disable_hardware", "play_music",
                                 "enable_hardware"] and duration is None:
                     # these actions have a default duration to 0.0
                     duration = 0.0
 
+                elif action in ['restart']:
+                    # for this specific event, we set
+                    # a high duration in order to
+                    # ensure that it will be considered
+                    # as blocking and won't call
+                    # `start_next_step` in its init.
+                    # In all cases, it will be removed in
+                    # when "restart" event is triggered
+                    duration = 100
+
             if delay is None:
+                # no delay is a 0.0 delay
                 delay = 0.0
 
             if duration == 0.0 and delay == 0.0 and end_conditions is None:
@@ -124,7 +135,7 @@ class Scenario(EventObject):
             # check that we don't have simultaneously
             # end conditions and a duration
             assert duration is None or end_conditions is None, \
-                f'step {action} with id {id} has both duration ({duration}) and' \
+                f'step {action} with id {id} has both duration ({duration}) and ' \
                 f'end conditions {end_conditions}. Cannot have both simultaneously.'
 
             # check that this step is either blocking or has a zero
@@ -341,6 +352,12 @@ class Scenario(EventObject):
 
     @event('restart')
     def on_restart(self):
+        # we must kill current step
+        self.steps[min(self.current_step, len(self.steps) - 1)].end(
+            win=False,
+            start_next_step=False
+        )
+        # and reset game
         self.engine.reset_game(start=True)
 
     @event(['start_game', 'start'])
@@ -360,7 +377,10 @@ class Scenario(EventObject):
     @event('goto_step')
     def on_goto(self, goto_id):
         # stop current step
-        self.steps[min(self.current_step, len(self.steps) - 1)].end(win=False)
+        self.steps[min(self.current_step, len(self.steps) - 1)].end(
+            win=False,
+            start_next_step=False
+        )
 
         # remove all programmed events that have been set in
         # the previous branch of the game

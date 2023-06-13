@@ -210,7 +210,7 @@ class Gui(EventObject):
         self.end_screen()
 
     @event('info')
-    def on_info(self, icon='chat', title='$info_title$', text='', duration=-1, close_on_enter=True, text_size=0.05,
+    def on_info(self, icon='chat', title='$info_title$', text='', life_time=-1, close_on_enter=True, text_size=0.05,
                 color='dark-window', **kwargs):
         self.set_current_window(
             icon=icon,
@@ -218,7 +218,7 @@ class Gui(EventObject):
             size_y=0.9,
             title=self.process_text(title),
             text=self.process_text(text),
-            life_time=duration,
+            life_time=life_time,
             on_enter=self.close_window_and_go if close_on_enter else None,
             color=color,
             text_size=text_size,
@@ -226,7 +226,7 @@ class Gui(EventObject):
         )
 
     @event('password')
-    def on_password(self, icon='caution', title='$password_title$', text='', text_size=0.05, duration=-1, password='', format=None,
+    def on_password(self, icon='caution', title='$password_title$', text='', text_size=0.07, duration=-1, password='', format=None,
                     on_password_find=None, color='dark-window', **kwargs):
         def format_target(x):
             char = ':'

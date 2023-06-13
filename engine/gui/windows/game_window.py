@@ -103,12 +103,6 @@ class GameWindow(Window):
         self._finished = False
         self.play_game()
 
-    # @event('current_step_end')
-    # def on_step_end(self) -> None:
-    #     self._gui_engine.engine.sound_manager.stop('star_game_music')
-    #     self._gui_engine.engine.sound_manager.resume_music()
-    #     self._gui_engine.close_window_and_go()
-
     def play_game(self, *_):
         text = OnscreenText(parent=self._game_background, scale=0.15, pos=(0, 0.5),
                             fg=(1.0, 1.0, 1.0, 1.0),
@@ -116,7 +110,7 @@ class GameWindow(Window):
         text.setTransparency(1)
         # play music
         self._gui_engine.engine.sound_manager.stop_music()
-        self._gui_engine.engine.sound_manager.play_sfx('star_game_music', loop=True)
+        self._gui_engine.engine.sound_manager.play_sfx('star_game_music', loop=True, volume=0.2)
 
         if self._status == 0:
             def start():

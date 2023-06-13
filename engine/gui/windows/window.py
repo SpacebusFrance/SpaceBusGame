@@ -170,7 +170,7 @@ class Window(BaseWidget):
         """
         Check if the password is correct
         """
-        if entry_text == self._password:
+        if entry_text.lower() == self._password.lower():
             self._gui_engine.engine.sound_manager.play_sfx('ok')
             if callable(self._on_password_find):
                 self._on_password_find(self)

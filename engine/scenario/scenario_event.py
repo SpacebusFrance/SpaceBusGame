@@ -189,13 +189,14 @@ class ScenarioStep:
         self.scenario.event_manager.remove_event(self._action_task)
         self.scenario.event_manager.remove_event(self._hint_task)
 
-    def end(self, win):
+    def end(self, win, start_next_step: bool = True):
         """
         Ends the step and starts the next step.
 
         Args:
             win (bool): If :code:`True` or if the step is passive, the :code:`win_function` is called (if it exists).
                 Otherwise, the :code:`loose_function` is called.
+            start_next_step (bool): Start next step at the end
         """
         if win:
             Logger.info('\t-> task complete')
@@ -215,5 +216,6 @@ class ScenarioStep:
             # tell the game that we stop current task
             send_event('current_step_end')
 
-            # starting the next step
-            self.scenario.start_next_step()
+            if start_next_step:
+                # starting the next step
+                self.scenario.start_next_step()
