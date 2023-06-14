@@ -78,7 +78,6 @@ class ScenarioStep:
         Start this step
         """
         Logger.info('')
-        Logger.info('_'*10)
         Logger.info(f'starting step "{self.name}" (id "{self.id}", starts in {self.delay:.2f} seconds)')
         Logger.info(f'\t- blocking \t\t: {self._blocking}')
         Logger.info(f'\t- delay \t\t: {self.delay:.2f} seconds')

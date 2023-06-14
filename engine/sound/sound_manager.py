@@ -1,15 +1,18 @@
+import re
 from os import listdir
 import numpy as np
+from direct.showbase.DirectObject import DirectObject
 
 from engine.utils.logger import Logger
 from engine.utils.ini_parser import read_file_as_list
 
 
-class SoundManager:
+class SoundManager(DirectObject):
     """
     Sound management class
     """
     def __init__(self, engine, load=True):
+        super().__init__()
         self._sounds = dict()
         self._ambient_sounds = dict()
         self._music = dict()
@@ -99,10 +102,17 @@ class SoundManager:
         for sound in self._sounds:
             self.stop(sound)
 
+        # stop music
+        self.stop_music()
+
+        # ignore all events
+        self.ignore_all()
+
         self._queue = []
         self._is_playing = False
 
         # random times
+        # for ambient sounds
         for name in self._ambient_sounds:
             t = t_max * np.random.rand(n)
             for i in t:
@@ -180,16 +190,31 @@ class SoundManager:
         if self._last_music_played is not None:
             self.play_music(self._last_music_played, loop=loop)
 
-    def play_music(self, name: str, loop: bool = True, volume: float = None) -> None:
+    def play_music(self, name: str, loop: bool = True) -> None:
         """
         Starts a music
 
         Args:
             name (str): music name
             loop (bool, optional): Plays music in loop. Default to True
-            volume (float, optional): Music volume. Default to 1.0
 
         """
+        # remember the name if overriden
+        # below
+        raw_name = name
+        if name not in self._music:
+            # if name is not in self._music
+            # we check if there is a music matching
+            # "name_<x>" where "<x>" is a digit.
+            # If it is the case, we pick one random item
+            # in the list.
+            regex = re.compile(f"{name}_[0-9]+")
+            matches = [k for k in self._music if re.match(regex, k)]
+            if len(matches) > 0:
+                # pick a random one
+                name = np.random.choice(matches)
+                Logger.info(f'picking a random music "{name}" from name "{raw_name}"')
+
         if name in self._music:
             music = self._music[name]
 
@@ -200,10 +225,21 @@ class SoundManager:
                 else:
                     return
 
-            music.setLoop(loop)
-            music.set_volume(volume or self._engine('volume_music'))
+            if loop:
+                # instead of calling `set_loop(True)`
+                # we send an event when music is done
+                # and listen for this event once.
+                # Event name is the raw_name of the music
+                # played, so that if there are several
+                # files matching this name, a new one
+                # can be played, instead of repeating the
+                # same file again and again
+                music.set_finished_event(raw_name)
+                self.accept_once(raw_name, lambda *args: self.play_music(raw_name, loop=True))
+            music.set_volume(self._engine('volume_music'))
 
             self._last_music_played = name
+            Logger.info(f'playing new music "{name}"')
             music.play()
         else:
             Logger.error(f'no music named "{name}"')
@@ -246,8 +282,8 @@ class SoundManager:
         elif name == "bips":
             # it bips, just play it
             self.play_bips()
-        else:
-            Logger.warning('sound {} does not exists'.format(name))
+        # else:
+        #     Logger.warning('sound {} does not exists'.format(name))
 
     def stop(self, name: str) -> None:
         """

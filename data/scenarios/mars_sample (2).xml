@@ -7,7 +7,7 @@
 
         <step action="wait" duration="2"/>
         <!-- starts the background music -->
-        <step action="play_music" name="music_1"/>
+        <step action="play_music" name="music"/>
 
         <!-- lock password -->
         <step action="password" password="RTJ108" title="$la_lock_tile$" text="$la_lock_text$" icon="locked" hint_sound="voice_password_cmd_hint" hint_time="180"/>
@@ -18,10 +18,10 @@
         <step action="info" title="$la_game_info_title$" text="$la_text$" duration="40" icon="compose" close_on_enter="False" text_size="0.042"/>
 
         <!-- setup timer and events (fixed time) -->
-        <event action="goto_step" goto_id="end" delay="900"/>
+        <event action="goto_step" goto_id="end" delay="890"/>
         <event action="play_sound" name="voice_bio_10min" delay="300" duration="0"/>
         <event action="play_sound" name="voice_bio_5min" delay="600" duration="0"/>
-        <event action="play_sound" name="voice_bio_1min" delay="850" duration="0"/>
+        <event action="play_sound" name="voice_bio_1min" delay="840" duration="0"/>
         <event action="start_chrono" time="900"/>
 
         <step action="wait" duration="2"/>

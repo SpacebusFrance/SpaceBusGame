@@ -1,15 +1,15 @@
 key;fr;en
 menu_title;Menu principal;Main menu
-menu_text;Welcome to Spacebus game;Welcome to Spacebus game
-button_play;Play;Play
-button_quit;Exit;Exit
+menu_text;Escape game SpaceBus;Welcome to Spacebus game
+button_play;Nouveau jeu;Play
+button_quit;Sortir;Exit
 game_title;Lancer le jeu;Game launch
 game_text;Choisir le scénario à jouer;Choose a scenario to launch
-apply_menu_button;apply;apply
+apply_menu_button;Appliquer;apply
 reset_menu_button;Reset;reset
 back_menu_button;Retour;back
-options_title;set options;set options
-button_options;options;options
+options_title;Options;set options
+button_options;Options;options
 shuttle_title;État navette;
 batterie1;Batterie 1;
 batterie2;Batterie 2;

@@ -555,8 +555,8 @@ class Scenario(EventObject):
         self.engine.shuttle.boost(direction, power)
 
     @event('play_music')
-    def on_play_music(self, name, volume=None, loop=True):
-        self.engine.sound_manager.play_music(name, loop=loop, volume=volume)
+    def on_play_music(self, name, loop=True):
+        self.engine.sound_manager.play_music(name, loop=loop)
 
     @event('stop_music')
     def on_stop_music(self):
