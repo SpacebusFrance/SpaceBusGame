@@ -55,11 +55,11 @@ class Game(ShowBase):
         # store clock object
         self.clock = globalClock
 
-        if self("test_3D"):
+        if self.get_option("test_3D"):
             self.earth = Earth(self)
             self.moon = Moon(self)
             self.sun = Sun(self)
-            self.space_craft = NewSpaceCraft(self, quality=self("quality"))
+            self.space_craft = NewSpaceCraft(self, quality=self.get_option("quality"))
 
             self.sound_manager = SoundManager(self)
             self.sound_manager.play_ambient_sound()
@@ -105,7 +105,7 @@ class Game(ShowBase):
             self.scenario = Scenario(self)
 
             # sound manager
-            self.sound_manager = SoundManager(self, load=self('play_sound'))
+            self.sound_manager = SoundManager(self, load=self.get_option('play_sound'))
 
             # control screen
             self.gui = Gui(self)
@@ -114,7 +114,7 @@ class Game(ShowBase):
             self.earth = Earth(self)
             self.moon = Moon(self)
             self.sun = Sun(self)
-            self.space_craft = NewSpaceCraft(self, quality=self("quality"))
+            self.space_craft = NewSpaceCraft(self, quality=self.get_option("quality"))
             self.asteroid = Asteroid(self)
 
             # initial position and angle
@@ -126,7 +126,7 @@ class Game(ShowBase):
 
             self.screens = []
 
-            if self("enable_free_camera"):
+            if self.get_option("enable_free_camera"):
                 self.screens.append(FakeScreen3D(self, 1, shuttle_angle=0))
 
                 cam = FreeCameraControl(self, self.screens[0].get_camera())
@@ -144,30 +144,30 @@ class Game(ShowBase):
                 self.generate_spacebus_screens()
 
             # other options
-            if self("show_basis"):
+            if self.get_option("show_basis"):
                 cb = CartesianBasis()
                 self.render.attachNewNode(cb)
-            if self("show_grid"):
+            if self.get_option("show_grid"):
                 grid = Grid(x_extend=[-10, 10], y_extend=[-10, 10], x_color=(1, 1, 1, 0.1), y_color=(1, 1, 1, 0.1))
                 self.render.attach_new_node(grid)
-            if self("show_ship_bounds"):
+            if self.get_option("show_ship_bounds"):
                 self.space_craft.show_bounds()
-            if self("show_sky_dome"):
+            if self.get_option("show_sky_dome"):
                 self.sky_sphere = SkyDome(self)
             else:
                 self.setBackgroundColor(0, 0, 0)
 
             # automatic shader
             self.render.setShaderAuto()
-            self.sky_sphere.set_luminosity(self("background_luminosity"))
+            self.sky_sphere.set_luminosity(self.get_option("background_luminosity"))
 
-            if self("show_frame_rate"):
+            if self.get_option("show_frame_rate"):
                 self.setFrameRateMeter(True)
-            if self("anti_aliasing"):
+            if self.get_option("anti_aliasing"):
                 self.render.setAntialias(AntialiasAttrib.MAuto)
-            if self('max_fps') is not None:
+            if self.get_option('max_fps') is not None:
                 globalClock.setMode(ClockObject.MLimited)
-                globalClock.setFrameRate(self('max_fps'))
+                globalClock.setFrameRate(self.get_option('max_fps'))
 
             # debug window displaying logs
             self.debug_window = OnscreenText(
@@ -188,6 +188,11 @@ class Game(ShowBase):
             self.accept('log_event', self.on_log_event)
             self.accept('wheel_up', self.on_wheel_up)
             self.accept('wheel_down', self.on_wheel_down)
+
+            if self.get_option('show_debug_log'):
+                self.debug_window.show()
+            else:
+                self.debug_window.hide()
 
             self.reset_game()
 
@@ -237,7 +242,7 @@ class Game(ShowBase):
         self.log_shift = 0
         self.draw_log()
 
-    def __call__(self, key, default=False):
+    def get_option(self, key, default=False):
         """
         Get the option named `key`
 
@@ -279,18 +284,18 @@ class Game(ShowBase):
         Generate screens for the game. Either with or without 3D screens
         """
         self.splashscreen.remove_node()
-        self.gui.set_single_window(self('show_3d_windows'), screen_number=self('screen_number'))
+        self.gui.set_single_window(self.get_option('show_3d_windows'), screen_number=self.get_option('screen_number'))
 
-        if self("show_3d_windows"):
+        if self.get_option("show_3d_windows"):
             # and setting the other display regions
             self.screens.clear()
-            screen_number = self('screen_number')
+            screen_number = self.get_option('screen_number')
             if screen_number >= 2:
                 self.screens.append(FakeScreen3D(self, 1, shuttle_angle=-90, shift_y=-4.0))
             if screen_number >= 3:
-                self.screens.append(FakeScreen3D(self, 2, shuttle_angle=-self("front_screen_angle")))
+                self.screens.append(FakeScreen3D(self, 2, shuttle_angle=-self.get_option("front_screen_angle")))
             if screen_number >= 4:
-                self.screens.append(FakeScreen3D(self, 3, shuttle_angle=self("front_screen_angle")))
+                self.screens.append(FakeScreen3D(self, 3, shuttle_angle=self.get_option("front_screen_angle")))
             if screen_number >= 5:
                 self.screens.append(FakeScreen3D(self, 4, shuttle_angle=90, shift_y=-4.0))
 
@@ -322,9 +327,9 @@ class Game(ShowBase):
             start (:obj:`bool`, optional): if :code:`True`, starts the scenario
         """
         # remove admin key trigger
-        self.ignore(self('admin_key'))
+        self.ignore(self.get_option('admin_key'))
         # ignore step fulfill
-        self.ignore(self('force_step_key'))
+        self.ignore(self.get_option('force_step_key'))
 
         self.clock.reset()
         self.sound_manager.reset()
@@ -360,8 +365,8 @@ class Game(ShowBase):
         Starts the current scenario
         """
         # always listen to admin key
-        self.accept(self('admin_key'), self.gui.admin_screen)
-        self.accept(self('force_step_key'), self.scenario.fulfill_current_step)
+        self.accept(self.get_option('admin_key'), self.gui.admin_screen)
+        self.accept(self.get_option('force_step_key'), self.scenario.fulfill_current_step)
 
         self.gui.hide_cursor()
         self.sound_manager.stop_music()
@@ -424,14 +429,14 @@ class Game(ShowBase):
             # button controlling communication frequency
             # decrease the state "freq_comm"
             self.state_manager.freq_comm.set_value(
-                self.state_manager.freq_comm.get_value() - self('freq_comm_increment'),
+                self.state_manager.freq_comm.get_value() - self.get_option('freq_comm_increment'),
                 **kwargs
             )
         elif state_name == "freq_plus" and value:
             # button controlling communication frequency
             # increase the state "freq_comm"
             self.state_manager.freq_comm.set_value(
-                self.state_manager.freq_comm.get_value() + self('freq_comm_increment'),
+                self.state_manager.freq_comm.get_value() + self.get_option('freq_comm_increment'),
                 **kwargs
             )
         elif state_name[:-1] == 'pilote_automatique':

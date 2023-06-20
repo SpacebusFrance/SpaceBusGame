@@ -41,10 +41,10 @@ class ShuttleFrame(DirectObject.DirectObject):
         self.dt = 1 / self.update_freq
         self._last_update = 0
         self._is_boost = False
-        self.a = self._engine("shuttle_velocity") * self.dt / self.boost_time
-        self.a_spin = self._engine("shuttle_spin_velocity") * self.dt / self.boost_time
+        self.a = self._engine.get_option("shuttle_velocity") * self.dt / self.boost_time
+        self.a_spin = self._engine.get_option("shuttle_spin_velocity") * self.dt / self.boost_time
 
-        self.velocity_mean = self._engine("shuttle_velocity")
+        self.velocity_mean = self._engine.get_option("shuttle_velocity")
 
         self.velocity = LVector3f(0, 0, 0)
         self.acceleration = LVector3f(0, 0, 0)

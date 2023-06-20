@@ -3,7 +3,8 @@
     <group name="debut de jeux">
         <!-- set the screen "lost_astronaut" (never-mind the name) -->
         <step action="set_screen" name="lost_astronaut"/>
-        <step action="keyboard" key="control-enter"/>
+<!--        <step action="keyboard" key="control-enter"/>-->
+        <step action="game_menu"/>
 
         <step action="wait" duration="2"/>
         <!-- starts the background music -->
@@ -45,6 +46,9 @@
 
         <!-- display code -->
         <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" close_on_enter="False"/>
+
+        <!-- this happens if we bypass previous step  -->
+        <step action="restart"/>
 
 <!--        <step action="keyboard" key="control-enter"/>-->
 <!--        &lt;!&ndash; wait for end &ndash;&gt;-->

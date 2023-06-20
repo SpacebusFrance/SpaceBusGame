@@ -37,7 +37,7 @@ class Sun(PandaNode):
 
         self.node.set_pos(0, 500, 0)
 
-        self.texture = base_object.loader.loadTexture(base_object("sun_texture"))
+        self.texture = base_object.loader.loadTexture(base_object.get_option("sun_texture"))
         self.node.set_texture(self.texture)
 
         self.node.setLightOff()

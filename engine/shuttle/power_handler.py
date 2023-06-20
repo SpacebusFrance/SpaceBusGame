@@ -7,7 +7,7 @@ class PowerHandler(object):
         self.power_consuming_actions = dict()
 
     def reset(self):
-        # self.power_consuming_actions = read_ini_file(self._engine("power_balance_file"))
+        # self.power_consuming_actions = read_ini_file(self._engine.get_option("power_balance_file"))
 
         # build the initial state
         for c, l in self._engine.hardware_map.iterrows():

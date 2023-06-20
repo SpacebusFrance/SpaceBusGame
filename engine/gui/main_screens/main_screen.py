@@ -25,7 +25,7 @@ class MainScreen(EventObject):
         self._text_scale = 0.07
         self._icon_size = 0.05
 
-        ar = self.engine('screen_resolution')[0] / self.engine('screen_resolution')[1]
+        ar = self.engine.get_option('screen_resolution')[0] / self.engine.get_option('screen_resolution')[1]
         # ar *= 1.5
         # cm = CardMaker('back')
         # cm.set_color(self.gui.colors['background'])
@@ -34,13 +34,13 @@ class MainScreen(EventObject):
         # cm.set_frame(0, 1, -1., 1.0)
         # self._background = self.engine.aspect2d.attachNewNode(cm.generate())
         self._background = DirectFrame(
-            image=(self.engine('image_path') + image) if image is not None else None,
+            image=(self.engine.get_option('image_path') + image) if image is not None else None,
             parent=self.engine.aspect2d,
             image_scale=(ar, 1, 1),
             frameColor=background_color if background_color is not None else (0, 0, 0, 0),
             frameSize=(-ar, ar, -1, 1)
         )
-        # self._background.set_texture(self.engine('image_path') + 'back.png')
+        # self._background.set_texture(self.engine.get_option('image_path') + 'back.png')
         # self._background.set_sx(5.2)
         # self._background = self.engine.render2d.attachNewNode(cm.generate())
 

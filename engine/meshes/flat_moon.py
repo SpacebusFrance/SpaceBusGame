@@ -38,7 +38,7 @@ class Moon(PandaNode):
         self.node = base_object.render.attachNewNode(self.geom)
         self.node.set_p(90)
 
-        self.texture = base_object.loader.loadTexture(base_object("moon_texture"))
+        self.texture = base_object.loader.loadTexture(base_object.get_option("moon_texture"))
         self.node.set_texture(self.texture)
 
         self.node.setLightOff()

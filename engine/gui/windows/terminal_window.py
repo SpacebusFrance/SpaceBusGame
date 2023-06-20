@@ -26,7 +26,7 @@ class TerminalWindow(Window):
             numLines=self.num_lines,
             text_fg=self.color('light'),
             overflow=True,
-            text_font=self._gui_engine.engine.loader.load_font(os.path.join(self._gui_engine.engine("font_path"),
+            text_font=self._gui_engine.engine.loader.load_font(os.path.join(self._gui_engine.engine.get_option("font_path"),
                                                                             'UbuntuMono-B.ttf')),
             command=self.process,
             frameColor=self.color('terminal_bg'),

@@ -5,6 +5,7 @@ import re
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import LVector3f, WindowProperties
 
+from engine.gui.windows.button_window import ButtonWindow
 from engine.scenario.scenario_event import ScenarioStep
 from engine.utils.event_handler import EventObject, event, send_event
 from engine.utils.global_utils import read_xml_args
@@ -191,7 +192,7 @@ class Scenario(EventObject):
             name (str): the name of the xml scenario to load
         """
         try:
-            with open(self.engine("scenario_path") + name + ".xml", 'r', encoding="utf-8") as file:
+            with open(self.engine.get_option("scenario_path") + name + ".xml", 'r', encoding="utf-8") as file:
                 lines = file.readlines()
 
             self.steps.clear()
@@ -306,14 +307,14 @@ class Scenario(EventObject):
 
         if save_score:
             # write scores, create file if it does not exist
-            with open(f'{self.engine("score_folder")}scores_{self._scenario}.txt', 'a+') as file:
+            with open(f'{self.engine.get_option("score_folder")}scores_{self._scenario}.txt', 'a+') as file:
                 file.write(f'{self.last_score}\n')
 
         if show_end_screen:            # format time
             hours, minutes, seconds = re.match(r'^(?P<hour>\d+):(?P<mins>\d+):(?P<seconds>\d+).*$',
                                                str(datetime.timedelta(seconds=self.last_score))).groups()
             try:
-                with open(f'{self.engine("score_folder")}scores_{self._scenario}.txt', 'r') as f:
+                with open(f'{self.engine.get_option("score_folder")}scores_{self._scenario}.txt', 'r') as f:
                     scores = list(map(float, f.readlines()))
                     position = len(list(filter(lambda x: x < self.last_score, scores)))
                     total = len(scores)
@@ -346,8 +347,8 @@ class Scenario(EventObject):
         if len(self.steps) > 0:
             self.steps[0].start()
 
-    @event(['reset_game', 'reset'])
-    def on_reset(self):
+    @event('reset_to_menu')
+    def on_reset_to_menu(self):
         self.engine.reset_game()
 
     @event('restart')
@@ -531,7 +532,6 @@ class Scenario(EventObject):
 
     @event('keyboard')
     def on_keyboard(self, key):
-        Logger.warning(f'listen to keyboard {key}')
         send_event('info',
                    icon='hourglass',
                    title='Keyboard',

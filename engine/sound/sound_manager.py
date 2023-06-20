@@ -28,7 +28,7 @@ class SoundManager(DirectObject):
         self._last_music_played = None
 
         # list of sounds that should not be stopped or overridden
-        self._protected_sounds = read_file_as_list(self._engine("non_overlapping_sounds"))
+        self._protected_sounds = read_file_as_list(self._engine.get_option("non_overlapping_sounds"))
         self._queue = []
         self._is_playing = False
         if load:
@@ -58,7 +58,7 @@ class SoundManager(DirectObject):
         Load all sounds
         """
         Logger.info('loading sfx')
-        folder = self._engine("sfx_sound_folder")
+        folder = self._engine.get_option("sfx_sound_folder")
         files = listdir(folder)
         np.random.shuffle(files)
         for file in files:
@@ -67,7 +67,7 @@ class SoundManager(DirectObject):
                 self._sounds[key] = self._engine.loader.loadSfx(folder + file)
 
         Logger.info('loading ambient musics')
-        ambient_folder = self._engine("ambient_sound_folder")
+        ambient_folder = self._engine.get_option("ambient_sound_folder")
         for file in listdir(ambient_folder):
             key = self._get_file_name(file)
             if file.endswith(self._supported_sound_format):
@@ -75,7 +75,7 @@ class SoundManager(DirectObject):
                 self._ambient_sounds[key] = self._engine.loader.loadSfx(ambient_folder + file)
 
         # getting the loop ambient sound
-        ambient_loop_file = self._get_file_name(self._engine("ambient_loop_file"))
+        ambient_loop_file = self._get_file_name(self._engine.get_option("ambient_loop_file"))
         if ambient_loop_file in self._ambient_sounds:
             self._ambient_loop = self._ambient_sounds.pop(ambient_loop_file)
         else:
@@ -87,7 +87,7 @@ class SoundManager(DirectObject):
             Logger.warning('no bips file !')
 
         Logger.info('loading music files')
-        music_folder = self._engine("music_sound_folder")
+        music_folder = self._engine.get_option("music_sound_folder")
         for file in listdir(music_folder):
             key = self._get_file_name(file)
             if file.endswith(self._supported_sound_format):
@@ -132,13 +132,13 @@ class SoundManager(DirectObject):
 
     def _play_ambient(self, name):
         if name in self._ambient_sounds:
-            self._ambient_sounds[name].setVolume(self._engine("volume_ambient"))
+            self._ambient_sounds[name].setVolume(self._engine.get_option("volume_ambient"))
             self._ambient_sounds[name].play()
 
     def play_ambient_sound(self):
         if self._ambient_loop is not None:
             self._ambient_loop.setLoop(True)
-            self._ambient_loop.setVolume(self._engine("volume_ambient"))
+            self._ambient_loop.setVolume(self._engine.get_option("volume_ambient"))
             self._ambient_loop.play()
         self.play_bips()
 
@@ -236,7 +236,7 @@ class SoundManager(DirectObject):
                 # same file again and again
                 music.set_finished_event(raw_name)
                 self.accept_once(raw_name, lambda *args: self.play_music(raw_name, loop=True))
-            music.set_volume(self._engine('volume_music'))
+            music.set_volume(self._engine.get_option('volume_music'))
 
             self._last_music_played = name
             Logger.info(f'playing new music "{name}"')
@@ -263,11 +263,11 @@ class SoundManager(DirectObject):
             # set volume
             is_voice = 'voice' in name or 'human' in name
             volume = volume if volume is not None \
-                else self._engine('volume_voice') if is_voice \
-                else self._engine('volume_sfx')
+                else self._engine.get_option('volume_voice') if is_voice \
+                else self._engine.get_option('volume_sfx')
             sound.setVolume(volume)
 
-            if name in self._protected_sounds or (self._engine("voice_sound_do_not_overlap") and
+            if name in self._protected_sounds or (self._engine.get_option("voice_sound_do_not_overlap") and
                                                   ("voice" in name or "human" in name)):
                 # if playing sound is protected or either "voice" or "human" is in file name, we queue it
                 self._queue.append(sound)

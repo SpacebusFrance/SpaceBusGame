@@ -30,11 +30,11 @@ def build_text_properties(engine):
     props = TextPropertiesManager.getGlobalPtr()
 
     # fonts
-    default_font = engine.loader.load_font(os.path.join(engine("font_path"), engine('font')))
-    default_font.setPixelsPerUnit(engine('font_pixels_per_unit'))
+    default_font = engine.loader.load_font(os.path.join(engine.get_option("font_path"), engine.get_option('font')))
+    default_font.setPixelsPerUnit(engine.get_option('font_pixels_per_unit'))
 
-    font_bold = engine.loader.load_font(os.path.join(engine("font_path"), engine('font_bold')))
-    font_bold.setPixelsPerUnit(engine('font_pixels_per_unit'))
+    font_bold = engine.loader.load_font(os.path.join(engine.get_option("font_path"), engine.get_option('font_bold')))
+    font_bold.setPixelsPerUnit(engine.get_option('font_pixels_per_unit'))
 
     tp = TextProperties()
     tp.setSlant(.2)

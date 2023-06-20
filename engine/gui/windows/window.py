@@ -45,7 +45,7 @@ class Window(BaseWidget):
 
         self._background = None
         if background_color is not None:
-            ar = self._gui_engine.engine('screen_resolution')[0] / self._gui_engine.engine('screen_resolution')[1]
+            ar = self._gui_engine.engine.get_option('screen_resolution')[0] / self._gui_engine.engine.get_option('screen_resolution')[1]
             cm = CardMaker('back')
             cm.set_color(self.color(background_color) if isinstance(background_color, str) else background_color)
             cm.set_frame(-ar, ar, -1.0, 1.0)
@@ -141,7 +141,7 @@ class Window(BaseWidget):
                          fg=(1.0, 0.8, 0.7, 0.6)
                          )
         if icon is not None:
-            im = OnscreenImage(image=os.path.join(self._gui_engine.engine('icon_path'), '{}.png'.format(icon)),
+            im = OnscreenImage(image=os.path.join(self._gui_engine.engine.get_option('icon_path'), '{}.png'.format(icon)),
                                scale=icon_size,
                                pos=(0.5 * self._size[0] - icon_size - self._widget_pad, 0.0,
                                     0.5 * self._size[1] - icon_size - self._widget_pad),

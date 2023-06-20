@@ -267,7 +267,7 @@ class GameWindow(Window):
 
     def _get_sprite(self, name, **kwargs):
         sprite = OnscreenImage(
-            image=os.path.join(self._gui_engine.engine('image_path'), name.replace('.png', '') + '.png'),
+            image=os.path.join(self._gui_engine.engine.get_option('image_path'), name.replace('.png', '') + '.png'),
             **kwargs
         )
         sprite.setTransparency(TransparencyAttrib.MAlpha)

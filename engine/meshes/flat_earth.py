@@ -39,7 +39,7 @@ class Earth(PandaNode):
         self.node.set_p(90)
         # self.node.set_h(90)
 
-        self.texture = base_object.loader.loadTexture(base_object("earth_texture"))
+        self.texture = base_object.loader.loadTexture(base_object.get_option("earth_texture"))
         self.node.set_texture(self.texture)
 
         self.node.setLightOff()

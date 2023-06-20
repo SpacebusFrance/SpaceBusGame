@@ -8,7 +8,7 @@ class NewSpaceCraft:
     def __init__(self, base, quality=0, sun_angle=0):
 
         self.base = base
-        folder = base("space_craft_folder")
+        folder = base.get_option("space_craft_folder")
         self.model = base.loader.load_model(folder + "core.egg")
         self.wheel = base.loader.load_model(folder + "wheel.egg")
         self.sp = base.loader.load_model(folder + "solar_panel.egg")

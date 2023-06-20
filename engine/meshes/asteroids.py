@@ -4,7 +4,7 @@ from panda3d.core import LVector3f
 class Asteroid(object):
     def __init__(self, base, scale=0.5):
         self.game_engine = base
-        self.model = self.game_engine.loader.load_model(self.game_engine("asteroid_model"))
+        self.model = self.game_engine.loader.load_model(self.game_engine.get_option("asteroid_model"))
         self.model.reparentTo(self.game_engine.render)
         self.model.set_bin('fixed', 10)
         self.model.set_scale(scale)

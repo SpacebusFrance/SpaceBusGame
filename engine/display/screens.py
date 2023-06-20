@@ -9,14 +9,14 @@ class FakeScreen3D:
         self._engine = engine
         self.screen = screen_number
 
-        aspect_ratio = self._engine('screen_resolution')[0] / self._engine('screen_resolution')[1]
+        aspect_ratio = self._engine.get_option('screen_resolution')[0] / self._engine.get_option('screen_resolution')[1]
         self.cam_node = self._engine.make_camera(self._engine.win,
                                                  displayRegion=(0.2 * screen_number, 0.2 * (screen_number + 1), 0, 1),
                                                  aspectRatio=aspect_ratio,
                                                  )
 
         self.lens = self.cam_node.node().getLens()
-        self.lens.setFov(self._engine("cam_fov"))
+        self.lens.setFov(self._engine.get_option("cam_fov"))
         self.lens.setNear(0.1)
 
         self.cam_node.reparent_to(self._engine.shuttle.frame)

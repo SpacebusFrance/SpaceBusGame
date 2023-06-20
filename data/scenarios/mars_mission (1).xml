@@ -4,8 +4,9 @@
         <step action="set_screen" duration="0.0" name="go_to_mars"/>
 
         <!-- wait for key button pressed -->
-        <step action="keyboard" key="control-enter"/>
-        <step action="play_sound" name="ok" duration="0"/>
+        <step action="game_menu"/>
+<!--        <step action="keyboard" key="control-enter"/>-->
+<!--        <step action="play_sound" name="ok" duration="0"/>-->
 
         <step action="wait" duration="5"/>
         <step action="play_sound" name="human_0" duration="10"/>

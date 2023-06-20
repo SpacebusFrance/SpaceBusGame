@@ -67,7 +67,7 @@ class OptionWindow(BaseWidget):
                          parent=self._widget)
 
         if icon is not None:
-            OnscreenImage(image=os.path.join(self._gui_engine.engine('icon_path'), '{}.png'.format(icon)),
+            OnscreenImage(image=os.path.join(self._gui_engine.engine.get_option('icon_path'), '{}.png'.format(icon)),
                           scale=icon_size,
                           pos=(0.5 * self._size[0] - icon_size - self._widget_pad, 0.0,
                                0.5 * self._size[1] - icon_size - self._widget_pad),

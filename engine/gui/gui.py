@@ -34,8 +34,8 @@ class Gui(EventObject):
         'dark': (0.2, 0.2, 0.2, 1.0),
         'dark-blue': (0.1, 0.1, 0.2, 1.0),
         'dark-sp': (0.2, 0.2, 0.2, 0.7),
-        'darker': (0.1, 0.1, 0.1, 1.0),
-        'dark-window': (0.12, 0.12, 0.12, 1.0),
+        'darker': (0.1, 0.05, 0.05, 1.0),
+        'dark-window': (0.12, 0.12, 0.12, 0.8),
         'button-color': (0.15, 0.15, 0.15, 1.0),
         'background': (0.08, 0.08, 0.08, 1.0),
         'terminal_bg': (0.174, 0.036, 0.11, 1.0),
@@ -50,10 +50,10 @@ class Gui(EventObject):
         # build text properties
         build_text_properties(engine)
 
-        self.image_path = self.engine("control_screen_image_path")
+        self.image_path = self.engine.get_option("control_screen_image_path")
 
         # read text correspondence
-        self._text_file = pd.read_csv(self.engine('text_file'), sep=';', index_col='key').fillna('NaN')
+        self._text_file = pd.read_csv(self.engine.get_option('text_file'), sep=';', index_col='key').fillna('NaN')
         self.screen = None
 
     def admin_screen(self):
@@ -72,7 +72,7 @@ class Gui(EventObject):
                    title='Admin window',
                    text='Administrator password',
                    close_time=20,
-                   password=self.engine('admin_password'),
+                   password=self.engine.get_option('admin_password'),
                    hide_password=True,
                    on_password_fail=reset_game,
                    on_password_find=lambda *args: self.engine.reset_game(None, False),
@@ -98,7 +98,7 @@ class Gui(EventObject):
 
         self.accept_once('enter', self.reset)
         # buy default, reset menu after a certain game_time
-        self.do_method_later(self.engine('end_game_reset_delay'), self.reset, name='menu_reset_task')
+        self.do_method_later(self.engine.get_option('end_game_reset_delay'), self.reset, name='menu_reset_task')
 
     def hide_cursor(self):
         # hide cursor
@@ -109,7 +109,7 @@ class Gui(EventObject):
     def show_cursor(self):
         # show cursor
         props = WindowProperties()
-        props.setCursorFilename(os.path.join(self.engine('image_path'), self.engine('cursor_file')))
+        props.setCursorFilename(os.path.join(self.engine.get_option('image_path'), self.engine.get_option('cursor_file')))
         props.setCursorHidden(False)
         self.engine.win.requestProperties(props)
 
@@ -142,12 +142,12 @@ class Gui(EventObject):
         """
         for value in re.findall(r'[{key}](\S*)[{key}]'.format(key=key), text):
             try:
-                new_value = self._text_file.loc[value, self.engine('lang')]
+                new_value = self._text_file.loc[value, self.engine.get_option('lang')]
             except KeyError:
                 new_value = 'NaN'
             if new_value == 'NaN':
                 # can be either missing key or language
-                Logger.error(f'missing text "{value}" for lang "{self.engine("lang")}"')
+                Logger.error(f'missing text "{value}" for lang "{self.engine.get_option("lang")}"')
                 new_value = f'!{value}!'
             text = text.replace('{key}{value}{key}'.format(key=key, value=value), new_value)
         return text.replace('\\1', '\1').replace('\\2', '\2').replace('\\n', "\n").replace('\\t', '\t')
@@ -282,6 +282,27 @@ class Gui(EventObject):
             **kwargs
         )
 
+    @event('game_menu')
+    def on_game_menu(self):
+        self.set_current_window(
+            win=ButtonWindow,
+            title='Menu du jeu',
+        )
+        win = self._current_window
+        win.add_button(size_x=0.5,
+                       size_y=0.15,
+                       text='\1golden\1lancer le jeu\2',
+                       on_select=self.engine.gui.close_window_and_go,
+                       pos=(0., 0.0, 0.1)
+                       )
+        win.add_button(size_x=0.5,
+                       size_y=0.15,
+                       text='\1golden\1retour au menu\2',
+                       on_select=self.engine.reset_game,
+                       pos=(0., 0.0, -0.1)
+                       )
+        win.select_button()
+
     @event('menu')
     def on_menu(self):
         self.show_menu()
@@ -319,7 +340,7 @@ class Gui(EventObject):
                 size_x=1.0,
                 size_y=1.8,
             )
-            files = [k for k in os.listdir(self.engine('scenario_path')) if k.endswith('.xml')]
+            files = [k for k in os.listdir(self.engine.get_option('scenario_path')) if k.endswith('.xml')]
             for i, game in enumerate(files):
                 self._current_window.add_button(size_x=0.5,
                                                 size_y=0.15,
@@ -331,7 +352,7 @@ class Gui(EventObject):
 
             self._current_window.add_button(size_x=0.5,
                                             size_y=0.15,
-                                            text='\1golden\1back\2',
+                                            text='\1golden\1Retour\2',
                                             color='blue',
                                             on_select=self.show_menu,
                                             pos=(0., 0.0, -0.7))
@@ -349,8 +370,8 @@ class Gui(EventObject):
                 size_y=1.8,
             )
             for param in self.engine.params:
-                if not isinstance(self.engine(param), str) or '/' not in self.engine(param):
-                    self._current_window.add_option(param.replace('_', ' '), self.engine(param))
+                if not isinstance(self.engine.get_option(param), str) or '/' not in self.engine.get_option(param):
+                    self._current_window.add_option(param.replace('_', ' '), self.engine.get_option(param))
             # add buttons
 
             def save_options():
@@ -371,7 +392,7 @@ class Gui(EventObject):
             def reset_options():
                 # get all options
                 for key in self._current_window.get_option().keys():
-                    self._current_window.set_option(key, self.engine(key.replace(' ', '_'), default=True))
+                    self._current_window.set_option(key, self.engine.get_option(key.replace(' ', '_'), default=True))
 
             b = Button(self,
                        text=self.process_text('$reset_menu_button$'),
@@ -425,14 +446,14 @@ class Gui(EventObject):
         # setting the main window properties
         props = WindowProperties()
         # screen resolutions
-        x, y = self.engine('screen_resolution')
+        x, y = self.engine.get_option('screen_resolution')
         if with_3d_screens:
             # set window size
             props.set_size((screen_number * x, y))
         else:
             props.set_size((x, y))
-        if self.engine('screen_position') is not None:
-            props.set_origin(self.engine('screen_position'))
+        if self.engine.get_option('screen_position') is not None:
+            props.set_origin(self.engine.get_option('screen_position'))
 
-        props.set_undecorated(not self.engine('decorated_window'))
+        props.set_undecorated(not self.engine.get_option('decorated_window'))
         self.engine.win.request_properties(props)

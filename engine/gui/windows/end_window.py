@@ -36,7 +36,7 @@ class EndWindow(Window):
             .replace('POSITION', str(player_position))\
             .replace('TOTAL', str(total_players))
 
-        OnscreenImage(image=self._gui_engine.engine('icon_path') + 'logo_sb.png',
+        OnscreenImage(image=self._gui_engine.engine.get_option('icon_path') + 'logo_sb.png',
                       pos=(1.25, 0, 0.75),
                       scale=(0.5, 1.0, 0.2),
                       color=self.color('golden'),

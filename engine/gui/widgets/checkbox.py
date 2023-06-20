@@ -16,8 +16,8 @@ class CheckBox(BaseWidget):
         super(CheckBox, self).__init__(gui_engine, shadow_scale=0.0)
         self._is_selected = False
         self._value = value
-        self._im_on = os.path.join(self._gui_engine.engine('icon_path'), 'checkbox_on.png')
-        self._im_off = os.path.join(self._gui_engine.engine('icon_path'), 'checkbox_off.png')
+        self._im_on = os.path.join(self._gui_engine.engine.get_option('icon_path'), 'checkbox_on.png')
+        self._im_off = os.path.join(self._gui_engine.engine.get_option('icon_path'), 'checkbox_off.png')
 
         self._widget = DirectButton(image=self._im_on if value else self._im_off,
                                     image_scale=scale,

@@ -1,7 +1,7 @@
 from typing import Union, Any
 
 import pygame
-from engine.utils.event_handler import EventObject, event, send_event
+from engine.utils.event_handler import EventObject, event
 from direct.showbase.MessengerGlobal import messenger
 from direct.showbase.ShowBase import ShowBase
 
@@ -32,7 +32,7 @@ class HardwareHandler(EventObject):
         self._axes_value = dict()
 
         # self.firewall_time = 0.05
-        self.firewall_time = self.engine('hardware_input_firewall_time')
+        self.firewall_time = self.engine.get_option('hardware_input_firewall_time')
 
         # for j in range(3):
         #     for b in range(10):
@@ -152,7 +152,7 @@ class HardwareHandler(EventObject):
                     # effectively sent after firewall_time
                     Logger.info(f'sending event "{event_name}" in {self.firewall_time} seconds')
                     self.tasks[event_name] = self.engine.task_mgr.do_method_later(
-                        self.firewall_time,
+                        1.1 * self.firewall_time,
                         self._process_event,
                         extraArgs=[event_name, value],
                         name=event_name
