@@ -162,8 +162,6 @@ class Gui(EventObject):
         """
         if self._current_window is not None and not self._current_window.is_empty():
             self._current_window.destroy()
-        if 'background_color' not in kwargs:
-            kwargs['background_color'] = (0.0, 0.0, 0.0, 0.8)
         self._current_window = win(self, **kwargs)
 
     def close_window_and_go(self, *args):
@@ -183,7 +181,7 @@ class Gui(EventObject):
         if self.screen is not None:
             self.screen.destroy()
         if cls is None:
-            self.screen = MainScreen(self)
+            self.screen = MainScreen(self, show_version=True)
         else:
             self.screen = cls(self)
         self.screen.make()
@@ -338,7 +336,7 @@ class Gui(EventObject):
                 title=self.process_text('$game_title$'),
                 text=self.process_text('$game_text$'),
                 size_x=1.0,
-                size_y=1.8,
+                size_y=1.5,
             )
             files = [k for k in os.listdir(self.engine.get_option('scenario_path')) if k.endswith('.xml')]
             for i, game in enumerate(files):
@@ -348,14 +346,14 @@ class Gui(EventObject):
                                                     game.replace('.xml', '').replace('_', ' ')),
                                                 on_select=lambda x: self.engine.reset_game(scenario=x, start=True),
                                                 extra_args=[game.replace('.xml', '')],
-                                                pos=(0.0, 0.0, 0.4 - i * 0.18))
+                                                pos=(0.0, 0.0, 0.35 - i * 0.18))
 
             self._current_window.add_button(size_x=0.5,
                                             size_y=0.15,
                                             text='\1golden\1Retour\2',
                                             color='blue',
                                             on_select=self.show_menu,
-                                            pos=(0., 0.0, -0.7))
+                                            pos=(0., 0.0, -0.6))
 
             self._current_window.select_button()
 

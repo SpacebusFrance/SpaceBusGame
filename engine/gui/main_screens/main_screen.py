@@ -1,6 +1,7 @@
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.OnscreenText import OnscreenText
 
+from engine import __version__ as version
 from engine.utils.event_handler import EventObject
 
 
@@ -8,7 +9,7 @@ class MainScreen(EventObject):
     """
     Base class for main game screen
     """
-    def __init__(self, gui_engine, image: str = 'back.png', background_color=None):
+    def __init__(self, gui_engine, image: str = 'back.png', background_color=None, show_version: bool = False):
         super().__init__()
 
         self.gui = gui_engine
@@ -26,13 +27,6 @@ class MainScreen(EventObject):
         self._icon_size = 0.05
 
         ar = self.engine.get_option('screen_resolution')[0] / self.engine.get_option('screen_resolution')[1]
-        # ar *= 1.5
-        # cm = CardMaker('back')
-        # cm.set_color(self.gui.colors['background'])
-        # cm.set_frame(-ar, ar, -1., 1.0)
-        # cm.set_frame(-1, 1, -1., 1.0)
-        # cm.set_frame(0, 1, -1., 1.0)
-        # self._background = self.engine.aspect2d.attachNewNode(cm.generate())
         self._background = DirectFrame(
             image=(self.engine.get_option('image_path') + image) if image is not None else None,
             parent=self.engine.aspect2d,
@@ -40,12 +34,10 @@ class MainScreen(EventObject):
             frameColor=background_color if background_color is not None else (0, 0, 0, 0),
             frameSize=(-ar, ar, -1, 1)
         )
-        # self._background.set_texture(self.engine.get_option('image_path') + 'back.png')
-        # self._background.set_sx(5.2)
-        # self._background = self.engine.render2d.attachNewNode(cm.generate())
-
-        # if force_fulfill_key is not None:
-        #     self.accept(force_fulfill_key, self.engine.scenario.fulfill_current_step)
+        if show_version:
+            t = OnscreenText(text=f'version {version}', parent=self._background,
+                             pos=(-0.8 * ar, -0.9), scale=0.07, fg=(0.8, 0.7, 0.6, 0.8))
+            t.setBin('gui-popup', 1)
 
     def destroy(self):
         self._background.remove_node()
@@ -64,16 +56,6 @@ class MainScreen(EventObject):
             color: the color to set
         """
         self._background.set_color(self.gui.colors[color] if isinstance(color, str) else color)
-
-    # def notify_event(self, event, **kwargs):
-    #     """
-    #     Notify that an event is asked for this screen
-    #
-    #     Args:
-    #         event (str): the name of the event
-    #         **kwargs (dict): event's parameters.
-    #     """
-    #     pass
 
     def notify_update(self, key):
         """
