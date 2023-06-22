@@ -74,7 +74,7 @@ reboot_text_0;Chargement de la sauvegarde de session ...;
 reboot_text_1;Chargement de la sauvegarde de session ...\nRécupération des données ...;
 reboot_text_2;Chargement de la sauvegarde de session ...\nRécupération des données ...\nLecture du fichier video ...;
 score_header;\1title\1Merci d'avoir joué avec SpaceBus !\2\n\nVotre score : MINUTES minutes et SECONDS secondes\nVous êtes POSITIONème sur TOTAL;
-score_text;\1title\1Conception et programmation\2\n\nPaul de Fromont\n\n\1title\1Scénario\2\n\nTabatha Sauvaget\nRaphaël Peralta\nDiane Bérard\nPaul de Fromont\n\n\1title\1Design et construction des décors\2\n\nJean-Louis Bérard\nKarine Bérard\nPaul de Fromont\nDiane Bérard\n\n\1title\1Electronique\2\n\nPaul de Fromont\nDiane Bérard\n\n\1title\1Sons et voix off\2\n\nPaul de Fromont\nMusique d’interstallar\nMusique Sweet home alabama\n\n\1title\1Un grand merci également à tous nos beta-testeurs !\2;
+score_text;\1title\1Conception\2\n\nRaphaël Peralta\nDiane Bérard\nTabatha Sauvaget\n\n\1title\1Programmation\2\n\nPaul de Fromont\n\n\1title\1Design et construction des décors\2\n\nJean-Louis Bérard\nKarine Bérard\nPaul de Fromont\nDiane Bérard\n\n\1title\1Electronique\2\n\nPaul de Fromont\nDiane Bérard\n\n\1title\1Images, musique et effets sonores\2\n\npixabay.com\nfreesound.com\ndepositphotos.com\npenguinmusic\nDaddy_s_music\n\n\1title\1Enfin ...\2\n\nUn \1bold\1grand merci\2 à tous nos beta-testeurs,\nEt à tous ceux qui nous ont aidés un jour ou l'autre !\n\nMerci !;
 chrono_title;temps avant erreur;time before crash
 
 window_enter_to_close;Appuyer sur \1bold\1ENTREE\2 pour passer;Press \1bold\1ENTER\2 to ignore
