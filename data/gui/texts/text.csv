@@ -46,6 +46,7 @@ id_title;Identification;
 id_text_0;Entrer le mot de passe du \1golden\1Commandant\2;
 id_text_1;Entrer le mot de passe du \1golden\1Scientifique\2;
 id_text_2;Entrer le mot de passe du \1golden\1Pilote\2;
+id_text_3;Entrer le mot de passe de \1golden\1l'Ingénieur\2;
 target_title_info;Choix de la cible;
 target_text_info;Entrer les coordonnées du lieu d'atterrissage de la navette : \1bold\1base 2012A2\2;
 target_title;Choix de la cible;
@@ -79,9 +80,9 @@ chrono_title;temps avant erreur;time before crash
 window_enter_to_close;Appuyer sur \1bold\1ENTREE\2 pour passer;Press \1bold\1ENTER\2 to ignore
 
 la_instructions;A l'intention des experts.\n\n1. Ouvrez le coffre\n2. Trouvez les quatre chiffres\n3. Trouvez leur ordre\n4. Récupérez les échantillons.\n\n\1red\1Attention\2 destruction des échantillons \1bold\1dans 15 minutes.\2;MISSING
-la_text;Chers experts.\n\nNous venons enfin de trouver un échantillon qui pourrait bouleverser notre vision de la vie martienne, mais nos instruments de mesures ne sont pas suffisamment précis pour en apporter la preuve formelle. Nous vous les confions pour des analyses plus poussées. Néanmoins, comme le protocole l’exige, ils sont sous scellés afin qu’ils ne tombent entre de mauvaises mains. Ils se trouvent dans un coffre fermé par un cadenas à 4 chiffres. Chacun d’entre nous a choisi un chiffre et a laissé des indices inspirés de sa vie dans le coffre. Une fois ces 4 chiffres trouvés, il vous faudra encore découvrir leur ordre pour finalement accéder aux échantillons. Comme décrit dans le protocole, les échantillons seront détruits dans 15 min. Bonne chance !;EMPTY
+la_text;Chers collègues.\n\nNous venons enfin de trouver un échantillon qui pourrait bouleverser notre vision de la vie martienne, mais nos instruments de mesures ne sont pas suffisamment précis pour en apporter la preuve formelle. Nous vous les confions pour des analyses plus poussées. Néanmoins, comme le protocole l’exige, ils sont sous scellés afin qu’ils ne tombent entre de mauvaises mains. Ils se trouvent dans un coffre fermé par un cadenas à 4 chiffres. Chacun d’entre nous a choisi un chiffre et a laissé des indices inspirés de sa vie dans le coffre. Une fois ces 4 chiffres trouvés, il vous faudra encore découvrir leur ordre pour finalement accéder aux échantillons. Comme décrit dans le protocole, les échantillons seront détruits dans 15 min. Bonne chance !;EMPTY
 la_unlocked_title;Information; Information
-la_unlocked_info;Bien joué ! Si vous êtes arrivé jusque là c'est que vous méritez de connaître mon \1italic\1nombre secret\2 qui est le \1bold\1six (6)\2;Well done crew. My secret number is: \1bold\1six (6)\2
+la_unlocked_info;Bien joué ! Si vous êtes arrivé jusque là c'est que vous méritez de connaître mon \1italic\1chiffre secret\2 qui est le \1bold\1six (6)\2;Well done crew. My secret number is: \1bold\1six (6)\2
 la_game_title;Survivant de l'espace;Space survivor
 la_game_info_title;Instructions;Instructions
 la_game_info_text;Bravo ! Vous avez réussi cette première étape ... Voyons voir si vos réflexes sont à la hauteur.\n\nRamassez un maximum étoiles et évitez les astéroïdes en utilisant les flèches du clavier;Collect stars and avoid asteroids using arrow keys
@@ -89,7 +90,7 @@ la_game_lost;Perdu ...;Lost ...
 la_game_win;Bravo !;Bravo !
 la_chrono_title;Décompte;Chronometer
 la_chrono_text;Temps avant péremption de l'échantillon. Passé ce délai, la navette devra être évacuée;Time before sample expiration
-la_chrono_end_title;Alerte;Alert
-la_chrono_end_text;Temps consumé ! L'échantillon est périmé si vous ne l'avez pas encore récupéré.\n\n\1bold\1Sortez de la navette\2;
+la_chrono_end_title;temps écoulé;Alert
+la_chrono_end_text;Malheureusement l'échantillon est périmé.\n\n\1bold\1Sortez de la navette\2;
 la_lock_tile;Ordinateur verrouillé;Computer locked
 la_lock_text;Mot de passe du \1italic\1commandant\2;Enter \1red\1Commandant\2 password

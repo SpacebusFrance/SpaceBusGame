@@ -24,6 +24,7 @@
         <step action="password" password="RTJ108" title="$id_title$" text="$id_text_0$" icon="locked"/>
         <step action="password" password="24K18E" title="$id_title$" text="$id_text_1$" icon="locked"/>
         <step action="password" password="12AN4D" title="$id_title$" text="$id_text_2$" icon="locked"/>
+        <step action="password" password="M22CTJ" title="$id_title$" text="$id_text_3$" icon="locked"/>
 
         <!-- fermeture des portes -->
         <step action="wait" duration="2"/>

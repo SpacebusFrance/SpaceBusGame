@@ -11,18 +11,19 @@
         <step action="play_music" name="music"/>
 
         <!-- lock password -->
-        <step action="password" password="RTJ108" title="$la_lock_tile$" text="$la_lock_text$" icon="locked" hint_sound="voice_password_cmd_hint" hint_time="180"/>
+        <step action="password" password="RTJ108" title="$la_lock_tile$" text="$la_lock_text$" icon="locked" hint_sound="voice_password_cmd_hint" hint_time="300"/>
 
         <!-- <step action="play_sound" name="ok" duration="0"/> -->
         <step action="wait" duration="2"/>
         <step action="play_sound" name="voice_bio_intro" duration="0"/>
-        <step action="info" title="$la_game_info_title$" text="$la_text$" duration="40" icon="compose" close_on_enter="False" text_size="0.042"/>
+        <step action="info" title="$la_game_info_title$" text="$la_text$" duration="80" icon="compose" close_on_enter="False" text_size="0.042"/>
 
         <!-- setup timer and events (fixed time) -->
         <event action="goto_step" goto_id="end" delay="890"/>
         <event action="play_sound" name="voice_bio_10min" delay="300" duration="0"/>
         <event action="play_sound" name="voice_bio_5min" delay="600" duration="0"/>
         <event action="play_sound" name="voice_bio_1min" delay="840" duration="0"/>
+        <event action="play_sound" name="voice_bio_end" delay="885" duration="0"/>
         <event action="start_chrono" time="900"/>
 
         <step action="wait" duration="2"/>
@@ -45,7 +46,7 @@
         <step action="2d_game_start" goal="30"/>
 
         <!-- display code -->
-        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" close_on_enter="False"/>
+        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" close_on_enter="False" text_size="0.06"/>
 
         <!-- this happens if we bypass previous step  -->
         <step action="restart"/>
@@ -56,11 +57,10 @@
     </group>
     <group id="end">
         <step action="play_sound" name="alarm" duration="0"/>
-        <step action="led_on" led="alert0"/>
-        <step action="led_on" led="alert1"/>
-
-        <step action="play_sound" name="voice_bio_end"/>
-        <step action="info" title="$la_chrono_end_title$" text="$la_chrono_end_text$" duration="15" icon="caution"/>
+        <step action="led_on" led="alert0" loop="True"/>
+        <step action="led_on" led="alert1" loop="True"/>
+        <step action="info" title="$la_chrono_end_title$" t
+              ext="$la_chrono_end_text$" duration="60" icon="caution" text_size="0.06" close_on_enter="False"/>
 
         <!-- wait for end -->
         <step action="restart"/>
