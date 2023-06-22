@@ -59,8 +59,7 @@
         <step action="play_sound" name="alarm" duration="0"/>
         <step action="led_on" led="alert0" loop="True"/>
         <step action="led_on" led="alert1" loop="True"/>
-        <step action="info" title="$la_chrono_end_title$" t
-              ext="$la_chrono_end_text$" duration="60" icon="caution" text_size="0.06" close_on_enter="False"/>
+        <step action="info" title="$la_chrono_end_title$" text="$la_chrono_end_text$" duration="60" icon="caution" text_size="0.06" close_on_enter="False"/>
 
         <!-- wait for end -->
         <step action="restart"/>
