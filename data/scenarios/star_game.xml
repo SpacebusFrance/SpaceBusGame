@@ -3,7 +3,8 @@
     <group name="debut de jeux">
         <!-- set the screen "lost_astronaut" (never-mind the name) -->
         <step action="set_screen" name="lost_astronaut"/>
-        <step action="keyboard" key="control-enter"/>
+
+        <step action="game_menu"/>
 
         <step action="2d_game_start" goal="30"/>
         <step action="restart"/>

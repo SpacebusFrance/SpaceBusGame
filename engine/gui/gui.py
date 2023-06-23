@@ -35,8 +35,9 @@ class Gui(EventObject):
         'dark-blue': (0.1, 0.1, 0.2, 1.0),
         'dark-sp': (0.2, 0.2, 0.2, 0.7),
         'darker': (0.1, 0.05, 0.05, 1.0),
-        'dark-window': (0.12, 0.12, 0.12, 0.8),
+        'dark-window': (0.12, 0.12, 0.12, 0.9),
         'button-color': (0.15, 0.15, 0.15, 1.0),
+        'window_background': (0.1, 0.1, 0.1, 0.8),
         'background': (0.08, 0.08, 0.08, 1.0),
         'terminal_bg': (0.174, 0.036, 0.11, 1.0),
     }
@@ -220,6 +221,7 @@ class Gui(EventObject):
             on_enter=self.close_window_and_go if close_on_enter else None,
             color=color,
             text_size=text_size,
+            background_color='window_background',
             **kwargs
         )
 
@@ -247,6 +249,7 @@ class Gui(EventObject):
             on_password_find=self.close_window_and_go if on_password_find is None else on_password_find,
             color=color,
             text_size=text_size,
+            background_color='window_background',
             **kwargs
         )
 
@@ -264,6 +267,7 @@ class Gui(EventObject):
             title=self.process_text(title),
             text=self.process_text(text),
             file_format='avi',
+            background_color='window_background',
             **kwargs
         )
 
@@ -277,6 +281,7 @@ class Gui(EventObject):
             text=self.process_text(text),
             life_time=duration,
             on_enter=self.close_window_and_go if close_on_enter else None,
+            background_color='window_background',
             **kwargs
         )
 
@@ -285,6 +290,7 @@ class Gui(EventObject):
         self.set_current_window(
             win=ButtonWindow,
             title='Menu du jeu',
+            background_color=(0.1, 0.1, 0.1, 0.9)
         )
         win = self._current_window
         win.add_button(size_x=0.5,
@@ -337,6 +343,7 @@ class Gui(EventObject):
                 text=self.process_text('$game_text$'),
                 size_x=1.0,
                 size_y=1.5,
+                background_color=(0.0, 0.0, 0.0, 0.7)
             )
             files = [k for k in os.listdir(self.engine.get_option('scenario_path')) if k.endswith('.xml')]
             for i, game in enumerate(files):
@@ -366,6 +373,7 @@ class Gui(EventObject):
                 title=self.process_text('$options_title$'),
                 size_x=1.5,
                 size_y=1.8,
+                background_color=(0.0, 0.0, 0.0, 0.7)
             )
             for param in self.engine.params:
                 if not isinstance(self.engine.get_option(param), str) or '/' not in self.engine.get_option(param):
@@ -422,6 +430,7 @@ class Gui(EventObject):
             text=self.process_text('$menu_text$'),
             size_x=1.0,
             size_y=1.0,
+            background_color=(0.0, 0.0, 0.0, 0.7)
         )
         self._current_window.add_button(size_x=0.5,
                                         size_y=0.15,

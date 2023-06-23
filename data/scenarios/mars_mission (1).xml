@@ -11,7 +11,7 @@
         <step action="wait" duration="5"/>
         <step action="play_sound" name="human_0" duration="10"/>
 
-        <step action="end_game"/>
+<!--        <step action="end_game"/>-->
 
 <!--        <step action="led_on" led="antenne_com" duration="0"/>-->
         <!-- set chronometer and time limit -->

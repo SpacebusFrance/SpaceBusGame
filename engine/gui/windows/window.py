@@ -39,7 +39,7 @@ class Window(BaseWidget):
                  focus=1,
                  hide_password=False,
                  shadow=True,
-                 background_color=(0.0, 0.0, 0.0, 0.7),
+                 background_color=None,
                  **kwargs):
         super(Window, self).__init__(gui_engine)
 
