@@ -44,7 +44,7 @@ class SoundManager(DirectObject):
             self._is_playing = True
             last.play()
 
-            self._engine.taskMgr.doMethodLater(last.length() + 0.2, self._start_next, name="music_overlap")
+            self._engine.taskMgr.doMethodLater(last.length() + 0.2, self._start_next, name="sfx_overlap")
 
     @staticmethod
     def _get_file_name(name: str) -> str:
@@ -94,13 +94,23 @@ class SoundManager(DirectObject):
                 Logger.info(f'loading music sound : {key}')
                 self._music[key] = self._engine.loader.loadMusic(music_folder + file)
 
-    def reset(self, n=5, t_max=900):
+    def reset(self, n=5, t_max=900) -> None:
+        """
+        Reset all sounds.
+
+        Args:
+            n:
+            t_max:
+        """
         for _ in range(len(self._ambient_tasks)):
             self._engine.taskMgr.remove(self._ambient_tasks.pop())
 
         # stop current playing sounds
-        for sound in self._sounds:
-            self.stop(sound)
+        for sound in self._sounds.values():
+            sound.stop()
+
+        # stop bips
+        self.stop_bips()
 
         # stop music
         self.stop_music()
@@ -241,7 +251,7 @@ class SoundManager(DirectObject):
             self._last_music_played = name
             Logger.info(f'playing new music "{name}"')
             music.play()
-        else:
+        elif name is not None and name != 'None':
             Logger.error(f'no music named "{name}"')
 
     def play_sfx(self, name, loop=False, volume=None, avoid_playing_twice=True):
@@ -267,23 +277,37 @@ class SoundManager(DirectObject):
                 else self._engine.get_option('volume_sfx')
             sound.setVolume(volume)
 
+            self._last_sfx_played = name
             if name in self._protected_sounds or (self._engine.get_option("voice_sound_do_not_overlap") and
                                                   ("voice" in name or "human" in name)):
                 # if playing sound is protected or either "voice" or "human" is in file name, we queue it
                 self._queue.append(sound)
-                self._last_sfx_played = name
                 if not self._is_playing:
                     # no sound is playing right now, get next sound in queue
                     self._start_next()
             else:
-                # not protected, just set it
-                self._last_sfx_played = name
+                # not protected, just play it
                 sound.play()
         elif name == "bips":
             # it bips, just play it
             self.play_bips()
-        # else:
-        #     Logger.warning('sound {} does not exists'.format(name))
+        elif name is not None and name != 'None':
+            Logger.warning(f'sound "{name}" does not exists')
+
+    def stop_sfx(self, clear_queue: bool = True) -> None:
+        """
+        Stop current sfx and optionally clear playing queue
+
+        Args:
+            clear_queue (bool): clear incoming sounds
+        """
+        for sfx in self._sounds.values():
+            sfx.stop()
+        self._is_playing = False
+
+        if clear_queue:
+            self._queue.clear()
+            self._engine.taskMgr.remove('sfx_overlap')
 
     def stop(self, name: str) -> None:
         """

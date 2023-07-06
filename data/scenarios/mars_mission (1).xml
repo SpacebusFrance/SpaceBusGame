@@ -5,21 +5,9 @@
 
         <!-- wait for key button pressed -->
         <step action="game_menu"/>
-<!--        <step action="keyboard" key="control-enter"/>-->
-<!--        <step action="play_sound" name="ok" duration="0"/>-->
 
         <step action="wait" duration="5"/>
         <step action="play_sound" name="human_0" duration="10"/>
-
-<!--        <step action="end_game"/>-->
-
-<!--        <step action="led_on" led="antenne_com" duration="0"/>-->
-        <!-- set chronometer and time limit -->
-<!--        <event action="goto_step" goto_id="wrong_end" game_time="40"/>-->
-<!--        <step action="start-chrono" time="40" duration="0"/>-->
-
-<!--        <step action="start_game"/>-->
-<!--        <step action="play_sound" name="human_0" duration="20"/>-->
 
         <!-- identification -->
         <step action="info" title="$id_info_title$" text="$id_info_text$" duration="20"/>
@@ -39,9 +27,12 @@
         <step action="info" duration="20" title="$target_title_info$" text="$target_text_info$" icon="target"/>
         <step action="password" format="target" password="08:59:41" title="$target_title$" icon="target" text="$target_text_1$" hint_sound="human_hint_target" hint_time="180"/>
         <step action="password" format="target" password="55:47:24" title="$target_title$" icon="target" text="$target_text_2$" hint_sound="human_hint_target" hint_time="180"/>
+        <step action="play_sound" name="voice_target_ok" duration="0"/>
         <step action="info" duration="4" title="$target_ok_title$" text="$target_ok_text$" icon="load_spinner" close_on_enter="False"/>
+        <step action="play_sound" name="voice_target_on" duration="1"/>
 
          <!--mise ne route des moteurs-->
+        <step action="play_sound" name="voice_engine_on" duration="0"/>
         <step action="reset_leds" duration="1"/>
         <step action="play_sound" name="engine_starts" duration="2" volume="2.0"/>
         <step action="play_sound" name="human_1" duration="2"/>
@@ -59,9 +50,15 @@
          <!--collision -->
         <step action="collision" duration="2"/>
         <step action="play_sound" name="alarm" duration="0" loop="True"/>
+        <step action="play_sound" name="voice_alert_collision" duration="0" delay="1" volume="1"/>
         <step action="warning" duration="10" title="$title_collision_info$" text="$text_collision_info$" close_on_enter="False"/>
+
+        <step action="play_sound" name="voice_o25" duration="1" volume="1" delay="5"/>
         <step action="password" password="15Hu7" title="$title_collision_password$" text="$text_collision_password$"/>
         <step action="stop_sound" name="alarm"/>
+
+        <event action="play_sound" name="voice_O2_10pct" delay="300" duration="0"/>
+
     </group>
     <group name="partie joueur">
         <!-- emergency frequency -->
@@ -150,20 +147,10 @@
         <step action="boost" direction="f" power="20" duration="0"/>
         <step action="wait" duration="10"/>
 
-        <step action="end_game"/>
-<!--        <step action="control_screen_event" name="image_screen" image_name="score" duration="0"/>-->
-<!--        <step action="show_score"/>-->
-        <step action="wait" duration="10"/>
-
         <step action="play_sound" name="human_end" duration="0"/>
-
-        <!-- RESTART GAME -->
-        <step action="wait">
-            <end_conditions>
-                <condition key="b_admin" value="True"/>
-            </end_conditions>
-        </step>
+        <step action="end_game" duration="60"/>
         <step action="restart"/>
+
     </group>
 
     <!--    This should not be reached until time end -->

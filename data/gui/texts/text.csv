@@ -15,7 +15,7 @@ batterie1;Batterie 1;
 batterie2;Batterie 2;
 batterie3;Batterie 3;
 batterie4;Batterie 4;
-recyclage_O2;Rectclage O2;
+recyclage_O2;Recyclage O2;
 recyclage_CO2;Recyclage CO2;
 recyclage_H2O;Recyclage H2O;
 tension_secteur1;Tension Secteur 1;
@@ -35,8 +35,8 @@ moteur2;Moteur 2;
 moteur3;Moteur 3;
 solar_title;Panneaux solaires;
 sp_power;Puissance solaire;
-offset_ps_y;Offset X;
-offset_ps_x;Offset Y;
+offset_ps_y;Offset panneaux SY;
+offset_ps_x;Offset panneaux SX;
 main_CO2;CO2;
 main_O2;O2;
 main_power;Puissance;
@@ -79,7 +79,7 @@ chrono_title;temps avant erreur;time before crash
 
 window_enter_to_close;Appuyer sur \1bold\1ENTREE\2 pour passer;Press \1bold\1ENTER\2 to ignore
 
-la_instructions;A l'intention des experts.\n\n1. Ouvrez le coffre\n2. Trouvez les quatre chiffres\n3. Trouvez leur ordre\n4. Récupérez les échantillons.\n\n\1red\1Attention\2 destruction des échantillons \1bold\1dans 15 minutes.\2;MISSING
+la_instructions;A l'attention des experts.\n\n1. Ouvrez le coffre\n2. Trouvez les quatre chiffres\n3. Trouvez leur ordre\n4. Récupérez les échantillons.\n\n\1red\1Attention\2 destruction des échantillons \1bold\1dans 15 minutes.\2;MISSING
 la_text;Chers collègues.\n\nNous venons enfin de trouver un échantillon qui pourrait bouleverser notre vision de la vie martienne, mais nos instruments de mesures ne sont pas suffisamment précis pour en apporter la preuve formelle. Nous vous les confions pour des analyses plus poussées. Néanmoins, comme le protocole l’exige, ils sont sous scellés afin qu’ils ne tombent entre de mauvaises mains. Ils se trouvent dans un coffre fermé par un cadenas à 4 chiffres. Chacun d’entre nous a choisi un chiffre et a laissé des indices inspirés de sa vie dans le coffre. Une fois ces 4 chiffres trouvés, il vous faudra encore découvrir leur ordre pour finalement accéder aux échantillons. Comme décrit dans le protocole, les échantillons seront détruits dans 15 min. Bonne chance !;EMPTY
 la_unlocked_title;Information; Information
 la_unlocked_info;Bien joué ! Si vous êtes arrivé jusque là c'est que vous méritez de connaître mon \1italic\1chiffre secret\2 qui est le \1bold\1six (6)\2;Well done crew. My secret number is: \1bold\1six (6)\2

@@ -408,12 +408,14 @@ class Scenario(EventObject):
 
     @event("end_game")
     def on_end_game(self, show_end_screen=True, save_score=True):
-        # remove all incoming events
-        self.event_manager.remove_all_events()
+        # # remove all incoming events
+        # self.event_manager.remove_all_events()
 
         # call the end game
-        self.end_game(show_end_screen=show_end_screen,
-                      save_score=save_score)
+        self.end_game(
+            show_end_screen=show_end_screen,
+            save_score=save_score
+        )
 
     @event('collision')
     def on_collision(self):
@@ -466,6 +468,8 @@ class Scenario(EventObject):
             self.engine.state_manager.offset_ps_x.set_value(2, **kwargs)
             self.engine.state_manager.offset_ps_y.set_value(1, **kwargs)
 
+            self.engine.state_manager.main_O2.set_value(0.1, **kwargs)
+
             # finally, update power
             self.engine.update_power()
 
@@ -477,29 +481,6 @@ class Scenario(EventObject):
     @event('asteroid')
     def on_asteroid(self):
         self.engine.asteroid.spawn()
-
-    # @event('oxygen_leak')
-    # def on_oxygen_leak(self):
-    #     send_event("set_gauge_goto_time", gauge="main_O2", time=800)
-    #     self.engine.state_manager.main_O2.set_value(0.0)
-    #     self.do_method_later(180,
-    #                          self.engine.sound_manager.play_sfx,
-    #                          name='sound_o2_1',
-    #                          extraArgs=['voice_alert_O2_5_33'])
-    #     self.do_method_later(330,
-    #                          self.engine.sound_manager.play_sfx,
-    #                          name='sound_o2_2',
-    #                          extraArgs=['voice_alert_O2_3_17'])
-
-    # @event('oxygen')
-    # def on_oxygen(self, time=420., value=0.0):
-    #     send_event("set_gauge_goto_time", gauge="main_O2", time=time)
-    #     self.engine.state_manager.main_O2.set_value(value)
-    #
-    # @event('CO2')
-    # def on_co2(self, time=420., value=0.0):
-    #     send_event("set_gauge_goto_time", gauge="main_CO2", time=time)
-    #     self.engine.state_manager.main_CO2.set_value(value)
 
     # elementary functions
     @event('shuttle_look_at')
@@ -619,6 +600,9 @@ class Scenario(EventObject):
         """
         Fulfill the current step and starts the next one
         """
+        # stop current sounds
+        self.engine.sound_manager.stop_sfx()
+        # and start new step
         self.steps[self.current_step].force_fulfill()
 
     def start_next_step(self):

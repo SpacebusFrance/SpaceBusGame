@@ -371,6 +371,8 @@ class Game(ShowBase):
         self.gui.hide_cursor()
         self.sound_manager.stop_music()
         self.sound_manager.play_ambient_sound()
+        self.sound_manager.play_bips()
+
         self.scenario.start_game()
 
     # new state management

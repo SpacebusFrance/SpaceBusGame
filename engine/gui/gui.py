@@ -97,9 +97,9 @@ class Gui(EventObject):
             background_color=self.colors['black'],
         )
 
-        self.accept_once('enter', self.reset)
-        # buy default, reset menu after a certain game_time
-        self.do_method_later(self.engine.get_option('end_game_reset_delay'), self.reset, name='menu_reset_task')
+        # self.accept_once('enter', self.reset)
+        # # buy default, reset menu after a certain game_time
+        # self.do_method_later(self.engine.get_option('end_game_reset_delay'), self.reset, name='menu_reset_task')
 
     def hide_cursor(self):
         # hide cursor
