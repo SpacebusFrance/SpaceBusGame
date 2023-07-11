@@ -239,7 +239,7 @@ class ShuttleFrame(DirectObject.DirectObject):
         self.spinning_velocity = LVector3f(0, 0, 0)
         self.compute_unit_vectors()
         # set is_moving to False
-        self._engine.state_manager.is_moving.set_value(True)
+        self._engine.state_manager.is_moving.set_value(False)
         if play_sound:
             self._boost_sound()
 
