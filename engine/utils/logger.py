@@ -17,6 +17,8 @@ Logger.getLogger().addHandler(LoggerHandler())
 Logger.title = logging.info
 Logger.print = logging.info
 
+Logger.set_log_level = Logger.getLogger().setLevel
+
 # class Logger:
 #     colors = {'purple': '\033[95m',
 #               'blue': '\033[94m',
