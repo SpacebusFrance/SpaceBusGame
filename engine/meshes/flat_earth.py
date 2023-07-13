@@ -49,6 +49,7 @@ class Earth(PandaNode):
         self.node.set_bin('fixed', 3)
         self.node.set_depth_write(0)
         self.node.set_depth_test(0)
+        # self.node.setEffect
         # self.node.setBillboardPointEye()
 
     def move(self, dx):
