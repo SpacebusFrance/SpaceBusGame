@@ -83,7 +83,7 @@ class GameState(DirectObject):
                   update_power: bool = True,
                   silent: bool = False,
                   update_scenario: bool = True) -> None:
-        if self.engine.can_set_state(self.name, new_value):
+        if new_value != self._value and self.engine.can_set_state(self.name, new_value):
             Logger.info(f'updating state {self.name} to {new_value}')
             self._value = new_value
 
