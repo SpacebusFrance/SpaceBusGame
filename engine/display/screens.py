@@ -1,7 +1,11 @@
-from panda3d.core import WindowProperties, NodePath, LVector4f
-from direct.gui.OnscreenText import OnscreenText, TextNode
+from direct.filter.CommonFilters import CommonFilters
+from panda3d.core import CardMaker, NodePath, Shader, Point2, Vec3
 
-from engine.utils.logger import Logger
+SHADER = Shader.load(
+    Shader.SL_GLSL,
+    vertex='data/shaders/flare-vert.glsl',
+    fragment='data/shaders/flare-frag.glsl'
+)
 
 
 class FakeScreen3D:
@@ -9,11 +13,14 @@ class FakeScreen3D:
         self._engine = engine
         self.screen = screen_number
 
-        aspect_ratio = self._engine.get_option('screen_resolution')[0] / self._engine.get_option('screen_resolution')[1]
-        self.cam_node = self._engine.make_camera(self._engine.win,
-                                                 displayRegion=(0.2 * screen_number, 0.2 * (screen_number + 1), 0, 1),
-                                                 aspectRatio=aspect_ratio,
-                                                 )
+        size_x = self._engine.get_option('screen_resolution')[0]
+        size_y = self._engine.get_option('screen_resolution')[1]
+        x0, x1 = 0.2 * screen_number, 0.2 * (screen_number + 1)
+        self.cam_node = self._engine.make_camera(
+            self._engine.win,
+            displayRegion=(x0, x1, 0, 1),
+            aspectRatio=size_x / size_y,
+        )
 
         self.lens = self.cam_node.node().getLens()
         self.lens.setFov(self._engine.get_option("cam_fov"))
@@ -24,88 +31,55 @@ class FakeScreen3D:
         self.cam_node.set_hpr(-shuttle_angle, 0, 0)
         self.cam_node.set_x(shift_x)
         self.cam_node.set_y(shift_y)
-        # don't know if this is necessary ?
-        # for dr in self._engine.win.get_display_regions():
-        #     cam = dr.get_camera()
-        #     if cam and "cam2d" in cam.name:
-        #         dr.set_dimensions(0, 0.2, 0, 1)
 
-    def set_angle(self, incr):
-        self.cam_node.set_h(self.cam_node.get_h() + incr)
-        Logger.info('new angle : {}'.format(self.cam_node.get_h()))
+        # bloom effect : glow on light colors
+        if engine.get_option('use_bloom_effect'):
+            filters = CommonFilters(engine.win, self.cam_node)
+            filters.set_bloom(
+                size="medium",
+            )
+
+        # sun shader
+        if engine.get_option('use_sun_shader'):
+            cm = CardMaker(f'card_{screen_number}')
+            cm.setFrame(2 * x0 - 1, 2 * x1 - 1, - 1, 1)
+
+            # Create a node path for the card
+            card = NodePath(cm.generate())
+
+            # Render the card in the 2D space
+            card.setDepthWrite(False)
+            card.setDepthTest(False)
+            card.setBin("unsorted", 0)
+            card.reparentTo(engine.render2d)
+            card.set_transparency(True)
+
+            card.set_shader(SHADER)
+            card.set_shader_inputs(
+                iResolution=(size_x, size_y),
+                iShift=(x0 / (x1 - x0), 0),
+                iPos=(10, 10)
+            )
+
+            def update(task):
+                coord2d = Point2()
+                self.lens.project(
+                    engine.sun.node.get_pos(self.cam_node),
+                    coord2d
+                )
+                facing = engine.render.getRelativeVector(self.cam_node, Vec3.forward()) \
+                    .dot(engine.sun.node.get_pos() - self.cam_node.get_pos())
+                if facing >= 0:
+                    card.set_shader_input(
+                        'iPos',
+                        (
+                            0.5 * coord2d[0],
+                            0.5 * coord2d[-1]
+                        )
+                    )
+                return task.cont
+
+            engine.add_task(update, f'update_{screen_number}')
 
     def get_camera(self):
         return self.cam_node
-#
-#
-# class Screen3D:
-#     def __init__(self, engine, screen_number, shuttle_angle=0, shift_x=0, shift_y=0.0):
-#         self._engine = engine
-#
-#         self.props = WindowProperties()
-#         self.screen = screen_number
-#         # hard-coded to avoid detection problems
-#         self.res = [1920, 1080]
-#
-#         self.props.set_size(800, 600)
-#         self.props.set_origin(100 + self.screen * self.res[0], 100)
-#         self.props.set_undecorated(True)
-#         self.props.set_foreground(False)
-#
-#         self.window = self._engine.openWindow(props=self.props, aspectRatio=float(800 / 600))
-#
-#         # getting the new camera
-#         self.camera = self._engine.camList[-1].node()
-#         self.cam_node = NodePath(self.camera)
-#         self.cam_node.reparent_to(self._engine.shuttle.frame)
-#         self.cam_node.set_x(shift_x)
-#         self.cam_node.set_y(shift_y)
-#         self.lens = self.camera.getLens()
-#         self.lens.setFov(self._engine.params("cam_fov"))
-#         self.lens.setNear(0.1)
-#
-#         # self.cam_node.set_hpr(0, shuttle_angle, 0)
-#         self.cam_node.set_hpr(-shuttle_angle, 0, 0)
-#         Logger.info('Opening new screen with h = {}'.format(-shuttle_angle))
-#
-#     def destroy(self):
-#         self._engine.closeWindow(self.window)
-#         self.camera.setActive(0)
-#
-#     def set_width(self, incr):
-#         self.lens.setFilmSize(self.lens.getFilmSize() + incr)
-#         Logger.info('new width : {}'.format(self.lens.getFilmSize()))
-#
-#     def set_fov(self, incr):
-#         self.lens.setFov(self.lens.getFov() + incr)
-#         Logger.info('new fov : {}'.format(self.lens.getFov()))
-#
-#     def set_angle(self, incr):
-#         self.cam_node.set_h(self.cam_node.get_h() + incr)
-#         Logger.info('new angle : {}'.format(self.cam_node.get_h()))
-#
-#     def get_camera(self):
-#         return self.cam_node
-#
-#     def set_fullscreen(self, on=True):
-#         if on:
-#             self.props.set_size((self.res[0], self.res[1]))
-#             self.props.setOrigin(self.screen * self.res[0], 0)
-#             self.lens.setAspectRatio(float(self.res[0]/self.res[1]))
-#         else:
-#             self.props.set_size((800, 600))
-#             self.props.setOrigin(self.screen * self.res[0] + 100, 100)
-#             self.lens.setAspectRatio(4/3)
-#         self.window.requestProperties(self.props)
-#
-#         d = {'resolution': self.res,
-#              'pos': self.props.getOrigin(),
-#              'size': self.props.getSize()}
-#
-#         Logger.info('Screen {0} infos : \n\t- {1}'.format(self.screen,
-#                                                           '\n\t-'.join(['{0} : {1}'.format(k, d[k]) for k in d])))
-#
-
-
-
-
