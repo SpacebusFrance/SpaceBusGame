@@ -52,6 +52,16 @@ class Game(ShowBase):
         self.default_params = ParamUtils.read_ini_file(default_param_file)
         self.default_params['param_file'] = param_file
 
+        # check that all keys in default params
+        # exist in params, otherwise add them
+        for key in self.default_params:
+            if key not in self.params:
+                self.params[key] = self.default_params[key]
+                Logger.error(f'Missing option "{key}" in file `params.ini`. You should add it manually as: '
+                             f'{key}={self.default_params[key]}')
+
+        Logger.set_log_level(self.params['log_level'])
+
         # store clock object
         self.clock = globalClock
 

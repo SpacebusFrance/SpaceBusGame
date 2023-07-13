@@ -121,7 +121,7 @@ class Gui(EventObject):
         Args:
             show_menu (bool): specifies if the main menu should be displayed or not
         """
-        Logger.title('GUI reset')
+        Logger.info('GUI reset')
         self.ignore_all()
         self.remove_all_tasks()
         if self._current_window is not None and not self._current_window.is_empty():
