@@ -36,16 +36,15 @@
         <step action="reset_leds" duration="1"/>
         <step action="play_sound" name="engine_starts" duration="2" volume="2.0"/>
         <step action="play_sound" name="human_1" duration="2"/>
-        <step action="shuttle_look_at" x="0" y ="10" z="0"/>
         <step action="shuttle_goto" x="-2" y="10" z="1" power="30"/>
         <step action="shuttle_look_at" x="0" y="0" z="0"/>
 
         <!-- premier mouvement -->
         <step action="play_sound" name="human_2" duration="5"/>
-        <step action="asteroid" duration="0"/>
         <step action="wait" duration="2.2"/>
         <step action="play_sound" name="start_music" duration="0"/>
-        <step action="shuttle_goto" x="500" y="10" z="0" power="200" duration="12.5"/>
+        <step action="asteroid" duration="0"/>
+        <step action="shuttle_goto" x="130" y="10" z="0" power="100"/>
 
          <!--collision -->
         <step action="collision" duration="2"/>
@@ -141,11 +140,12 @@
 
         <!-- LAST MOVE -->
         <step action="play_sound" name="end_music" duration="0"/>
-        <step action="shuttle_look_at" x="0" y="-10" z="0" time="10"/>
-        <step action="control_screen_event" name="image_screen" image_name="end" duration="0"/>
+        <step action="shuttle_goto" x="0" y="-10" z="0" power="10" duration="10"/>
+<!--        <step action="shuttle_look_at" x="0" y="-10" z="0" time="10"/>-->
+<!--        <step action="control_screen_event" name="image_screen" image_name="end" duration="0"/>-->
 
-        <step action="boost" direction="f" power="20" duration="0"/>
-        <step action="wait" duration="10"/>
+<!--        <step action="boost" direction="f" power="20" duration="0"/>-->
+<!--        <step action="wait" duration="10"/>-->
 
         <step action="play_sound" name="human_end" duration="0"/>
         <step action="end_game" duration="60"/>
