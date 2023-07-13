@@ -490,26 +490,26 @@ class Scenario(EventObject):
         else:
             self.engine.shuttle.dynamic_look_at(LVector3f(x, y, z), time=time)
 
-    @event('shuttle_pos')
-    def on_shuttle_pos(self, x=0.0, y=0.0, z=0.0):
-        self.engine.shuttle.set_pos(LVector3f(x, y, z))
+    # @event('shuttle_pos')
+    # def on_shuttle_pos(self, x=0.0, y=0.0, z=0.0):
+    #     self.engine.shuttle.set_pos(LVector3f(x, y, z))
 
     @event('shuttle_goto')
     def on_shuttle_goto(self, x=0.0, y=0.0, z=0.0, power=1.0):
-        self.engine.shuttle.dynamic_goto(LVector3f(x, y, z), power)
+        self.engine.shuttle.dynamic_goto(LVector3f(x, y, z), power=power)
 
-    @event('shuttle_stop')
-    def on_shuttle_stop(self, play_sound=True):
-        self.engine.shuttle.stop(play_sound)
+    # @event('shuttle_stop')
+    # def on_shuttle_stop(self, play_sound=True):
+    #     self.engine.shuttle.stop(play_sound)
 
-    @event('shuttle_goto_station')
-    def on_shuttle_goto_station(self, power=1.0):
-        pos, hpr = self.engine.space_craft.get_connection_pos_and_hpr()
-
-        def _end(t=None):
-            self.engine.shuttle.dynamic_goto_hpr(hpr, time=7)
-
-        self.engine.shuttle.dynamic_goto(pos, power=power, t_spin=7.0, end_func=_end)
+    # @event('shuttle_goto_station')
+    # def on_shuttle_goto_station(self, power=1.0):
+    #     pos, hpr = self.engine.space_craft.get_connection_pos_and_hpr()
+    #
+    #     def _end(t=None):
+    #         self.engine.shuttle.dynamic_goto_hpr(hpr, time=7)
+    #
+    #     self.engine.shuttle.dynamic_goto(pos, power=power, t_spin=7.0, end_func=_end)
 
     @event('keyboard')
     def on_keyboard(self, key):
@@ -531,9 +531,9 @@ class Scenario(EventObject):
     def on_group(self):
         pass
 
-    @event('boost')
-    def on_boost(self, direction=None, power=1.0):
-        self.engine.shuttle.boost(direction, power)
+    # @event('boost')
+    # def on_boost(self, direction=None, power=1.0):
+    #     self.engine.shuttle.boost(direction, power)
 
     @event('play_music')
     def on_play_music(self, name, loop=True):
