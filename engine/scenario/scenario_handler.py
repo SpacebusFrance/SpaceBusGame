@@ -180,6 +180,10 @@ class Scenario(EventObject):
         except IndexError:
             pass
 
+        # reset all steps
+        for step in self.steps:
+            step.reset()
+
         self.current_step = 0
         self.game_time = None
         self.last_score = None
@@ -359,7 +363,7 @@ class Scenario(EventObject):
             start_next_step=False
         )
         # and reset game
-        self.engine.reset_game(start=True)
+        self.engine.reset_game(scenario=self._scenario, start=True)
 
     @event(['start_game', 'start'])
     def on_start(self):

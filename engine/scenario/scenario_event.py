@@ -10,19 +10,22 @@ class ScenarioStep:
     """
     step_counter = 0
 
-    def __init__(self, engine,
-                 id,
-                 end_conditions=None,
-                 action="",
-                 duration=None,
-                 delay=None,
-                 blocking=True,
-                 args_dict=None,
-                 win_sound=None,
-                 loose_sound=None,
-                 fulfill_if_lost=False,
-                 hint_sound=None,
-                 hint_time=None):
+    def __init__(
+            self,
+            engine,
+            id,
+            end_conditions=None,
+            action="",
+            duration=None,
+            delay=None,
+            blocking=True,
+            args_dict=None,
+            win_sound=None,
+            loose_sound=None,
+            fulfill_if_lost=False,
+            hint_sound=None,
+            hint_time=None
+    ):
         """
         Instantiate a :class:`Step`
 
@@ -72,6 +75,13 @@ class ScenarioStep:
         self._loose_sound = loose_sound
         self._win_sound = win_sound
         self._fulfill_if_lost = fulfill_if_lost
+
+    def reset(self) -> None:
+        """
+        Reset this step. Remove incoming steps
+        """
+        self.kill()
+        self._next_step_started = False
 
     def start(self) -> None:
         """
@@ -211,6 +221,7 @@ class ScenarioStep:
 
         # check that next step isn't started already
         if not self._next_step_started:
+            Logger.info('-> There')
             self._next_step_started = True
             # tell the game that we stop current task
             send_event('current_step_end')

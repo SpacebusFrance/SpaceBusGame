@@ -1,6 +1,9 @@
 import logging
+from panda3d.core import loadPrcFileData
 from engine.main_engine import Game
 from pathlib import Path
+
+loadPrcFileData("", "textures-power-2 none")
 
 if __name__ == '__main__':
     # check if 'params.ini' file exists, otherwise create it as a copy of params_default.ini
