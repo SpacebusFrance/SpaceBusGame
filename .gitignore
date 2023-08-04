@@ -4,3 +4,5 @@ test_arduino.py
 tests.py
 .idea/
 doc/build/
+start.sh
+test.py
