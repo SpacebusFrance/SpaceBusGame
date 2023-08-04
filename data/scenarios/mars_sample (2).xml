@@ -46,14 +46,17 @@
         <step action="2d_game_start" goal="30"/>
 
         <!-- display code -->
-        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" close_on_enter="False" text_size="0.06"/>
+        <step action="enable_hardware"/>
+        <step action="info" title="$la_unlocked_title$" text="$la_unlocked_info$" close_on_enter="False" text_size="0.06">
+            <condition key="recyclage_CO2" value="False"/>
+            <condition key="recyclage_O2" value="False"/>
+        </step>
+        <step action="disable_hardware"/>
 
+        <!-- display score file -->
+        <step action="end_game" duration="60"/>
         <!-- this happens if we bypass previous step  -->
         <step action="restart"/>
-
-<!--        <step action="keyboard" key="control-enter"/>-->
-<!--        &lt;!&ndash; wait for end &ndash;&gt;-->
-<!--        <step action="restart"/>-->
     </group>
     <group id="end">
         <step action="play_sound" name="alarm" duration="0"/>
