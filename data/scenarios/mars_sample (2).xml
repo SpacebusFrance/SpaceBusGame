@@ -54,6 +54,7 @@
         <step action="disable_hardware"/>
 
         <!-- display score file -->
+        <step action="wait" duration="5"/>
         <step action="play_sound" name="voice_end_mars_sample" duration="0"/>
         <step action="end_game" duration="60"/>
         <!-- this happens if we bypass previous step  -->

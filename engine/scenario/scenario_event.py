@@ -1,4 +1,5 @@
 import inspect
+from typing import List
 
 from engine.utils.event_handler import send_event
 from engine.utils.logger import Logger
@@ -188,6 +189,18 @@ class ScenarioStep:
         else:
             Logger.info('-> Can end task')
             return True
+
+    @property
+    def event_names(self) -> List:
+        """
+        get a list of all non-empty event names
+        """
+        names = [
+            self._end_task,
+            self._action_task,
+            self._hint_task
+        ]
+        return [k for k in names if k is not None]
 
     def kill(self):
         """

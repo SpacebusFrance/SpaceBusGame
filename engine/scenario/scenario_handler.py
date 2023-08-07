@@ -34,10 +34,19 @@ class IncomingGameEvents(DirectObject):
             return task.is_alive()
         return False
 
-    def remove_all_events(self):
-        for _event in self._events.values():
-            self.remove_task(_event)
-        self._events.clear()
+    def remove_all_events(self, exceptions=None) -> None:
+        """
+        Remove all incoming events with possible exceptions
+
+        Args:
+            exceptions (List[str], optional): List of event names to keep
+        """
+        events = list(self._events.keys())
+        for _event in events:
+            if _event not in exceptions:
+                self.remove_task(_event)
+                self._events.pop(_event)
+        # self._events.clear()
 
     def remove_event(self, name):
         task = self._events.pop(name, None)
@@ -412,8 +421,13 @@ class Scenario(EventObject):
 
     @event("end_game")
     def on_end_game(self, show_end_screen=True, save_score=True):
-        # # remove all incoming events
-        # self.event_manager.remove_all_events()
+        # remove all incoming events
+        # except events from current task
+        # (being the end_game task with
+        # a possible duration)
+        self.event_manager.remove_all_events(
+            exceptions=self.steps[self.current_step].event_names
+        )
 
         # call the end game
         self.end_game(
