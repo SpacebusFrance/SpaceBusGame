@@ -31,13 +31,7 @@ class HardwareHandler(EventObject):
         self.tasks = dict()
         self._axes_value = dict()
 
-        # self.firewall_time = 0.05
         self.firewall_time = self.engine.get_option('hardware_input_firewall_time')
-
-        # for j in range(3):
-        #     for b in range(10):
-        #         self.times[f'joystick{j}-button{b}'] =
-        #         self.tasks[f'joystick{j}-button{b}'] = None
 
     @event('enable_hardware')
     def enable_inputs(self) -> None:
@@ -48,7 +42,7 @@ class HardwareHandler(EventObject):
         pygame.event.clear()
         self.engine.taskMgr.add(self._event_polling, 'Hardware_Polling')
         # self.engine.update_soft_state("listen_to_hardware", True)
-        self.engine.state_manager.listen_to_hardware.set_value(True)
+        # self.engine.state_manager.listen_to_hardware.set_value(True)
 
     @event('disable_hardware')
     def disable_inputs(self) -> None:
@@ -57,7 +51,7 @@ class HardwareHandler(EventObject):
         """
         self.engine.taskMgr.remove('Hardware_Polling')
         # self.engine.update_soft_state("listen_to_hardware", False)
-        self.engine.state_manager.listen_to_hardware.set_value(False)
+        # self.engine.state_manager.listen_to_hardware.set_value(False)
 
     def reset(self):
         """
