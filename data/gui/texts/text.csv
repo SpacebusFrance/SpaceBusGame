@@ -85,7 +85,7 @@ la_unlocked_title;Information; Information
 la_unlocked_info;Bien joué ! Si vous êtes arrivé jusque là c'est que vous méritez de connaître mon \1italic\1chiffre secret\2 qui est le \1bold\1six (6)\2;Well done crew. My secret number is: \1bold\1six (6)\2
 la_game_title;Survivant de l'espace;Space survivor
 la_game_info_title;Instructions;Instructions
-la_game_info_text;Bravo ! Vous avez réussi cette première étape ... Voyons voir si vos réflexes sont à la hauteur.\n\nRamassez un maximum étoiles et évitez les astéroïdes en utilisant les flèches du clavier;Collect stars and avoid asteroids using arrow keys
+la_game_info_text;Bravo ! Vous avez réussi cette première étape ... Voyons voir si vos réflexes sont à la hauteur.\n\nRamassez un maximum d'étoiles et évitez les astéroïdes en utilisant les flèches du clavier;Collect stars and avoid asteroids using arrow keys
 la_game_lost;Perdu ...;Lost ...
 la_game_win;Bravo !;Bravo !
 la_chrono_title;Décompte;Chronometer

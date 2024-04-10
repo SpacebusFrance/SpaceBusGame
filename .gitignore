@@ -6,3 +6,4 @@ tests.py
 doc/build/
 start.sh
 test.py
+__pycache__

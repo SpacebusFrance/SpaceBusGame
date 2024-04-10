@@ -1,6 +1,7 @@
 import datetime
 import inspect
 import re
+import os
 
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import LVector3f, WindowProperties
@@ -320,6 +321,7 @@ class Scenario(EventObject):
 
         if save_score:
             # write scores, create file if it does not exist
+            os.makedirs(self.engine.get_option("score_folder"), exist_ok=True)
             with open(f'{self.engine.get_option("score_folder")}scores_{self._scenario}.txt', 'a+') as file:
                 file.write(f'{self.last_score}\n')
 
