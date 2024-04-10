@@ -306,7 +306,7 @@ class Scenario(EventObject):
         """
         return self._scenario
 
-    def end_game(self, save_score=True, show_end_screen=True):
+    def end_game(self, save_score=True, show_end_screen=True, text='$score_text$'):
         """
         End the current game and write the score in the score file
 
@@ -339,7 +339,8 @@ class Scenario(EventObject):
             self.engine.gui.end_screen(player_position=position,
                                        total_players=total,
                                        time_minutes=minutes,
-                                       time_seconds=seconds)
+                                       time_seconds=seconds,
+                                       text=text)
 
     def start_game(self):
         """
@@ -422,7 +423,7 @@ class Scenario(EventObject):
         self.start_next_step()
 
     @event("end_game")
-    def on_end_game(self, show_end_screen=True, save_score=True):
+    def on_end_game(self, show_end_screen=True, save_score=True, text='$score_text$'):
         # remove all incoming events
         # except events from current task
         # (being the end_game task with
@@ -434,7 +435,8 @@ class Scenario(EventObject):
         # call the end game
         self.end_game(
             show_end_screen=show_end_screen,
-            save_score=save_score
+            save_score=save_score,
+            text=text,
         )
 
     @event('collision')

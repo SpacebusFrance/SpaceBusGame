@@ -79,7 +79,7 @@ class Gui(EventObject):
                    on_password_find=lambda *args: self.engine.reset_game(None, False),
                    )
 
-    def end_screen(self, player_position=None, total_players=None, time_minutes=None, time_seconds=None):
+    def end_screen(self, player_position=None, total_players=None, time_minutes=None, time_seconds=None, text='$score_text$'):
         """
         Displays an end screen
 
@@ -94,6 +94,7 @@ class Gui(EventObject):
             time_minutes=time_minutes,
             time_seconds=time_seconds,
             total_players=total_players,
+            text=text,
             background_color=self.colors['black'],
         )
 
