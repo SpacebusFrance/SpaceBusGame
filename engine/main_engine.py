@@ -195,11 +195,12 @@ class Game(ShowBase):
             self.log_size = 30
             self.debug_window.setBin('gui-popup', 1)
             self.accept('control-l', self.toggle_debug_window)
+            self.accept('control-0', self.userExit)
             self.accept('log_event', self.on_log_event)
             self.accept('wheel_up', self.on_wheel_up)
             self.accept('wheel_down', self.on_wheel_down)
 
-            if self.get_option('show_debug_log'):
+            if self.get_option('show_debug_log'): 
                 self.debug_window.show()
             else:
                 self.debug_window.hide()
@@ -233,7 +234,9 @@ class Game(ShowBase):
         """
         Draw logs on the debug window
         """
-        self.debug_window.setText('\n'.join(self.debug_logs[-self.log_size - self.log_shift: - 1 - self.log_shift]))
+        self.debug_window.setText(
+            text='\n'.join(self.debug_logs[-self.log_size - self.log_shift: - 1 - self.log_shift])
+        )
 
     def on_log_event(self, level, message) -> None:
         """
