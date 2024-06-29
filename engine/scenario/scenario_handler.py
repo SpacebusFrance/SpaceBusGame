@@ -35,7 +35,7 @@ class IncomingGameEvents(DirectObject):
             return task.is_alive()
         return False
 
-    def remove_all_events(self, exceptions=None) -> None:
+    def remove_all_events(self, exceptions=[None]) -> None:
         """
         Remove all incoming events with possible exceptions
 
