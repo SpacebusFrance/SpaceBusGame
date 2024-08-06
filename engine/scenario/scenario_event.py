@@ -66,6 +66,7 @@ class ScenarioStep:
         self.duration = duration
         self._action_task = None
         self.delay = delay if delay is not None else 0.0
+        self.delay = self.countdown_replace(delay)
 
         self.constraints = end_conditions
 
@@ -76,6 +77,13 @@ class ScenarioStep:
         self._loose_sound = loose_sound
         self._win_sound = win_sound
         self._fulfill_if_lost = fulfill_if_lost
+
+    def countdown_replace(self, timer, scenario = "mars_sample (2)"):
+        """replace $countdown$ with its value in xml.""" 
+        if self.scenario._scenario == scenario:
+            if isinstance(timer, str) and timer.startswith("$countdown$"):
+                return eval(timer.replace("$countdown$",str(self.scenario.countdown)))
+        return timer
 
     def reset(self) -> None:
         """
@@ -121,6 +129,8 @@ class ScenarioStep:
                     method=lambda *args: send_event(self._event_name, **self._event_kwargs)
                 )
             else:
+                if "time" in self._event_kwargs:
+                    self._event_kwargs["time"] = self.countdown_replace(self._event_kwargs["time"])
                 send_event(self._event_name, **self._event_kwargs)
 
         if self._hint_sound is not None and self._hint_time is not None:

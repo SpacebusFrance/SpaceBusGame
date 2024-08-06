@@ -79,7 +79,6 @@ chrono_title;temps avant erreur;time before crash
 
 window_enter_to_close;Appuyer sur \1bold\1ENTREE\2 pour passer;Press \1bold\1ENTER\2 to ignore
 
-la_countdown;15
 la_instructions;A l'attention des experts.\n\n1. Ouvrez le coffre\n2. Trouvez les quatre chiffres\n3. Trouvez leur ordre\n4. Récupérez les échantillons.\n\n\1red\1Attention\2 destruction des échantillons \1bold\1dans COUNTDOWN minutes.\2;MISSING
 la_text;Chers collègues.\n\nNous venons enfin de trouver un échantillon qui pourrait bouleverser notre vision de la vie martienne, mais nos instruments de mesures ne sont pas suffisamment précis pour en apporter la preuve formelle. Nous vous les confions pour des analyses plus poussées. Néanmoins, comme le protocole l’exige, ils sont sous scellés afin qu’ils ne tombent entre de mauvaises mains. Ils se trouvent dans un coffre fermé par un cadenas à 4 chiffres. Chacun d’entre nous a choisi un chiffre et a laissé des indices inspirés de sa vie dans le coffre. Une fois ces 4 chiffres trouvés, il vous faudra encore découvrir leur ordre pour finalement accéder aux échantillons. Comme décrit dans le protocole, les échantillons seront détruits dans COUNTDOWN min. Bonne chance !;EMPTY
 la_unlocked_title;Information; Information

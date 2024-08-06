@@ -1,6 +1,7 @@
     <?xml version="1.0" encoding="UTF-8"?>
 <scenario>
-    <group name="debut de jeux">
+    <!-- set 'countdown' below to adapt the duration of the game (in seconds) -->
+    <group name="debut de jeux" countdown="60*20"> 
         <!-- set the screen "lost_astronaut" (never-mind the name) -->
         <step action="set_screen" name="lost_astronaut"/>
 <!--        <step action="keyboard" key="control-enter"/>-->
@@ -19,12 +20,12 @@
         <step action="info" title="$la_game_info_title$" text="$la_text$" duration="80" icon="compose" close_on_enter="False" text_size="0.042"/>
 
         <!-- setup timer and events (fixed time) -->
-        <event action="goto_step" goto_id="end" delay="890"/>
-        <event action="play_sound" name="voice_bio_10min" delay="300" duration="0"/>
-        <event action="play_sound" name="voice_bio_5min" delay="600" duration="0"/>
-        <event action="play_sound" name="voice_bio_1min" delay="840" duration="0"/>
-        <event action="play_sound" name="voice_bio_end" delay="885" duration="0"/>
-        <event action="start_chrono" time="900"/>
+        <event action="goto_step" goto_id="end" delay="$countdown$"/>
+        <event action="play_sound" name="voice_bio_10min" delay="$countdown$-60*10" duration="0"/>
+        <event action="play_sound" name="voice_bio_5min" delay="$countdown$-60*5" duration="0"/>
+        <event action="play_sound" name="voice_bio_1min" delay="$countdown$-60*1" duration="0"/>
+        <event action="play_sound" name="voice_bio_end" delay="5" duration="0"/>
+        <event action="start_chrono" time="$countdown$"/>
 
         <step action="wait" duration="2"/>
 

@@ -152,7 +152,11 @@ class Gui(EventObject):
                 Logger.error(f'missing text "{value}" for lang "{self.engine.get_option("lang")}"')
                 new_value = f'!{value}!'
             text = text.replace('{key}{value}{key}'.format(key=key, value=value), new_value)
-        return text.replace('\\1', '\1').replace('\\2', '\2').replace('\\n', "\n").replace('\\t', '\t').replace("COUNTDOWN",self._text_file.loc["la_countdown", 'fr'])
+        text = text.replace('\\1', '\1').replace('\\2', '\2').replace('\\n', "\n").replace('\\t', '\t')
+        if hasattr(self.engine.scenario,"countdown"):
+            text = text.replace("COUNTDOWN",str(int(self.engine.scenario.countdown/60)))
+            # conversion seconds -> minutes
+        return text
 
     def set_current_window(self, win=Window, **kwargs):
         """

@@ -211,6 +211,7 @@ class Scenario(EventObject):
 
             self.steps.clear()
             self._scenario = name
+            self.countdown = 0
 
             event_counter = 0
 
@@ -261,6 +262,8 @@ class Scenario(EventObject):
                         current["action"] = "group" # noqa
                         current["id"] = args.pop("id", f'step_{len(self.steps)}')
                         current["duration"] = 0.0   # noqa
+                        if "countdown" in args:
+                            self.countdown = args["countdown"]
                         # idem, add a new step
                         self._new_step(**current)
                         # and reset arguments
