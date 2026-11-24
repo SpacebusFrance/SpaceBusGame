@@ -9,13 +9,21 @@ SHADER = Shader.load(
 
 
 class FakeScreen3D:
-    def __init__(self, engine, screen_number, shuttle_angle=0, shift_x=0, shift_y=0.0):
+    def __init__(self, engine, screen_id, shuttle_angle=0, shift_x=0, shift_y=0.0, front_screen=False):
         self._engine = engine
-        self.screen = screen_number
-
+        self.screen = screen_id
+        screen_number = self._engine.get_option('screen_number')
         size_x = self._engine.get_option('screen_resolution')[0]
         size_y = self._engine.get_option('screen_resolution')[1]
-        x0, x1 = 0.2 * screen_number, 0.2 * (screen_number + 1)
+
+        if front_screen: # override screen resolution with 'front_screen_resolution'
+          try:
+              size_x = self._engine.get_option('front_screen_resolution')[0]
+              size_y = self._engine.get_option('front_screen_resolution')[1]
+          except:
+              pass # backward compatibility
+
+        x0, x1 = screen_id/screen_number, (screen_id + 1)/screen_number
         self.cam_node = self._engine.make_camera(
             self._engine.win,
             displayRegion=(x0, x1, 0, 1),
@@ -41,7 +49,7 @@ class FakeScreen3D:
 
         # sun shader
         if engine.get_option('use_sun_shader'):
-            cm = CardMaker(f'card_{screen_number}')
+            cm = CardMaker(f'card_{screen_id}')
             cm.setFrame(2 * x0 - 1, 2 * x1 - 1, - 1, 1)
 
             # Create a node path for the card
@@ -79,7 +87,7 @@ class FakeScreen3D:
                     )
                 return task.cont
 
-            engine.add_task(update, f'update_{screen_number}')
+            engine.add_task(update, f'update_{screen_id}')
 
     def get_camera(self):
         return self.cam_node
