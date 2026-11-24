@@ -303,14 +303,21 @@ class Game(ShowBase):
             # and setting the other display regions
             self.screens.clear()
             screen_number = self.get_option('screen_number')
-            if screen_number >= 2:
+            if screen_number == 4:
                 self.screens.append(FakeScreen3D(self, 1, shuttle_angle=-90, shift_y=-4.0))
-            if screen_number >= 3:
+                # front screen had different resolution
+                self.screens.append(FakeScreen3D(self, 2, shuttle_angle=-self.get_option("front_screen_angle"), front_screen=True))
+                self.screens.append(FakeScreen3D(self, 3, shuttle_angle=90, shift_y=-4.0))
+            elif screen_number == 5:
+                self.screens.append(FakeScreen3D(self, 1, shuttle_angle=-90, shift_y=-4.0))
                 self.screens.append(FakeScreen3D(self, 2, shuttle_angle=-self.get_option("front_screen_angle")))
-            if screen_number >= 4:
                 self.screens.append(FakeScreen3D(self, 3, shuttle_angle=self.get_option("front_screen_angle")))
-            if screen_number >= 5:
                 self.screens.append(FakeScreen3D(self, 4, shuttle_angle=90, shift_y=-4.0))
+            else:
+                if screen_number >= 2:
+                    self.screens.append(FakeScreen3D(self, 1, shuttle_angle=-90, shift_y=-4.0))
+                if screen_number >= 3:
+                    self.screens.append(FakeScreen3D(self, 2, shuttle_angle=-self.get_option("front_screen_angle")))
 
             # correct gui position
             self.aspect2d.set_pos(1/screen_number - 1, 0, 0)
